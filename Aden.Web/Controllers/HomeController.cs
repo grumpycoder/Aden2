@@ -257,7 +257,11 @@ namespace Aden.Web.Controllers
             return View(vm.OrderByDescending(x => x.Sent));
         }
 
-        public ActionResult Log()
+        public ActionResult LogViewer()
+        {
+            return View();
+        }
+        public ActionResult PerfViewer()
         {
             return View();
         }

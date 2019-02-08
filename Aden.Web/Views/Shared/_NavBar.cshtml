@@ -31,6 +31,25 @@
                 @Html.NavigationLink("Mail Viewer", "Mail", "Home", "fa fa-envelope")
             }
 
+            @if (User.IsInRole(Constants.Administrators))
+            {
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Log Viewer
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li>
+                            @Html.NavigationLink("Error Log", "LogViewer", "Home", "fa fa-envelope")
+
+                        </li>
+                        <li>
+                            @Html.NavigationLink("Performance Log", "PerfViewer", "Home", "fa fa-envelope")
+
+                        </li>
+                    </ul>
+                </li>
+                
+            }
+
 
         </ul>
 

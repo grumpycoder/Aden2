@@ -239,9 +239,15 @@
     <Compile Include="Controllers\api\DemoController.cs" />
     <Compile Include="Controllers\api\DocumentController.cs" />
     <Compile Include="Controllers\api\FileSpecificationController.cs" />
+    <Compile Include="Controllers\api\LogController.cs" />
     <Compile Include="Controllers\api\MailController.cs" />
     <Compile Include="Controllers\api\MembershipController.cs" />
     <Compile Include="Controllers\api\SubmissionController.cs" />
+    <Compile Include="Data\Configuration\ErrorLogDetailConfiguration.cs" />
+    <Compile Include="Data\Configuration\PerformanceLogDetailConfiguration.cs" />
+    <Compile Include="Data\Profiles\ErrorLogDetailProfile.cs" />
+    <Compile Include="Models\ErrorLogDetail.cs" />
+    <Compile Include="Models\PerformanceLogDetail.cs" />
     <Compile Include="ViewModels\UpdateGroupMemberDto.cs" />
     <Compile Include="Controllers\api\WorkItemController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -322,6 +328,7 @@
     <Compile Include="ViewModels\WorkItemViewDto.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\release.txt" />
     <Content Include="css\dx-bundle.css" />
     <Content Include="css\dx-bundle.min.css">
       <DependentUpon>dx-bundle.css</DependentUpon>
@@ -352,6 +359,7 @@
     <Content Include="js\app\filespecification.module.min.js">
       <DependentUpon>filespecification.module.js</DependentUpon>
     </Content>
+    <Content Include="js\app\log.module.js" />
     <Content Include="js\app\mail.module.js" />
     <Content Include="js\app\mail.module.min.js" />
     <Content Include="js\app\review.module.js" />
@@ -476,14 +484,13 @@
     <Content Include="Views\Shared\Unauthorized.cshtml" />
     <Content Include="Views\Home\_ReportUploadForm.cshtml" />
     <Content Include="Views\Home\Mail.cshtml" />
-    <Content Include="Views\Home\Log.cshtml" />
+    <Content Include="Views\Home\LogViewer.cshtml" />
+    <Content Include="Views\Home\PerfViewer.cshtml" />
     <None Include="Web.Production.config" />
     <None Include="Web.Stage.config" />
     <None Include="Web.Test.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="App_Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
