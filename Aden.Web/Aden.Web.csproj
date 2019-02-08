@@ -476,6 +476,10 @@
     <Content Include="Views\Shared\Unauthorized.cshtml" />
     <Content Include="Views\Home\_ReportUploadForm.cshtml" />
     <Content Include="Views\Home\Mail.cshtml" />
+    <Content Include="Views\Home\Log.cshtml" />
+    <None Include="Web.Production.config" />
+    <None Include="Web.Stage.config" />
+    <None Include="Web.Test.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -231,7 +231,7 @@ namespace Aden.Web.Controllers
         [TrackViewName]
         public ActionResult Mail()
         {
-            MimeReader mime = new MimeReader();     
+            MimeReader mime = new MimeReader();
 
             var vm = new List<MailViewModel>();
             var path = HostingEnvironment.MapPath(@"/App_Data");
@@ -257,7 +257,10 @@ namespace Aden.Web.Controllers
             return View(vm.OrderByDescending(x => x.Sent));
         }
 
-
+        public ActionResult Log()
+        {
+            return View();
+        }
 
         private string GetPlainText(RxMailMessage mm)
         {
