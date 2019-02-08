@@ -360,6 +360,7 @@
       <DependentUpon>filespecification.module.js</DependentUpon>
     </Content>
     <Content Include="js\app\log.module.js" />
+    <Content Include="js\app\log.module.min.js" />
     <Content Include="js\app\mail.module.js" />
     <Content Include="js\app\mail.module.min.js" />
     <Content Include="js\app\review.module.js" />
