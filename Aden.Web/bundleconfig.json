@@ -72,5 +72,11 @@
     "inputFiles": [
       "js/app/mail.module.js"
     ]
+  },
+  {
+    "outputFileName": "js/app/log.module.min.js",
+    "inputFiles": [
+      "js/app/log.module.js"
+    ]
   }
 ]

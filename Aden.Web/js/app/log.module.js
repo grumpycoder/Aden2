@@ -1,10 +1,11 @@
 ﻿
-var uriCurrent = "/api/log/performance";
+var uriPerf = "/api/log/performance";
+var uriError = "/api/log/error";
 
 var $gridErrorLog = $('#gridErrorLog').dxDataGrid({
     dataSource: DevExpress.data.AspNet.createStore({
         key: 'id',
-        loadUrl: uriCurrent
+        loadUrl: uriError
     }),
     remoteOperations: true,
     allowColumnResizing: true,
@@ -113,7 +114,7 @@ var $gridErrorLog = $('#gridErrorLog').dxDataGrid({
 var $gridPerfLog = $('#gridPerfLog').dxDataGrid({
     dataSource: DevExpress.data.AspNet.createStore({
         key: 'id',
-        loadUrl: uriCurrent
+        loadUrl: uriPerf
     }),
     remoteOperations: true,
     allowColumnResizing: true,
