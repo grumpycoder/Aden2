@@ -85,10 +85,5 @@ namespace Aden.Web.Controllers.api
             return Ok($"Deleted {user.FullName} to {group.Name}");
         }
     }
-
-    public class UserModel
-    {
-        public string EmailAddress { get; set; }
-        public string Name { get; set; }
-    }
+    
 }
