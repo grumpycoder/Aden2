@@ -1,4 +1,5 @@
-﻿using Aden.Web.Data;
+﻿using System;
+using Aden.Web.Data;
 using Aden.Web.Models;
 using ALSDE.Services;
 using CSharpFunctionalExtensions;
@@ -76,5 +77,9 @@ namespace Aden.Web.Services
             return _user.Groups;
         }
 
+        public UserProfile GetUserProfile(Guid identityGuid)
+        {
+            return _context.Users.FirstOrDefault(x => x.IdentityGuid == identityGuid);
+        }
     }
 }

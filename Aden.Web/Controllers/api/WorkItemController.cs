@@ -34,8 +34,8 @@ namespace Aden.Web.Controllers.api
             _context = new AdenContext();
             _membershipService = new MembershipService(_context);
             _idemService = new IdemService();
-            _currentUserFullName = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
-            _currentUsername = User.Identity.Name;
+            _currentUserFullName = User.Identity.Name;
+            _currentUsername = ((ClaimsIdentity)User.Identity).Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
             _documentService = new DocumentService(_context);
 
         }

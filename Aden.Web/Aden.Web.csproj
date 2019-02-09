@@ -57,8 +57,8 @@
     <Reference Include="Alsde.Mvc.Logging, Version=2018.8.6800.1, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Mvc.Logging.2018.8.1\lib\net471\Alsde.Mvc.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="Alsde.Security, Version=2019.1.30.6969, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Alsde.Security.2019.1.0-beta-01\lib\net451\Alsde.Security.dll</HintPath>
+    <Reference Include="Alsde.Security, Version=2019.2.9.6979, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Security.2019.2.0-beta-01\lib\net451\Alsde.Security.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Services, Version=2018.10.17.6688, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Services.2018.10.0\lib\net451\Alsde.Services.dll</HintPath>

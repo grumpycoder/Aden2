@@ -35,13 +35,24 @@ namespace Aden.Web.Controllers
 
             var identity = result.Value;
             if (identity == null) throw new Exception("No identity returned from Token signin");
+            
+            var claim = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+            var user = _membershipService.GetUserProfile(new Guid(claim));
 
-            var groups = _membershipService.GetUserGroups(identity.Name);
+            user.EmailAddress = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value;
+            user.LastName = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname).Value;
+            user.FirstName = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName).Value;
+            user.FullName = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
+
+            _context.SaveChanges();
+
+            var groups = _membershipService.GetUserGroups(user.EmailAddress);
             foreach (var @group in groups)
             {
                 identity.AddClaim(new Claim(ClaimTypes.Role, @group.Name));
                 identity.AddClaim(new Claim(ClaimsIdentity.DefaultNameClaimType, @group.Name));
             }
+
 
             return RedirectToAction(identity.Claims.Any(x => x.Type == ClaimTypes.Role && x.Value.Contains("Administrators")) ? "Submissions" : "Assignments", "Home");
         }

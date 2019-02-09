@@ -8,9 +8,7 @@ using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using System.Data.Entity;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 
 namespace Aden.Web.Controllers.api
@@ -27,7 +25,7 @@ namespace Aden.Web.Controllers.api
         {
             _context = new AdenContext();
             _membershipService = new MembershipService(_context);
-            _currentUserFullName = ((ClaimsIdentity)HttpContext.Current.User.Identity).Claims.FirstOrDefault(c => c.Type == "FullName")?.Value;
+            _currentUserFullName = User.Identity.Name;
         }
 
         [HttpGet]
