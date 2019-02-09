@@ -1,11 +1,12 @@
-﻿using System;
-using Aden.Web.Data;
+﻿using Aden.Web.Data;
 using Aden.Web.Models;
 using ALSDE.Services;
 using CSharpFunctionalExtensions;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Security.Claims;
 
 namespace Aden.Web.Services
 {
@@ -80,6 +81,27 @@ namespace Aden.Web.Services
         public UserProfile GetUserProfile(Guid identityGuid)
         {
             return _context.Users.FirstOrDefault(x => x.IdentityGuid == identityGuid);
+        }
+
+        public void SyncClaims(ClaimsIdentity identity)
+        {
+            var claim = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+
+            var user = _context.Users.FirstOrDefault(x => x.IdentityGuid == new Guid(claim));
+
+            user.EmailAddress = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value;
+            user.LastName = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname).Value;
+            user.FirstName = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName).Value;
+            user.FullName = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
+
+            _context.SaveChanges();
+
+            var groups = GetUserGroups(user.EmailAddress);
+            foreach (var @group in groups)
+            {
+                identity.AddClaim(new Claim(ClaimTypes.Role, @group.Name));
+                identity.AddClaim(new Claim(ClaimsIdentity.DefaultNameClaimType, @group.Name));
+            }
         }
     }
 }
