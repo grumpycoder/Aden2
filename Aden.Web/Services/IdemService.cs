@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Text;
 
 namespace Aden.Web.Services
 {
@@ -38,18 +39,27 @@ namespace Aden.Web.Services
             }
         }
 
-        public List<AuthenticatedUserDto> FindUsers(string searchTerm)
+        public List<AuthenticatedUserDto> FindUsers(string searchTerm, bool internalOnly = true)
         {
-            var query = "select top 15 LastName, FirstName, EmailAddress, " +
+            StringBuilder query = new StringBuilder();
+            query.Append("select top 15 LastName, FirstName, EmailAddress, " +
                         "IdentityGuid from Idem.Identities " +
-                        "WHERE EmailAddress like '%' + @SearchString + '%' OR " +
-                        "LastName like '%' + @SearchString + '%' OR " +
-                        "PrintName like '%' + @SearchString + '%'";
+                        "WHERE " +
+                        "(LastName like '%' + @SearchString + '%' OR " +
+                        "PrintName like '%' + @SearchString + '%' OR " +
+                        "EmailAddress LIKE '%' + @SearchString + '%')" );
+
+            var extendedQuery = internalOnly ? " AND EmailAddress LIKE '%alsde.edu'" : "";
+
+            query.Append(extendedQuery); 
+
             using (var cn = new SqlConnection(_context.Database.Connection.ConnectionString))
             {
-                var list = cn.Query<AuthenticatedUserDto>(query, new { @SearchString = searchTerm }).ToList();
+                var list = cn.Query<AuthenticatedUserDto>(query.ToString(), new { @SearchString = searchTerm }).ToList();
                 return list;
             }
         }
+
+     
     }
 }
