@@ -42,15 +42,16 @@ namespace Aden.Web.Controllers.api
         [HttpPut, Route("{id}")]
         public object Put(int id, UpdateFileSpecificationDto dto)
         {
-            var model = _context.FileSpecifications.Find(id);
+            //var model = _context.FileSpecifications.Find(id);
 
-            if (model == null) return NotFound();
+            //if (model == null) return NotFound();
 
-            Mapper.Map(dto, model);
+            //Mapper.Map(dto, model);
 
-            _context.SaveChanges();
+            //_context.SaveChanges();
 
-            return Ok(dto);
+            //return Ok(dto);
+            return Ok();
         }
 
         [HttpPost, Route("activate/{id}")]
