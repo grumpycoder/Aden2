@@ -59,7 +59,7 @@ namespace Aden.Web.Services
 
             var group = _context.Groups.Include(u => u.Users).FirstOrDefault(x => x.Name == groupName);
 
-            var users = group.Users;
+            var users = group?.Users;
 
             return users;
         }
