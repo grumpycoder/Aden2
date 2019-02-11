@@ -40,7 +40,7 @@ namespace Aden.Web.Controllers.api
         }
 
         [HttpPut, Route("{id}")]
-        public object Post(int id, UpdateFileSpecificationDto dto)
+        public object Put(int id, UpdateFileSpecificationDto dto)
         {
             var model = _context.FileSpecifications.Find(id);
 
