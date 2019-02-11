@@ -39,7 +39,7 @@ namespace Aden.Web.Controllers.api
             return Ok(DataSourceLoader.Load(dto, loadOptions));
         }
 
-        [HttpPost, Route("save/{id}")]
+        [HttpPost, Route("{id}")]
         public object Post(int id, UpdateFileSpecificationDto dto)
         {
             var model = _context.FileSpecifications.Find(id);
