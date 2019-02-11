@@ -1,12 +1,13 @@
 ﻿using Aden.Web.Data;
 using Aden.Web.Models;
 using Aden.Web.Services;
+using Aden.Web.ViewModels;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
-using Aden.Web.ViewModels;
 
 namespace Aden.Web.Controllers.api
 {
@@ -15,12 +16,15 @@ namespace Aden.Web.Controllers.api
     public class MembershipController : ApiController
     {
         private AdenContext _context;
-        private IdemContext _idemContext;
+        private readonly MembershipService _membershipService;
+        private string _currentUsername;
 
         public MembershipController()
         {
             _context = new AdenContext();
-            _idemContext = new IdemContext();
+            _membershipService = new MembershipService(_context);
+            _currentUsername = ((ClaimsIdentity)User.Identity).Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
+
         }
 
         [HttpGet, Route("{username}")]
@@ -65,6 +69,9 @@ namespace Aden.Web.Controllers.api
 
             _context.SaveChanges();
 
+            var applications = new IdemService().GetUserApplications(user.EmailAddress);
+            if (!applications.Any(x => x.ApplicationViewKey == Constants.ApplicationName)) WorkEmailer.RequestAccess(user, _currentUsername);
+
 
             return Ok(user);
         }
@@ -84,6 +91,7 @@ namespace Aden.Web.Controllers.api
 
             return Ok($"Deleted {user.FullName} to {group.Name}");
         }
+
     }
-    
+
 }

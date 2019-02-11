@@ -74,14 +74,32 @@ namespace Aden.Web.Services
                 }
             }
 
-            //var smtpClient = new SmtpClient();
-            //smtpClient.PickupDirectoryLocation = @"~\App_Data"; 
-
-            //email.UsingClient(smtpClient); 
             email.Send();
 
         }
 
+        public static void RequestAccess(UserProfile user, string sendFom)
+        {
+            Email.DefaultRenderer = new RazorRenderer();
+
+            var sender = Constants.ReplyAddress;
+            var templatePath = Constants.UserRequestTemplatePath;
+
+            var subject = "Add user to Aden Viewers";
+            var model = user.EmailAddress;
+
+            var email = Email
+                .From(sendFom, sendFom)
+                .To(user.EmailAddress)
+                .Subject(subject)
+                .BodyAsHtml()
+                .Body("")
+                .UsingTemplateFromFile(templatePath, model);
+
+
+
+            email.Send();
+        }
     }
 
     public class EmailModel

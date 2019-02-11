@@ -1,10 +1,11 @@
-﻿
+﻿@model string
+@using Aden.Web
 
 <div style="width:100%; font-family:'Lato', Tahoma, Verdana, Segoe, sans-serif;">
 
     <div style="width:70%; margin:auto; text-align:center;" id="messageTitle">
         <h2>
-            Please @Model.Action user @Model.Email to group <br />@Model.GroupName
+            Please add user @Model to group <br />@Constants.DefaultApplicationViewerGroup
         </h2>
         <hr />
     </div>

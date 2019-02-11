@@ -12,6 +12,8 @@ namespace Aden.Web
         public const string LeaKey = "LEA";
         public const string StateKey = "SEA";
 
+        public static string DefaultApplicationViewerGroup = AppSettings.Get<string>("DefaultViewerGroup");
+
         public static string TpaAccessKey => AppSettings.Get<string>("TPA_AccessKey");
         public static string DatabaseContextName => "AdenContext";
         public static string Environment => AppSettings.Get<string>("ASPNET_ENV");
@@ -30,7 +32,7 @@ namespace Aden.Web
         public static int CommandTimeout => AppSettings.Get<int>("CommandTimeout");
         public static string GlobalAdministrators => AppSettings.Get<string>("GlobalAdministratorsGroupName");
         public static string Administrators = AppSettings.Get<string>("AdministratorsGroupName");
-        
+
 
         //Email variables
         public const string TaskIcon = "tasklist";
