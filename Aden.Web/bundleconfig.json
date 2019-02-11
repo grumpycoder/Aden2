@@ -36,47 +36,5 @@
       "enabled": true,
       "adjustRelativePaths": false
     }
-  },
-  {
-    "outputFileName": "js/app/filespecification.module.min.js",
-    "inputFiles": [
-      "js/app/filespecification.module.js"
-    ]
-  },
-  {
-    "outputFileName": "js/app/submission.module.min.js",
-    "inputFiles": [
-      "js/app/submission.module.js"
-    ]
-  },
-  {
-    "outputFileName": "js/app/review.module.min.js",
-    "inputFiles": [
-      "js/app/review.module.js"
-    ]
-  },
-  {
-    "outputFileName": "js/app/app.module.min.js",
-    "inputFiles": [
-      "js/app/app.module.js"
-    ]
-  },
-  {
-    "outputFileName": "js/app/assignments.module.min.js",
-    "inputFiles": [
-      "js/app/assignments.module.js"
-    ]
-  },
-  {
-    "outputFileName": "js/app/mail.module.min.js",
-    "inputFiles": [
-      "js/app/mail.module.js"
-    ]
-  },
-  {
-    "outputFileName": "js/app/log.module.min.js",
-    "inputFiles": [
-      "js/app/log.module.js"
-    ]
   }
 ]

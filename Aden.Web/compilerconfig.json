@@ -6,5 +6,33 @@
   {
     "outputFile": "css/site-bundle.css",
     "inputFile": "src/scss/site/site.scss"
+  },
+  {
+    "outputFile": "js/app/app.module.min.js",
+    "inputFile": "js/app/app.module.js"
+  },
+  {
+    "outputFile": "js/app/assignments.module.min.js",
+    "inputFile": "js/app/assignments.module.js"
+  },
+  {
+    "outputFile": "js/app/filespecification.module.min.js",
+    "inputFile": "js/app/filespecification.module.js"
+  },
+  {
+    "outputFile": "js/app/log.module.min.js",
+    "inputFile": "js/app/log.module.js"
+  },
+  {
+    "outputFile": "js/app/mail.module.min.js",
+    "inputFile": "js/app/mail.module.js"
+  },
+  {
+    "outputFile": "js/app/review.module.min.js",
+    "inputFile": "js/app/review.module.js"
+  },
+  {
+    "outputFile": "js/app/submission.module.min.js",
+    "inputFile": "js/app/submission.module.js"
   }
 ]
