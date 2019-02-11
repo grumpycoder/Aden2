@@ -105,7 +105,8 @@ namespace Aden.Web.Controllers.api
                 .FirstOrDefault(x => x.ReportId == submission.CurrentReportId && x.WorkItemState == WorkItemState.NotStarted);
 
             //Create copy because removing workitems produces null assignee 
-            var wi = workItem.DeepCopy();
+            var wi = workItem; 
+            if(workItem != null) wi = workItem.DeepCopy();
 
             //TODO: Submission does not need to be aware of data context
             //Remove Reports/Documents/WorkItems from submission
@@ -113,18 +114,21 @@ namespace Aden.Web.Controllers.api
                 .FirstOrDefaultAsync(r => r.Id == submission.CurrentReportId);
             if (report != null)
             {
-                var workItems = _context.WorkItems.Where(w => w.ReportId == report.Id);
-                _context.WorkItems.RemoveRange(workItems);
 
                 var docs = _context.ReportDocuments.Where(d => d.ReportId == report.Id);
-                _context.ReportDocuments.RemoveRange(docs);
+                if (docs.Any()) _context.ReportDocuments.RemoveRange(docs);
 
+
+                var workItems = _context.WorkItems.Where(w => w.ReportId == report.Id);
+                if(workItems.Any()) _context.WorkItems.RemoveRange(workItems);
+
+           
                 _context.Reports.Remove(report);
             }
 
             submission.Cancel(_currentUserFullName);
 
-            WorkEmailer.Send(wi, submission);
+            if(wi != null) WorkEmailer.Send(wi, submission);
 
             _context.SaveChanges();
 

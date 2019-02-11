@@ -156,7 +156,7 @@ namespace Aden.Web.Controllers.api
 
             WorkEmailer.Send(wi, submission, null, additionalRecipients);
 
-            //_context.SaveChanges();
+            _context.SaveChanges();
 
             var dto = Mapper.Map<WorkItemViewDto>(workItem);
 
