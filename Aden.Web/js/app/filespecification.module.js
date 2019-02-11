@@ -293,7 +293,7 @@
     function editFileSpecification(container, data) {
         var title = 'Edit File Specification';
         var url = '/home/editfileSpecification/' + data.id;
-        var postUrl = '/api/filespecification/' + data.id;
+        var postUrl = '/api/filespecification/save/' + data.id;
 
         BootstrapDialog.show({
             type: BootstrapDialog.TYPE_WARNING, 
@@ -323,7 +323,7 @@
                         var data = $('form').serializeJSON(); 
                         $.ajax({
                             contentType: 'application/json; charset=utf-8',
-                            type: "PUT",
+                            type: "POST",
                             url: postUrl,
                             data: JSON.stringify(data),
                             dataType: 'json',
@@ -333,6 +333,7 @@
                                 $grid.refresh();
                             },
                             error: function (error) {
+                                console.log('error', error);
                                 toastr.error('Error saving file changes');
                             },
                             complete: function (status) {
