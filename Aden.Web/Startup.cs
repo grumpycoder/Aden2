@@ -20,7 +20,7 @@ namespace Aden.Web
             {
                 AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie,
                 CookieDomain = "alsde.edu",
-                CookieName = "Aden.ApplicationCookie"
+                CookieName = "Aden.ApplicationCookie." + Constants.Environment
             });
 
             //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
