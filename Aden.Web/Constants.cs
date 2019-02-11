@@ -39,10 +39,10 @@ namespace Aden.Web
         public const string CancelledIcon = "event-declined";
         public const string ErrorIcon = "error";
         public const string SuccessIcon = "good-quality";
-        public const string WorkItemTemplatePath = @"~\Templates\WorkItemEmailTemplate.cshtml";
-        public const string SubmissionTemplatePath = @"~\Templates\WorkItemSubmissionTemplate.cshtml";
-        public const string CancelTemplatePath = @"~\Templates\WorkItemCancelTemplate.cshtml";
-        public const string UserRequestTemplatePath = @"~\Templates\UserRequestEmailTemplate.cshtml";
+        public const string WorkItemTemplatePath = @"~\Views\Templates\WorkItemEmailTemplate.cshtml";
+        public const string SubmissionTemplatePath = @"~\Views\Templates\WorkItemSubmissionTemplate.cshtml";
+        public const string CancelTemplatePath = @"~\Views\Templates\WorkItemCancelTemplate.cshtml";
+        public const string UserRequestTemplatePath = @"~\Views\Templates\UserRequestEmailTemplate.cshtml";
 
     }
 }
