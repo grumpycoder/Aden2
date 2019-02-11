@@ -5,18 +5,21 @@
 
     $('[data-message-id]').tooltip();
 
-    $(document).on('click', '[data-message-id]', function (e) {
+    $(document).on('click', '[data-id]', function (e) {
         e.preventDefault();
         var btn = $(this);
-        console.log('btn', btn);
-        var id = $(this).data('message-id');
+        btn.parent().closest('div').parent().remove();
+
+        var id = $(this).data('id');
+        var $div = $('[data-message-id="' + id + '"]');
+
         var url = '/api/mail/delete/' + id;
         $.ajax({
             url: url,
             type: 'POST',
             success: function (data) {
                 toastr.success('Deleted message');
-                btn.parent().closest('div').parent().remove();
+                $div.remove();
             },
             error: function (err) {
                 toastr.error('Something went wrong: ' + err.responseJSON.message);
