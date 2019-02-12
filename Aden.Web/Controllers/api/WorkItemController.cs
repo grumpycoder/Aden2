@@ -152,7 +152,14 @@ namespace Aden.Web.Controllers.api
             var wi = submission.CompleteWork(workItem, assignee);
 
             var additionalRecipients = new List<UserProfile>();
-            if (wi.WorkItemAction == 0) additionalRecipients = _membershipService.GetGroupMembers(Constants.GlobalAdministrators);
+            if (wi.WorkItemAction == 0)
+            {
+                additionalRecipients = _membershipService.GetGroupMembers(Constants.GlobalAdministrators);
+                var generators = _membershipService.GetGroupMembers(submission.FileSpecification.GenerationGroup.Name).ToList();
+                var approvers = _membershipService.GetGroupMembers(submission.FileSpecification.ApprovalGroup.Name).ToList();
+                additionalRecipients.AddRange(generators);
+                additionalRecipients.AddRange(approvers);
+            }
 
             WorkEmailer.Send(wi, submission, null, additionalRecipients);
 

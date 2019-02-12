@@ -138,7 +138,7 @@
     </fieldset>
 
 
-    @*<fieldset class="@(User.IsInRole(Constants.ApplicationProgrammerGroup) ? "show" : "hidden")">*@
+    @*<fieldset class="@(User.IsInRole(Constants.Administrators) ? "show" : "hidden")">*@
     <fieldset>
         <legend>Responsible User Groups</legend>
 
@@ -174,8 +174,7 @@
     </fieldset>
 
 
-    @*<fieldset class="@(User.IsInRole(Constants.ApplicationProgrammerGroup) ? "show" : "hidden")">*@
-        <fieldset>
+    <fieldset class="@(User.IsInRole(Constants.Administrators) ? "show" : "hidden")">
         <legend>Generation Properties</legend>
 
         <div class="row">
