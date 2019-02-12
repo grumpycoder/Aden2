@@ -62,12 +62,12 @@ namespace Aden.Web.Controllers.api
         public async Task<object> Start(int id)
         {
             var submission = await _context.Submissions
-                .Include(f => f.FileSpecification)
+                .Include(f => f.FileSpecification.GenerationGroup)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (submission == null) return NotFound();
 
-            if (submission.FileSpecification.GenerationUserGroup == null)
+            if (submission.FileSpecification.GenerationGroup == null)
                 return BadRequest($"No generation group defined for File { submission.FileSpecification.FileNumber }");
 
             var group = _context.Groups.Include(x => x.Users).FirstOrDefault(x => x.Id == submission.FileSpecification.GenerationGroupId);
@@ -151,12 +151,15 @@ namespace Aden.Web.Controllers.api
 
             if (submission == null) return NotFound();
 
-            if (string.IsNullOrWhiteSpace(submission.FileSpecification.GenerationUserGroup))
+            if (submission.FileSpecification.GenerationGroup == null)
                 return BadRequest($"No generation group defined for File { submission.FileSpecification.FileNumber }");
 
             var group = _context.Groups.Include(x => x.Users)
                 .FirstOrDefault(x => x.Id == submission.FileSpecification.GenerationGroupId);
+
             var assignedUser = _membershipService.GetAssignee(group);
+            if (assignedUser == null)
+                return BadRequest($"No group members to assign next task. ");
 
             var workItem = submission.Reopen(_currentUserFullName, model.Message, assignedUser, model.NextSubmissionDate);
 

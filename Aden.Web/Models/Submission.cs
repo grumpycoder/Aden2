@@ -237,13 +237,11 @@ namespace Aden.Web.Models
                     throw new ArgumentOutOfRangeException();
             }
 
-            //CurrentAssignee = wi.AssignedUser;
             LastUpdated = DateTime.Now;
 
             if (wi.WorkItemAction != 0)
             {
                 report.WorkItems.Add(wi);
-                //CurrentAssignee = nextAssignee;
             }
 
             return wi;

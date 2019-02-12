@@ -277,7 +277,7 @@
                 $grid.refresh();
             },
             error: function (error) {
-                toastr.error('Error starting submission process');
+                toastr.error('Error starting submission process: ' + error.responseJSON.message);
             },
             complete: function (status) {
                 
@@ -353,13 +353,13 @@
                             dataType: 'json',
                             success: function (response) {
                                 toastr.success('Reopened submission process for ' + response.fileName + ' (' + response.fileNumber + ')');
-                                dialogRef.close();
                                 $grid.refresh();
                             },
                             error: function (error) {
-                                toastr.error('Error reopening submission process');
+                                toastr.error('Error starting submission process: ' + error.responseJSON.message);
                             },
                             complete: function (status) {
+                                dialogRef.close();
                             }
                         });
                     }

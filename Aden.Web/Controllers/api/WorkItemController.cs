@@ -7,6 +7,7 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
@@ -144,9 +145,17 @@ namespace Aden.Web.Controllers.api
             if (assignee == null) return BadRequest($"No members in {group.Name} to assign next task");
 
             //TODO Move to completed work method
-            if (workItem.WorkItemAction == WorkItemAction.Generate)
+            try
             {
-                _documentService.GenerateDocuments(currentReport);
+                if (workItem.WorkItemAction == WorkItemAction.Generate)
+                {
+                    _documentService.GenerateDocuments(currentReport);
+                }
+            }
+            catch (Exception e)
+            {
+
+                return BadRequest(e.Message);
             }
 
             var wi = submission.CompleteWork(workItem, assignee);

@@ -183,7 +183,7 @@
                     toastr.success('Completed task for ' + data.fileName + ' (' + data.fileNumber + ')');
                 },
                 error: function (err) {
-                    toastr.error('Error completing task');
+                    toastr.error('Error completing task: ' + err.responseJSON.message);
                 }
             }).always(function () {
                 $toggleWorkingButton(container);

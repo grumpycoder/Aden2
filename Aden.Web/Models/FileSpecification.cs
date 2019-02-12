@@ -18,9 +18,6 @@ namespace Aden.Web.Models
         public string SupportGroup { get; set; }
 
         public string Section { get; set; }
-        public string GenerationUserGroup { get; set; }
-        public string ApprovalUserGroup { get; set; }
-        public string SubmissionUserGroup { get; set; }
 
         public int? GenerationGroupId { get; set; }
         public int? ApprovalGroupId { get; set; }
