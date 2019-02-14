@@ -487,6 +487,7 @@
     <Content Include="Views\Templates\WorkItemCancelTemplate.cshtml" />
     <Content Include="Views\Templates\WorkItemEmailTemplate.cshtml" />
     <Content Include="Views\Templates\WorkItemSubmissionTemplate.cshtml" />
+    <Content Include="Views\Templates\WorkItemSubmissionErrorTemplate.cshtml" />
     <None Include="Web.Production.config" />
     <None Include="Web.Stage.config" />
     <None Include="Web.Test.config" />

@@ -31,7 +31,10 @@ namespace Aden.Web
 
         public static int CommandTimeout => AppSettings.Get<int>("CommandTimeout");
         public static string GlobalAdministrators => AppSettings.Get<string>("GlobalAdministratorsGroupName");
+
         public static string Administrators = AppSettings.Get<string>("AdministratorsGroupName");
+        public static string SubmissionErrorNotifiers = AppSettings.Get<string>("SubmissionErrorNotifiersGroupName");
+        public static string SubmissionNotifiers = AppSettings.Get<string>("SubmissionNotifiersGroupName");
 
 
         //Email variables
@@ -39,10 +42,12 @@ namespace Aden.Web
         public const string CancelledIcon = "event-declined";
         public const string ErrorIcon = "error";
         public const string SuccessIcon = "good-quality";
+
         public const string WorkItemTemplatePath = @"~\Views\Templates\WorkItemEmailTemplate.cshtml";
         public const string SubmissionTemplatePath = @"~\Views\Templates\WorkItemSubmissionTemplate.cshtml";
         public const string CancelTemplatePath = @"~\Views\Templates\WorkItemCancelTemplate.cshtml";
         public const string UserRequestTemplatePath = @"~\Views\Templates\UserRequestEmailTemplate.cshtml";
+        public const string ErrorTemplatePath = @"~\Views\Templates\WorkItemSubmissionErrorTemplate.cshtml";
 
     }
 }

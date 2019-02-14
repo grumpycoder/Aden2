@@ -196,7 +196,9 @@ namespace Aden.Web.Controllers
             var workItem = await _context.WorkItems.Include(x => x.Report).FirstOrDefaultAsync(x => x.Id == id);
             if (workItem == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
-            var submission = _context.Submissions.Include(f => f.FileSpecification.GenerationGroup.Users).FirstOrDefault(s => s.Id == workItem.Report.SubmissionId);
+            var submission = _context.Submissions
+                .Include(f => f.FileSpecification.GenerationGroup.Users)
+                .FirstOrDefault(s => s.Id == workItem.Report.SubmissionId);
 
             var assignedUser = _membershipService.GetAssignee(submission.FileSpecification.GenerationGroup);
 
@@ -207,6 +209,12 @@ namespace Aden.Web.Controllers
             {
                 wi.WorkItemImages.Add(new WorkItemImage() { Image = f.ConvertToByte(), });
             }
+
+            var notifiers = _membershipService.GetGroupMembers(Constants.SubmissionErrorNotifiers);
+
+            WorkEmailer.Send(wi, submission, model.Files);
+
+            WorkEmailer.SendErrorNotification(wi, submission, model.Files, notifiers);
 
             await _context.SaveChangesAsync();
 

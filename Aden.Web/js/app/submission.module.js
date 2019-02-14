@@ -9,7 +9,7 @@
         dataSource: DevExpress.data.AspNet.createStore({
             key: 'id',
             loadUrl: uri,
-            updateUrl: uri,
+            updateUrl: uri
         }),
         remoteOperations: true,
         allowColumnResizing: true,
@@ -165,8 +165,8 @@
         summary: {
             totalItems: [
                 {
-                    column: "id",
-                    displayFormat: '{0} Total Submissions',
+                    column: "fileNumber",
+                    displayFormat: '{0} Submissions',
                     summaryType: 'count',
                     showInGroupFooter: true,
                     showInColumn: 'FileNumber'
@@ -175,13 +175,19 @@
             groupItems: [
                 {
                     summaryType: "count",
-                    displayFormat: '{0} Submissions',
+                    displayFormat: '{0} Submissions'
                 }
 
             ]
         },
         onRowPrepared: function (row) {
-        }, 
+            if (row.rowType === 'data') {
+                addRowClass(row.rowElement, row.data); 
+            }
+        },
+        onContentReady: function () {
+            $(".dx-datagrid-table").addClass("table");
+        },
         onToolbarPreparing: function (e) {
             var dataGrid = e.component;
 
@@ -425,4 +431,29 @@
 
     }
     
+    function addRowClass(rowElement, data) {
+        var classes = ['active', 'success', 'info', 'warning', 'danger'];
+        var $moment = window.moment();
+
+        if (data.submissionStateDisplay === 'Completed' || data.submissionStateDisplay === 'Waived') {
+            rowElement.addClass(classes[1]);
+            return; 
+        }
+
+        if (data.submissionStateDisplay === 'CompleteWithErrors') {
+            //console.log('complete with errors');
+            rowElement.addClass(classes[2]);
+            return;
+        }
+
+        if (data.submissionStateDisplay !== 'Completed' && $moment.isSameOrAfter(data.dueDate)) {
+            rowElement.addClass(classes[4]);
+            return;
+        }
+
+        if (data.submissionStateDisplay !== 'Completed' && $moment.add(14, 'days').isSameOrAfter(data.dueDate)) {
+            rowElement.addClass(classes[3]);
+            return;
+        }
+    }
 }); 

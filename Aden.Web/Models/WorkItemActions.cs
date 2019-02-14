@@ -12,7 +12,7 @@ namespace Aden.Web.Models
         Approve = 3,
         [Display(Name = "Submit", ShortName = "Submit File", Description = "Submit File")]
         Submit = 4,
-        [Display(Name = "Review Completed", ShortName = "Review Error", Description = "Submission Error Review")]
+        [Display(Name = "Review Error", ShortName = "Review Error", Description = "Submission Error Review")]
         ReviewError = 6,
     }
 }

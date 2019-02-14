@@ -11,7 +11,7 @@ namespace Aden.Web.Services
 {
     public static class WorkEmailer
     {
-        public static void Send(WorkItem workItem, Submission submission, HttpPostedFileBase[] files = null, List<UserProfile> additionalRecipients = null)
+        public static void Send(WorkItem workItem, Submission submission, HttpPostedFileBase[] files = null)
         {
 
             Email.DefaultRenderer = new RazorRenderer();
@@ -32,6 +32,7 @@ namespace Aden.Web.Services
             if (workItem.WorkItemAction == WorkItemAction.ReviewError)
             {
                 taskIcon = Constants.ErrorIcon;
+                //subject = $"{submission.FileSpecification.FileDisplayName} {workItem.WorkItemAction.GetDisplayName()} Assignment";
             }
 
             if (submission.SubmissionState == SubmissionState.NotStarted)
@@ -45,7 +46,7 @@ namespace Aden.Web.Services
 
             var model = new EmailModel()
             {
-                WorkItemAction = workItem.WorkItemAction != 0 ? workItem.WorkItemAction.GetDescription() : "",
+                WorkItemAction = workItem.WorkItemAction != 0 ? workItem.WorkItemAction.GetDisplayName() : "",
                 Notes = workItem.Description ?? string.Empty,
                 DueDate = submission.NextDueDate ?? submission.DueDate ?? DateTime.Now,
                 FileName = submission.FileSpecification.FileDisplayName,
@@ -58,12 +59,6 @@ namespace Aden.Web.Services
                     .BodyAsHtml()
                     .Body("")
                     .UsingTemplateFromFile(templatePath, model);
-
-            if (additionalRecipients != null)
-                foreach (var address in additionalRecipients.ToList())
-                {
-                    email.CC(address.EmailAddress, address.FullName);
-                }
 
             if (files != null)
             {
@@ -100,10 +95,90 @@ namespace Aden.Web.Services
 
             email.Send();
         }
+
+        public static void SendErrorNotification(WorkItem workItem, Submission submission, HttpPostedFileBase[] files, List<UserProfile> notifiers)
+        {
+            Email.DefaultRenderer = new RazorRenderer();
+
+            var sender = Constants.ReplyAddress;
+            var templatePath = Constants.ErrorTemplatePath;
+            var taskIcon = Constants.ErrorIcon;
+            var subject = $"{submission.FileSpecification.FileDisplayName} Submission Error";
+
+            var model = new EmailModel()
+            {
+                AssignedUser = workItem.AssignedUser.FullName,
+                WorkItemAction = workItem.WorkItemAction != 0 ? workItem.WorkItemAction.GetDescription() : "",
+                Notes = workItem.Description ?? string.Empty,
+                DueDate = submission.NextDueDate ?? submission.DueDate ?? DateTime.Now,
+                FileName = submission.FileSpecification.FileDisplayName,
+                Icon = taskIcon
+            };
+            var email = Email
+                    .From(sender, sender)
+                    .To(workItem.AssignedUser.EmailAddress)
+                    .Subject(subject)
+                    .BodyAsHtml()
+                    .Body("")
+                    .UsingTemplateFromFile(templatePath, model);
+
+            if (notifiers != null)
+                foreach (var address in notifiers.ToList())
+                {
+                    email.CC(address.EmailAddress, address.FullName);
+                }
+
+            if (files != null)
+            {
+                foreach (var file in files)
+                {
+                    file.InputStream.Position = 0;
+                    email.Message.Attachments.Add(new Attachment(file.InputStream, file.FileName));
+                }
+            }
+
+            email.Send();
+        }
+
+        public static void SendCompletion(WorkItem workItem, Submission submission, List<UserProfile> notifiers)
+        {
+            Email.DefaultRenderer = new RazorRenderer();
+
+            var sender = Constants.ReplyAddress;
+            var templatePath = Constants.SubmissionTemplatePath;
+            var taskIcon = Constants.SuccessIcon;
+            var subject = string.Empty;
+
+            var model = new EmailModel()
+            {
+                AssignedUser = workItem.AssignedUser.FullName,
+                WorkItemAction = workItem.WorkItemAction != 0 ? workItem.WorkItemAction.GetDescription() : "",
+                Notes = workItem.Description ?? string.Empty,
+                DueDate = submission.NextDueDate ?? submission.DueDate ?? DateTime.Now,
+                FileName = submission.FileSpecification.FileDisplayName,
+                Icon = taskIcon
+            };
+            var email = Email
+                .From(sender, sender)
+                .To(workItem.AssignedUser.EmailAddress)
+                .Subject(subject)
+                .BodyAsHtml()
+                .Body("")
+                .UsingTemplateFromFile(templatePath, model);
+
+            if (notifiers != null)
+                foreach (var address in notifiers.ToList())
+                {
+                    email.CC(address.EmailAddress, address.FullName);
+                }
+
+            email.Send();
+        }
     }
 
     public class EmailModel
     {
+        public string AssignedUser { get; set; }
         public string WorkItemAction { get; set; }
         public string Notes { get; set; }
         public DateTime DueDate { get; set; }

@@ -30,7 +30,7 @@
                 cellTemplate: function (container, options) {
 
                     if (!options.data.canGenerate) {
-                        $('<a/>').addClass('btn btn-default  btn-sm btn-grid')
+                        $('<a/>').addClass('btn btn-primary btn-sm btn-grid')
                             .text('Review File')
                             .attr('href', '/review/' + options.data.dataYear + '/' + options.data.fileNumber)
                             .attr('aria-label', 'Review generated file ' + options.data.fileName)
@@ -39,9 +39,9 @@
                     }
 
                     var actionName = options.data.actionName;
-                    if (options.data.isManualUpload && options.data.canGenerate) actionName = 'Manual';
+                    if (options.data.isManualUpload && options.data.canGenerate) actionName = 'Upload';
 
-                    $('<a/>').addClass('btn btn-primary btn-sm btn-grid')
+                    $('<a/>').addClass('btn btn-success btn-sm btn-grid')
                         .text(actionName)
                         .attr('aria-label', options.data.actionName + ' ' + options.data.fileName)
                         .on('dxclick',

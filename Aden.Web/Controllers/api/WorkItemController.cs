@@ -8,7 +8,6 @@ using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -160,18 +159,20 @@ namespace Aden.Web.Controllers.api
 
             var wi = submission.CompleteWork(workItem, assignee);
 
-            var additionalRecipients = new List<UserProfile>();
             if (wi.WorkItemAction == 0)
             {
-                additionalRecipients = _membershipService.GetGroupMembers(Constants.GlobalAdministrators);
+                var notifiers = _membershipService.GetGroupMembers(Constants.SubmissionNotifiers);
                 var generators = _membershipService.GetGroupMembers(submission.FileSpecification.GenerationGroup.Name).ToList();
                 var approvers = _membershipService.GetGroupMembers(submission.FileSpecification.ApprovalGroup.Name).ToList();
-                additionalRecipients.AddRange(generators);
-                additionalRecipients.AddRange(approvers);
+                notifiers.AddRange(generators);
+                notifiers.AddRange(approvers);
+
+                WorkEmailer.SendCompletion(wi, submission, notifiers);
             }
-
-            WorkEmailer.Send(wi, submission, null, additionalRecipients);
-
+            else
+            {
+                WorkEmailer.Send(wi, submission, null);
+            }
             _context.SaveChanges();
 
             var dto = Mapper.Map<WorkItemViewDto>(workItem);
