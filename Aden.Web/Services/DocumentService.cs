@@ -23,7 +23,7 @@ namespace Aden.Web.Services
             var version = report.CurrentDocumentVersion ?? 0 + 1;
             string filename;
             report.CurrentDocumentVersion = version;
-
+            if(string.IsNullOrEmpty(report.Submission.FileSpecification.ReportAction)) return Result.Fail($"No report action defined for this {report.Submission.FileSpecification.FileDisplayName}");
             if (report.Submission.FileSpecification.IsSCH)
             {
                 filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.SCH.GetDisplayName()).Replace("{version}",
