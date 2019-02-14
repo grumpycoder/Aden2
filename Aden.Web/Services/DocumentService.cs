@@ -1,6 +1,7 @@
 ﻿using Aden.Web.Data;
 using Aden.Web.Helpers;
 using Aden.Web.Models;
+using CSharpFunctionalExtensions;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -17,40 +18,48 @@ namespace Aden.Web.Services
             _context = context;
         }
 
-        public void GenerateDocuments(Report report)
+        public Result GenerateDocuments(Report report)
         {
             var version = report.CurrentDocumentVersion ?? 0 + 1;
             string filename;
+            report.CurrentDocumentVersion = version;
 
             if (report.Submission.FileSpecification.IsSCH)
             {
-                filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.SCH.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
-
-                var file = ExecuteDocumentCreationToFile(report, ReportLevel.SCH);
-                var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length, Version = version };
+                filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.SCH.GetDisplayName()).Replace("{version}",
+                    $"v{version}.csv");
+                var result = ExecuteDocumentCreationToFile(report, ReportLevel.SCH);
+                if (result.IsFailure) return result;
+                var doc = new ReportDocument() { FileData = result.Value, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = result.Value.Length, Version = version };
                 report.Documents.Add(doc);
 
             }
             if (report.Submission.FileSpecification.IsLEA)
             {
-                filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.LEA.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
-                var file = ExecuteDocumentCreationToFile(report, ReportLevel.LEA);
-                var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length, Version = version };
+                filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.LEA.GetDisplayName()).Replace("{version}",
+                    $"v{version}.csv");
+                var result = ExecuteDocumentCreationToFile(report, ReportLevel.LEA);
+                if (result.IsFailure) return result;
+                var doc = new ReportDocument() { FileData = result.Value, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = result.Value.Length, Version = version };
                 report.Documents.Add(doc);
             }
             if (report.Submission.FileSpecification.IsSEA)
             {
-                filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.SEA.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
-                var file = ExecuteDocumentCreationToFile(report, ReportLevel.SEA);
-                var doc = new ReportDocument() { FileData = file, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = file.Length, Version = version };
+                filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.SEA.GetDisplayName()).Replace("{version}",
+                    $"v{version}.csv");
+                var result = ExecuteDocumentCreationToFile(report, ReportLevel.SEA);
+                if (result.IsFailure) return result;
+                var doc = new ReportDocument() { FileData = result.Value, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = result.Value.Length, Version = version };
                 report.Documents.Add(doc);
             }
             report.GeneratedDate = DateTime.Now;
-            report.CurrentDocumentVersion = version;
+ 
+
+            return Result.Ok();
         }
 
 
-        private byte[] ExecuteDocumentCreationToFile(Report report, ReportLevel reportLevel)
+        private Result<byte[]> ExecuteDocumentCreationToFile(Report report, ReportLevel reportLevel)
         {
             var dataTable = new DataTable();
             var ds = new DataSet();
@@ -68,16 +77,35 @@ namespace Aden.Web.Services
                 }
             }
 
-            var version = 1; //report.GetNextFileVersionNumber(reportLevel);
-            var filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", reportLevel.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
+            if (ds.Tables.Count < 2) return Result.Fail<byte[]>($"Report action of {reportLevel.GetDisplayName()} level report of {report.Submission.FileSpecification.FileDisplayName} does not contain header and data rows");
+            
+            var filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", reportLevel.GetDisplayName()).Replace("{version}", $"v{report.CurrentDocumentVersion}.csv");
 
-            var table1 = ds.Tables[0].UpdateFieldValue("Filename", filename).ToCsvString(false);
-            var table2 = ds.Tables[1].UpdateFieldValue("Filename", filename).ToCsvString(false);
+            var results = new StringBuilder();
+            foreach (DataTable table in ds.Tables)
+            {
 
+                if (table.Columns.Contains("Filename"))
+                {
+                    if (table.Rows.Count == 0) return Result.Fail<byte[]>($"Report action of {reportLevel.GetDisplayName()} level report of {report.Submission.FileSpecification.FileDisplayName} header table does not contain any records");
 
-            var file = Encoding.ASCII.GetBytes(ds.Tables[0].Rows.Count > 1 ? string.Concat(table2, table1) : string.Concat(table1, table2)); ;
+                    foreach (DataRow row in table.Rows)
+                    {
+                        for (var i = 0; i < table.Columns.Count; i++)
+                        {
+                            string value = row[i].ToString();
+                            if (string.IsNullOrEmpty(value)) return Result.Fail<byte[]>($"Report action of {reportLevel.GetDisplayName()} level report of {report.Submission.FileSpecification.FileDisplayName} header table contains null records");
+                        }
+                    }
+                    results.Insert(0, table.UpdateFieldValue("Filename", filename).ToCsvString());
+                }
 
-            return file;
+                if (table.Rows.Count == 0) return Result.Fail<byte[]>($"Report action of {reportLevel.GetDisplayName()} level report of {report.Submission.FileSpecification.FileDisplayName} data table does not contain any records");
+                results.Append(table.ToCsvString());
+            }
+            var file = Encoding.ASCII.GetBytes(results.ToString());
+
+            return Result.Ok(file);
 
         }
 

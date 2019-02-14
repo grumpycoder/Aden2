@@ -148,7 +148,8 @@ namespace Aden.Web.Controllers.api
             {
                 if (workItem.WorkItemAction == WorkItemAction.Generate)
                 {
-                    _documentService.GenerateDocuments(currentReport);
+                   var result = _documentService.GenerateDocuments(currentReport);
+                   if (result.IsFailure) return BadRequest(result.Error);
                 }
             }
             catch (Exception e)
