@@ -43,7 +43,7 @@ namespace Aden.Web.Controllers.api
             return Ok(dto.Users);
         }
 
-        [HttpPut, Route("groupmembers")]
+        [HttpPost, Route("AddGroupUser")]
         public object AddGroupUser(UpdateGroupMemberDto model)
         {
             var group = _context.Groups.Include(u => u.Users).FirstOrDefault(x => x.Id == model.GroupId);
@@ -76,7 +76,7 @@ namespace Aden.Web.Controllers.api
             return Ok(user);
         }
 
-        [HttpDelete, Route("groupmembers")]
+        [HttpPost, Route("DeleteGroupMember")]
         public object DeleteGroupMember(UpdateGroupMemberDto model)
         {
             var group = _context.Groups.Include(u => u.Users).FirstOrDefault(x => x.Id == model.GroupId);
