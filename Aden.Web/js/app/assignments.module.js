@@ -166,28 +166,79 @@
 
 
     function complete(container, data) {
+        console.log('action', data);
         var uri = '/api/workitem/complete/' + data.id;
         if (data.isManualUpload && data.canGenerate) {
             showUpload(container, data);
         }
         else {
-            // Generate files from defined report action
-            $toggleWorkingButton(container);
-
-            $.ajax({
-                url: uri,
-                type: 'POST',
-                success: function (data) {
-                    $gridCurrent.refresh();
-                    $gridComplete.refresh();
-                    toastr.success('Completed task for ' + data.fileName + ' (' + data.fileNumber + ')');
-                },
-                error: function (err) {
-                    toastr.error('Error completing task: ' + err.responseJSON.message);
+            if (data.actionName === 'Review Error') {
+                var message = ''; 
+                if (data.isManual) {
+                    message = 'Have you resolved the existing errors in the manual file?';
+                } else {
+                    message = 'Have you resolved the error generating the file?';
                 }
-            }).always(function () {
+                BootstrapDialog.confirm({
+                    title: 'Confirm Error Review', 
+                    type: BootstrapDialog.TYPE_WARNING,
+                    message: '<p class="lead">' + message + '</p> ' +
+                        '<p>Selecting "Ok" will assign a task to begin the process again.</p>', 
+                    callback: function (result) {
+                        if (result) {
+
+                            $toggleWorkingButton(container);
+
+                            $.ajax({
+                                url: uri,
+                                type: 'POST',
+                                success: function(data) {
+                                    $gridCurrent.refresh();
+                                    $gridComplete.refresh();
+                                    toastr.success('Completed task for ' +
+                                        data.fileName +
+                                        ' (' +
+                                        data.fileNumber +
+                                        ')');
+                                },
+                                error: function(err) {
+                                    toastr.error('Error completing task: ' + err.responseJSON.message);
+                                }
+                            }).always(function() {
+                                $toggleWorkingButton(container);
+                            });
+
+
+                        } else {
+                            return;
+                        }
+                    }
+                });
+
+            }
+            else {
+
+
+                console.log('continue with completing task', data);
+                // Generate files from defined report action
                 $toggleWorkingButton(container);
-            });
+
+                $.ajax({
+                    url: uri,
+                    type: 'POST',
+                    success: function (data) {
+                        $gridCurrent.refresh();
+                        $gridComplete.refresh();
+                        toastr.success('Completed task for ' + data.fileName + ' (' + data.fileNumber + ')');
+                    },
+                    error: function (err) {
+                        toastr.error('Error completing task: ' + err.responseJSON.message);
+                    }
+                }).always(function () {
+                    $toggleWorkingButton(container);
+                });
+
+            }
 
         }
 
@@ -310,9 +361,11 @@
 
                         var formData = new FormData($('form')[0]);
 
+                        var files = $('#errorFiles')[0].files;
+
                         if (files.length > 0) {
                             for (var i = 0; i < files.length; i++) {
-                                formData.append('file', files[i]);
+                                formData.append('files', files[i]);
                             }
                         }
                         $.ajax({
@@ -408,7 +461,7 @@
                             }
                         }
                         console.log('enable', btn);
-                    if (enable) btn.enable();
+                        if (enable) btn.enable();
                     }
 
                 });
