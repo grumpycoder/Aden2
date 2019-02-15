@@ -1,27 +1,38 @@
 ﻿@model Aden.Web.ViewModels.SubmissionErrorDto
-
 @Html.AntiForgeryToken()
-<form id="form" name="form" role="form" enctype="multipart/form-data" action="/api/workitem/reporterror">
+
+<form id="errorForm" name="errorForm" role="form" enctype="multipart/form-data" action="/api/workitem/reporterror">
 
     <input type="hidden" name="id" id="id" value=@Model.Id />
 
-    <div class="validation-summary-errors" id="errors">
-        <label id="errorMessage" class="text-danger"></label></div>
+    <p class="lead">
+        @Model.DisplayFileName Submission
+    </p>
 
-    <div>
-        <label class="control-label">
-            @Model.DisplayFileName Submission
+    <div class="form-group">
+        <label for="description" class="control-label">
+            Error Description:
         </label>
+        <textarea class="form-control" id="description" name="description"
+                  required="required"
+                  aria-required="true"
+                  data-val-required="Description is required"
+                  placeholder="Enter details here..."></textarea>
+
+        <p class="" data-valmsg-for="description" data-valmsg-replace="true"></p>
     </div>
 
     <div class="form-group">
-        <label for="description" class="control-label">Description:</label>
-        <textarea class="form-control" id="description" name="description" required="" placeholder="Enter details here..."></textarea>
-    </div>
-
-    <div class="form-group">
-        <label for="files" class="control-label">Report Data Files:</label>
-        <input type="file" id="files" name="files" multiple="multiple" class="form-control" />
+        <label for="errorFiles" class="control-label">
+            Attach image files to report (must be png format):
+            <input type="file" id="errorFiles" name="errorFiles"
+                   multiple="multiple"
+                   accept=".png"
+                   aria-required="true"
+                   data-val-required="File is required"
+                   class="form-control" />
+        </label>
+        <p class="alert alert-warning hidden" data-valmsg-for="errorFiles" data-valmsg-replace="true"></p>
     </div>
 
 </form>

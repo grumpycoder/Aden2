@@ -3,6 +3,8 @@
     "outputFileName": "js/vendor-bundle.js",
     "inputFiles": [
       "node_modules/jquery/dist/jquery.js",
+      "node_modules/jquery-validation/dist/jquery.validate.js",
+      "node_modules/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.js",
       "node_modules/bootstrap-sass/assets/javascripts/bootstrap.js",
       "node_modules/gasparesganga-jquery-loading-overlay/dist/loadingoverlay.js",
       "node_modules/jquery-serializejson/jquery.serializejson.js",

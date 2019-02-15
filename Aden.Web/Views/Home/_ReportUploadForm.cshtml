@@ -1,9 +1,12 @@
 ﻿@model WorkItemUploadDto
 
-
 @Html.AntiForgeryToken()
 <div class="container-fluid">
-
+    <div class="row">
+        <div class="col-md-12">
+            <div id="errorMessage"></div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-md-12">
             <p class="lead">
@@ -13,16 +16,25 @@
     </div>
 
     <div class="row">
-        <form role="form" enctype="multipart/form-data">
+        <form role="form" name="uploadForm" id="uploadForm" enctype="multipart/form-data">
 
             @Html.HiddenFor(model => model.Id)
 
             <div class="col-md-12">
                 <div class="form-group">
-                    <input type="file" id="files" name="files" multiple="multiple" class="form-control" />
+                    <label class="control-label" for="uploadFiles">Choose a file to upload (must be csv format)</label>
+                    <input type="file" id="uploadFiles"
+                           name="uploadFiles"
+                           multiple="multiple"
+                           class="form-control"
+                           accept=".csv"
+                           required="required"
+                           aria-required="true"
+                          
+                           data-val-required="File is required" />
+                    <p class="alert alert-warning hidden" data-valmsg-for="files" data-valmsg-replace="true"></p>
                 </div>
             </div>
-
         </form>
     </div>
 

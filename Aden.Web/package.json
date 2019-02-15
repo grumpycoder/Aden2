@@ -16,6 +16,8 @@
     "gasparesganga-jquery-loading-overlay": "2.1.6",
     "jquery": "3.3.1",
     "jquery-serializejson": "^2.9.0",
+    "jquery-validation": "^1.19.0",
+    "jquery-validation-unobtrusive": "^3.2.11",
     "jszip": "^3.1.5",
     "moment": "^2.24.0",
     "toastr": "2.1.4"
