@@ -5980,6 +5980,9 @@ $btn-default-border: #ddd !default;*/
   background-color: #3498db;
   color: white; }
 
+.error {
+  color: #ca2b27; }
+
 /*!
  *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
  *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
