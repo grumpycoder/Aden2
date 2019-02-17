@@ -134,6 +134,19 @@
             </div>
 
         </div>
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="control-label full-width">
+                        Select group members
+                        <button class="btn btn-info btn-block" data-membership id="btnSubmissionGroupGroup" data-group-id="@Model.SubmissionGroupId" @(Model.SubmissionGroupId == null ? "disabled='disabled'" : "")>
+                            @(Model.SubmissionGroupId == null ? "Not a valid group" : $"Submission Group Members ({Model?.SubmissionGroup?.Users?.Count ?? 0})")
+                        </button>
+                    </label>
+                </div>
+            </div>
+        </div>
 
     </fieldset>
 
@@ -222,9 +235,7 @@
                     title: title,
                     message: $('<div></div>').load(url, function (resp, status, xhr) {
                         if (status === 'error') {
-                            console.log('status', status);
-                            console.log('resp', resp);
-                            console.log('Error showing group membership');
+                            toastr.error('Error showing group membership');
                         }
                     }),
                     buttons: [

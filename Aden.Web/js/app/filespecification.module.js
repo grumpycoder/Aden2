@@ -310,6 +310,7 @@
                     label: 'Close',
                     action: function (dialogRef) {
                         dialogRef.close();
+                        $grid.refresh();
                     }
                 },
                 {
