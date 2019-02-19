@@ -5,6 +5,7 @@ using CSharpFunctionalExtensions;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Security.Claims;
 
@@ -89,11 +90,14 @@ namespace Aden.Web.Services
 
             var user = _context.Users.FirstOrDefault(x => x.IdentityGuid == new Guid(claim));
 
+            if(user == null) user = new UserProfile();
+
             user.EmailAddress = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value;
             user.LastName = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname).Value;
             user.FirstName = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName).Value;
             user.FullName = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
-
+            user.IdentityGuid = new Guid(identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value); 
+            _context.Users.AddOrUpdate(user);
             _context.SaveChanges();
 
             var groups = GetUserGroups(user.EmailAddress);
