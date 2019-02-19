@@ -26,7 +26,7 @@
                 </li>
             }
 
-            @if (Constants.Environment != "Production" && (User.IsInRole(Constants.Administrators) || User.IsInRole(Constants.GlobalAdministrators)))
+            @if (Constants.Environment != "Production")
             {
 
                 @Html.NavigationLink("Mail Viewer", "Mail", "Home", "fa fa-envelope")
