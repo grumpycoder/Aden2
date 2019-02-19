@@ -2,7 +2,6 @@
 using Aden.Web.Services;
 using Alsde.Security.Identity;
 using System;
-using System.Linq;
 using System.Security.Claims;
 using System.Web.Mvc;
 
@@ -35,10 +34,13 @@ namespace Aden.Web.Controllers
 
             var identity = result.Value;
             if (identity == null) throw new Exception("No identity returned from Token signin");
-           
+
             _membershipService.SyncClaims(identity);
-            
-            return RedirectToAction(identity.Claims.Any(x => x.Type == ClaimTypes.Role && x.Value.Contains("Administrators")) ? "Submissions" : "Assignments", "Home");
+
+            if (identity.HasClaim(x => x.Type == ClaimTypes.Role && x.Value.Contains("AdenAdministrators")))
+                return RedirectToAction("Submissions", "Home");
+
+            return RedirectToAction("Assignments", "Home");
         }
 
 
