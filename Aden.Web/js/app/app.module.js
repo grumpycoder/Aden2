@@ -23,8 +23,6 @@ window.$hideModalWorking = function () {
 
 $(document).ajaxError(function(e, xhr) {
     if (xhr.status === 401) {
-        console.log('got 401 error');
-
         BootstrapDialog.show({
             
             draggable: true,
@@ -35,7 +33,7 @@ $(document).ajaxError(function(e, xhr) {
                     label: 'Login',
                     action: function(dialogRef) {
                         dialogRef.close();
-                        location.href = window.location.href;
+                        location.href = window.location.origin;
                     }
                 }
             ]
@@ -44,7 +42,21 @@ $(document).ajaxError(function(e, xhr) {
     }
     //window.location = "/Account/Login";
     else if (xhr.status === 403)
-        alert("You have no enough permissions to request this resource.");
+        BootstrapDialog.show({
+
+            draggable: true,
+            title: 'Permission Error',
+            message: 'You have no enough permissions to request this resource. ',
+            buttons: [
+                {
+                    label: 'Login',
+                    action: function (dialogRef) {
+                        dialogRef.close();
+                        location.href = window.location.origin;
+                    }
+                }
+            ]
+        });
 });
 
 // Source: http://pixelscommander.com/en/javascript/javascript-file-download-ignore-content-type/
