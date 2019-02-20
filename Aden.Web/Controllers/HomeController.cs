@@ -1,5 +1,4 @@
-﻿using System;
-using Aden.Web.Data;
+﻿using Aden.Web.Data;
 using Aden.Web.Filters;
 using Aden.Web.Helpers;
 using Aden.Web.MailMessage;
@@ -41,7 +40,6 @@ namespace Aden.Web.Controllers
         [CustomAuthorize(Roles = "AppGlobalAdenAdministrator, AppAdenAdministrators")]
         public ActionResult FileSpecifications()
         {
-            throw new Exception("Testing error message");
             return View();
         }
 
