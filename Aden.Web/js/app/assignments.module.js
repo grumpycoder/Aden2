@@ -166,7 +166,6 @@
 
 
     function complete(container, data) {
-        console.log('action', data);
         var uri = '/api/workitem/complete/' + data.id;
         if (data.isManualUpload && data.canGenerate) {
             showUpload(container, data);
@@ -299,42 +298,37 @@
             title: title,
             onshown: function (dialog) {
                 var btn = dialog.getButton(dialog.getButtons()[1].id);
-
-                $('#errorForm').validate({
-                    rules: {
-                        description: {
-                            required: true
-                        },
-                        errorFiles: {
-                            required: true,
-                            fileType: 'png'
-                        }
-                    },
-                    messages: {
-                        description: { required: 'this is required' },
-                        errorFiles: {
-                            required: 'This is required',
-                            fileType: 'Wrong file type. Should be png file.'
-                        }
-                    }
-                });
-                var validator = $('#errorForm').validate();
-
-                $(document).on('change', '#errorFiles', function () {
-                    var enable = true;
-                    var files = document.getElementById('errorFiles').files;
-                    if (files.length > 0) {
-                        for (var i = 0; i < files.length; i++) {
-                            if (files[i].name.split('.')[1].toLowerCase() !== 'png') {
-                                enable = false;
-                                $('#errorfiles').validate();
+                $(document).on('change', '#form', function () {
+                    console.log('changed');
+                    $('#form').validate({
+                        rules: {
+                            description: {
+                                required: true
+                            },
+                            errorFiles: {
+                                required: true,
+                                fileType: 'png'
                             }
+                        },
+                        messages: {
+                            description: { required: 'Error description is required' },
+                            errorFiles: {
+                                required: 'Image files are required',
+                                fileType: 'Wrong file type. Should be png file.'
+                            }
+                        },
+                        onfocusout: function (element) {
+                            this.element(element);
                         }
-                    }
+                    });
+                    var form = $('#form');
 
-                    if (enable) btn.enable();
+                    if (form.valid()) {
+                        btn.enable();
+                    } else {
+                        btn.disable();
+                    }
                 });
-                btn.disable();
             },
 
             message: $('<div></div>').load(url, function (resp, status, xhr) {
@@ -432,64 +426,33 @@
             onshown: function (dialog) {
                 var btn = dialog.getButton(dialog.getButtons()[1].id);
                 btn.disable();
-
-                $('#uploadForm').validate({
-                    rules: {
-                        uploadFiles: {
-                            required: true,
-                            fileType: 'csv'
-                        }
-                    },
-                    messages: {
-                        uploadFiles: {
-                            required: 'This is required',
-                            fileType: 'Wrong file type. Should be csv file.'
-                        }
-                    }
-                });
-                console.log('show upload form');
-                $(document).on('change', '#uploadFiles', function () {
-                    var enable = true;
-                    console.log('upload change');
-                    var files = document.getElementById('uploadFiles').files;
-                    if (files.length > 0) {
-                        for (var i = 0; i < files.length; i++) {
-
-                            if (files[i].name.split('.')[1].toLowerCase() !== 'csv') {
-                                enable = false;
-                                $('#uploadFiles').validate();
+                $(document).on('change', '#form', function () {
+                    $('#form').validate({
+                        rules: {
+                            uploadFiles: {
+                                required: true,
+                                fileType: 'csv'
                             }
+                        },
+                        messages: {
+                            uploadFiles: {
+                                required: 'This is required',
+                                fileType: 'Wrong file type. Should be csv file.'
+                            }
+                        },
+                        onfocusout: function (element) {
+                            this.element(element);
                         }
-                        console.log('enable', btn);
-                        if (enable) btn.enable();
+                    });
+                    var form = $('#form');
+
+                    if (form.valid()) {
+                        btn.enable();
+                    } else {
+                        btn.disable();
                     }
-
                 });
-                btn.disable();
 
-                //$(document).on('change', 'input', function () {
-                //    $(this).removeClass('invalid');
-                //    this.setCustomValidity("Invalid file.");
-                //    this.validationMessage = 'Invalid file type. Must be csv';
-                //    var enable = true;
-                //    var files = document.getElementById('files').files;
-                //    if (files.length > 0) {
-                //        for (var i = 0; i < files.length; i++) {
-                //            if (files[i].name.split('.')[1].toLowerCase() !== 'csv') {
-                //                enable = false;
-                //                $(this).addClass('invalid');
-                //                $('#files').parent().children().last().removeClass('hidden');
-                //            }
-                //        }
-                //    }
-                //    if (enable) {
-                //        btn.enable();
-                //        $('#files').parent().children().last().addClass('hidden');
-                //    }
-                //    var form = $('#uploadForm')[0];
-                //    if (!form.checkValidity()) {
-                //    };
-                //});
             },
             message: $('<div></div>').load(loadUrl, function (resp, status, xhr) {
                 if (status === 'error') {
@@ -512,18 +475,9 @@
                         $showModalWorking($('.panel-body'));
                         var $button = this;
                         $button.disable();
-                        $('#errorMessage').text('');
-
-                        var validation = $("#uploadForm").validate({
-                            rules: {
-                                field: {
-                                    required: true,
-                                    accept: ".csv"
-                                }
-                            }
-                        });
 
                         var formData = new FormData($('form')[0]);
+                        var files = $('#uploadFiles')[0].files;
 
                         if (files.length > 0) {
                             for (var i = 0; i < files.length; i++) {
