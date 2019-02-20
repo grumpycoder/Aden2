@@ -16,7 +16,7 @@
         'export': {
             enabled: true,
             fileName: "FileSpecifications",
-            allowExportSelectedData: false, 
+            allowExportSelectedData: false,
             icon: 'fa fa-trash'
         },
         stateStoring: {
@@ -53,39 +53,39 @@
             },
             { dataField: 'section', caption: 'Section', dataType: 'string' },
             { dataField: 'supportGroup', caption: 'Support Group', dataType: 'string' },
-            { dataField: 'application', caption: 'Application', dataType: 'string'},
+            { dataField: 'application', caption: 'Application', dataType: 'string' },
             { dataField: 'collection', caption: 'Collection', dataType: 'string' },
             { dataField: 'reportAction', caption: 'Report Action', dataType: 'string', visible: false },
             { dataField: 'generationGroup', caption: 'Generation Group', dataType: 'string', visible: false },
             { dataField: 'approvalGroup', caption: 'Approval Group', dataType: 'string', visible: false },
             { dataField: 'submissionGroup', caption: 'Submission Group', dataType: 'string', visible: false },
             {
-                dataField: 'generators', caption: 'Generators', dataType: 'string', 
-                cellTemplate: function(container, options) {
-                    options.data.generators.forEach(function(item) { $('<span>' + item + '</span><br />').appendTo(container) });
-                }, 
-                allowFiltering:false, 
-                calculateDisplayValue: function(rowData) {
+                dataField: 'generators', caption: 'Generators', dataType: 'string',
+                cellTemplate: function (container, options) {
+                    options.data.generators.forEach(function (item) { $('<span>' + item + '</span><br />').appendTo(container) });
+                },
+                allowFiltering: false,
+                calculateDisplayValue: function (rowData) {
                     return rowData.generators.join(", ");
                 }
             },
             {
-                dataField: 'approvers', caption: 'Approvers', dataType: 'string', 
-                cellTemplate: function(container, options) {
-                    options.data.approvers.forEach(function(item) { $('<span>' + item + '</span><br />').appendTo(container) });
-                }, 
-                allowFiltering:false, 
-                calculateDisplayValue: function(rowData) {
+                dataField: 'approvers', caption: 'Approvers', dataType: 'string',
+                cellTemplate: function (container, options) {
+                    options.data.approvers.forEach(function (item) { $('<span>' + item + '</span><br />').appendTo(container) });
+                },
+                allowFiltering: false,
+                calculateDisplayValue: function (rowData) {
                     return rowData.approvers.join(", ");
                 }
             },
             {
                 dataField: 'submitters', caption: 'Submitters', dataType: 'string',
-                cellTemplate: function(container, options) {
-                    options.data.submitters.forEach(function(item) { $('<span>' + item + '</span><br />').appendTo(container) });
-                }, 
-                allowFiltering:false, 
-                calculateDisplayValue: function(rowData) {
+                cellTemplate: function (container, options) {
+                    options.data.submitters.forEach(function (item) { $('<span>' + item + '</span><br />').appendTo(container) });
+                },
+                allowFiltering: false,
+                calculateDisplayValue: function (rowData) {
                     return rowData.submitters.join(", ");
                 }
             },
@@ -146,7 +146,7 @@
                             .text('Retire')
                             .attr('aria-label', 'Retire ' + options.data.fileName)
                             .on('dxclick',
-                                function(e) {
+                                function (e) {
                                     retire($(this), options.data);
                                 })
                             .appendTo(container);
@@ -207,10 +207,10 @@
                 {
                     location: "after",
                     widget: "dxButton",
-                  
+
                     options: {
                         icon: "refresh",
-                        hint: 'Refresh', 
+                        hint: 'Refresh',
                         onClick: function () {
                             dataGrid.refresh();
                         }
@@ -221,7 +221,7 @@
                     widget: "dxButton",
                     options: {
                         icon: "clearformat",
-                        hint: 'Clear filters', 
+                        hint: 'Clear filters',
                         onClick: function () {
                             dataGrid.clearFilter();
                         }
@@ -232,13 +232,13 @@
                     widget: "dxButton",
                     options: {
                         icon: "clearsquare",
-                        hint: 'Reset grid to default', 
+                        hint: 'Reset grid to default',
                         onClick: function () {
                             dataGrid.state({});
                         }
                     }
                 }
-                
+
             );
         }
     }).dxDataGrid("instance");
@@ -262,12 +262,12 @@
                 }).always(function () {
                     window.$hideModalWorking();
                 });
-            } 
+            }
         });
     }
 
     function retire(container, data) {
-        var id = data.id; 
+        var id = data.id;
         BootstrapDialog.confirm('Retire File Specification, are you sure?', function (result) {
             if (result) {
                 window.$showModalWorking();
@@ -284,10 +284,10 @@
                 }).always(function () {
                     window.$hideModalWorking();
                 });
-            } 
+            }
         });
 
-       
+
     }
 
     function editFileSpecification(container, data) {
@@ -296,7 +296,7 @@
         var postUrl = '/api/filespecification/' + data.id;
 
         BootstrapDialog.show({
-            type: BootstrapDialog.TYPE_WARNING, 
+            type: BootstrapDialog.TYPE_WARNING,
             size: window.BootstrapDialog.SIZE_WIDE,
             draggable: true,
             title: title,
@@ -305,6 +305,31 @@
                     window.$log.error('Error showing history');
                 }
             }),
+            onshown: function (dialog) {
+                var btn = dialog.getButton(dialog.getButtons()[1].id);
+                $(document).on('change', '#form', function () {
+                    $('#form').validate({
+                        rules: {
+                            fileNumber: { required: true },
+                            fileName: { required: true }
+                        },
+                        messages: {
+                            fileNumber: { required: 'File Number is required' },
+                            fileName: { required: 'File Name is required' }
+                        },
+                        onfocusout: function (element) {
+                            this.element(element);
+                        }
+                    });
+                    var form = $('#form');
+
+                    if (form.valid()) {
+                        btn.enable();
+                    } else {
+                        btn.disable();
+                    }
+                });
+            },
             buttons: [
                 {
                     label: 'Close',
@@ -317,11 +342,13 @@
                     label: 'Save',
                     cssClass: 'btn-primary',
                     action: function (dialogRef) {
+
                         dialogRef.enableButtons(false);
                         dialogRef.setClosable(false);
+
                         $showModalWorking($('.panel-body'));
 
-                        var data = $('form').serializeJSON(); 
+                        var data = $('form').serializeJSON();
                         $.ajax({
                             contentType: 'application/json; charset=utf-8',
                             type: "POST",
@@ -337,7 +364,7 @@
                                 toastr.error('Error saving file changes');
                             },
                             complete: function (status) {
-                                
+
                             }
                         });
                     }
@@ -347,4 +374,5 @@
 
     }
 
+   
 })();
