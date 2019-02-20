@@ -101,6 +101,30 @@
                             toastr.error('Error showing history');
                         }
                     }),
+                    onshown: function (dialog) {
+                        var btn = dialog.getButton(dialog.getButtons()[1].id);
+                        btn.disable();
+                        $(document).on('change', '#form', function () {
+                            $('#form').validate({
+                                rules: {
+                                    AssignedUser: { required: true }
+                                },
+                                messages: {
+                                    AssignedUser: { required: 'Assigned User is required' }
+                                },
+                                onfocusout: function (element) {
+                                    this.element(element);
+                                }
+                            });
+                            var form = $('#form');
+
+                            if (form.valid()) {
+                                btn.enable();
+                            } else {
+                                btn.disable();
+                            }
+                        });
+                    },
                     buttons: [
                         {
                             label: 'Close',
