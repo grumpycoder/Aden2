@@ -23,7 +23,7 @@ namespace Aden.Web.Services
             var version = report.CurrentDocumentVersion ?? 0 + 1;
             string filename;
             report.CurrentDocumentVersion = version;
-            if(string.IsNullOrEmpty(report.Submission.FileSpecification.ReportAction)) return Result.Fail($"No report action defined for this {report.Submission.FileSpecification.FileDisplayName}");
+            if (string.IsNullOrEmpty(report.Submission.FileSpecification.ReportAction)) return Result.Fail($"No report action defined for this {report.Submission.FileSpecification.FileDisplayName}");
             if (report.Submission.FileSpecification.IsSCH)
             {
                 filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", ReportLevel.SCH.GetDisplayName()).Replace("{version}",
@@ -53,7 +53,7 @@ namespace Aden.Web.Services
                 report.Documents.Add(doc);
             }
             report.GeneratedDate = DateTime.Now;
- 
+
 
             return Result.Ok();
         }
@@ -78,25 +78,18 @@ namespace Aden.Web.Services
             }
 
             if (ds.Tables.Count < 2) return Result.Fail<byte[]>($"Report action of {reportLevel.GetDisplayName()} level report of {report.Submission.FileSpecification.FileDisplayName} does not contain header and data rows");
-            
+
             var filename = report.Submission.FileSpecification.FileNameFormat.Replace("{level}", reportLevel.GetDisplayName()).Replace("{version}", $"v{report.CurrentDocumentVersion}.csv");
 
             var results = new StringBuilder();
             foreach (DataTable table in ds.Tables)
             {
 
-                if (table.Columns.Contains("Filename"))
+                if (table.Columns.Contains("filename"))
                 {
+
                     if (table.Rows.Count == 0) return Result.Fail<byte[]>($"Report action of {reportLevel.GetDisplayName()} level report of {report.Submission.FileSpecification.FileDisplayName} header table does not contain any records");
 
-                    foreach (DataRow row in table.Rows)
-                    {
-                        for (var i = 0; i < table.Columns.Count; i++)
-                        {
-                            string value = row[i].ToString();
-                            if (string.IsNullOrEmpty(value)) return Result.Fail<byte[]>($"Report action of {reportLevel.GetDisplayName()} level report of {report.Submission.FileSpecification.FileDisplayName} header table contains null records");
-                        }
-                    }
                     results.Insert(0, table.UpdateFieldValue("Filename", filename).ToCsvString());
                 }
 
