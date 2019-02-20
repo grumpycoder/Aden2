@@ -18,7 +18,7 @@
         'export': {
             enabled: true,
             fileName: "Submissions",
-            allowExportSelectedData: false, 
+            allowExportSelectedData: false,
             icon: 'fa fa-trash'
         },
         stateStoring: {
@@ -182,7 +182,7 @@
         },
         onRowPrepared: function (row) {
             if (row.rowType === 'data') {
-                addRowClass(row.rowElement, row.data); 
+                addRowClass(row.rowElement, row.data);
             }
         },
         onContentReady: function () {
@@ -208,10 +208,10 @@
                 {
                     location: "after",
                     widget: "dxButton",
-                  
+
                     options: {
                         icon: "refresh",
-                        hint: 'Refresh', 
+                        hint: 'Refresh',
                         onClick: function () {
                             dataGrid.refresh();
                         }
@@ -222,7 +222,7 @@
                     widget: "dxButton",
                     options: {
                         icon: "clearformat",
-                        hint: 'Clear filters', 
+                        hint: 'Clear filters',
                         onClick: function () {
                             dataGrid.clearFilter();
                         }
@@ -233,17 +233,17 @@
                     widget: "dxButton",
                     options: {
                         icon: "clearsquare",
-                        hint: 'Reset grid to default', 
+                        hint: 'Reset grid to default',
                         onClick: function () {
                             dataGrid.state({});
                         }
                     }
                 }
-                
+
             );
         }
     }).dxDataGrid("instance");
-    
+
     function showHistory(e) {
         var title = 'Submission History - [' + e.row.data.fileName + ']';
         var url = '/history/' + e.row.data.id;
@@ -288,7 +288,7 @@
                 toastr.error('Error starting submission process: ' + error.responseJSON.message);
             },
             complete: function (status) {
-                
+
                 $toggleWorkingButton(container);
             }
         });
@@ -298,7 +298,7 @@
 
     function cancelWorkFlow(container, data) {
         var id = data.id;
-        
+
         BootstrapDialog.confirm('Cancel Submission, are you sure?', function (result) {
             if (result) {
                 window.$showModalWorking();
@@ -336,6 +336,32 @@
                     window.$log.error('Error showing history');
                 }
             }),
+            onshown: function (dialog) {
+                var btn = dialog.getButton(dialog.getButtons()[1].id);
+                btn.disable();
+                $(document).on('change', '#form', function () {
+                    $('#form').validate({
+                        rules: {
+                            message: { required: true },
+                            nextSubmissionDate: { required: true }
+                        },
+                        messages: {
+                            message: { required: 'Description is required' },
+                            nextSubmissionDate: { required: 'New Submission Date is required' }
+                        },
+                        onfocusout: function (element) {
+                            this.element(element);
+                        }
+                    });
+                    var form = $('#form');
+
+                    if (form.valid()) {
+                        btn.enable();
+                    } else {
+                        btn.disable();
+                    }
+                });
+            },
             buttons: [
                 {
                     label: 'Close',
@@ -381,7 +407,6 @@
         var title = 'Waiver Reason';
         var url = '/home/waiver/' + data.id;
         var postUrl = '/api/submission/waive/' + data.id;
-
         BootstrapDialog.show({
             size: window.BootstrapDialog.SIZE_WIDE,
             draggable: true,
@@ -391,6 +416,30 @@
                     window.$log.error('Error showing history');
                 }
             }),
+            onshown: function (dialog) {
+                var btn = dialog.getButton(dialog.getButtons()[1].id);
+                btn.disable();
+                $(document).on('change', '#form', function () {
+                    $('#form').validate({
+                        rules: {
+                            message: { required: true }
+                        },
+                        messages: {
+                            message: { required: 'Description is required' }
+                        },
+                        onfocusout: function (element) {
+                            this.element(element);
+                        }
+                    });
+                    var form = $('#form');
+
+                    if (form.valid()) {
+                        btn.enable();
+                    } else {
+                        btn.disable();
+                    }
+                });
+            },
             buttons: [
                 {
                     label: 'Close',
@@ -401,18 +450,18 @@
                 {
                     label: 'Save',
                     cssClass: 'btn-primary',
-                    action: function(dialogRef) {
+                    action: function (dialogRef) {
                         dialogRef.enableButtons(false);
                         dialogRef.setClosable(false);
                         $showModalWorking($('.panel-body'));
 
-                        var data = $('form').serializeJSON(); 
+                        var data = $('form').serializeJSON();
 
                         $.ajax({
                             contentType: 'application/json; charset=utf-8',
-                            type: "POST", 
-                            url: postUrl, 
-                            data: JSON.stringify(data), 
+                            type: "POST",
+                            url: postUrl,
+                            data: JSON.stringify(data),
                             success: function (response) {
                                 toastr.success('Waived submission process for ' + response.fileName + ' (' + response.fileNumber + ')');
                                 dialogRef.close();
@@ -430,14 +479,14 @@
         });
 
     }
-    
+
     function addRowClass(rowElement, data) {
         var classes = ['active', 'success', 'info', 'warning', 'danger'];
         var $moment = window.moment();
 
         if (data.submissionStateDisplay === 'Completed' || data.submissionStateDisplay === 'Waived') {
             rowElement.addClass(classes[1]);
-            return; 
+            return;
         }
 
         if (data.submissionStateDisplay === 'CompleteWithErrors') {
@@ -456,4 +505,4 @@
             return;
         }
     }
-}); 
+});
