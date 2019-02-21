@@ -500,16 +500,11 @@
     <Content Include="Views\Templates\WorkItemEmailTemplate.cshtml" />
     <Content Include="Views\Templates\WorkItemSubmissionTemplate.cshtml" />
     <Content Include="Views\Templates\WorkItemSubmissionErrorTemplate.cshtml" />
-    <None Include="Web.Production.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Web.Stage.config" />
-    <None Include="Web.Dev.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="Web.Test.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Content Include="Web.Production.config" />
+    <Content Include="Web.Stage.config" />
+    <Content Include="Web.Dev.config" />
+    <Content Include="Web.Test.config" />
+    
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>
