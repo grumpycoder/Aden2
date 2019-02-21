@@ -33,7 +33,7 @@ $(document).ajaxError(function(e, xhr) {
                     label: 'Login',
                     action: function(dialogRef) {
                         dialogRef.close();
-                        location.href = window.location.origin;
+                        location.href = window.location.href;
                     }
                 }
             ]

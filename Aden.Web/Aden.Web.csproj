@@ -492,6 +492,7 @@
     <Content Include="Views\Templates\WorkItemSubmissionErrorTemplate.cshtml" />
     <None Include="Web.Production.config" />
     <None Include="Web.Stage.config" />
+    <None Include="Web.Dev.config" />
     <None Include="Web.Test.config" />
   </ItemGroup>
   <ItemGroup />
