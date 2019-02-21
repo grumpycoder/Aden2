@@ -23,8 +23,8 @@ window.$hideModalWorking = function () {
 
 $(document).ajaxError(function(e, xhr) {
     if (xhr.status === 401) {
+        console.log('401', window.location.href);
         BootstrapDialog.show({
-            
             draggable: true,
             title: 'Session Timeout',
             message: 'Your session has expired. Please login again. ',
