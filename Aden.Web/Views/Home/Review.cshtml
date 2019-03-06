@@ -100,7 +100,7 @@
                                                 </span>
                                             </div>
                                             <div class="panel-body">
-                                                @Html.Partial("_ReportDocuments", report.Documents)
+                                                @Html.Partial("_ReportDocuments", report.Documents.Where(d => d.Version == report.CurrentDocumentVersion).ToList())
                                             </div>
                                         </div>
 
@@ -111,12 +111,12 @@
                                         <div class="panel panel-default">
                                             <div class="panel-heading">
                                                 <span class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="#faq" href="#fileHistory" aria-expanded="false" aria-controls="fileHistory">
+                                                    <a data-toggle="collapse" data-parent="documents" href="@string.Format("#fileHistory{0}", @report.Id)" aria-expanded="false" aria-controls="fileHistory">
                                                         Revision History
                                                     </a>
                                                 </span>
                                             </div>
-                                            <div class="panel-body panel-collapse collapse" id="fileHistory" role="tabpanel" aria-labelledby="fileHistory">
+                                            <div class="panel-body panel-collapse collapse" id="@string.Format("fileHistory{0}", @report.Id)" role="tabpanel" aria-labelledby="fileHistory">
                                                 @Html.Partial("_ReportDocuments", report.Documents.Where(d => d.Version < report.CurrentDocumentVersion).ToList())
                                             </div>
                                         </div>

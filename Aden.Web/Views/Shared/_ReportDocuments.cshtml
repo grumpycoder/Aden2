@@ -1,6 +1,5 @@
 ﻿@model List<Aden.Web.ViewModels.DocumentViewDto>
 @{
-    int mostRecentVersion = 1;
 }
 <table class="table table-responsive">
 
@@ -13,11 +12,7 @@
     <tbody>
         @if (Model.Any())
         {
-
-            mostRecentVersion = Model.OrderByDescending(d => d.Version).FirstOrDefault().Version;
-
-
-            foreach (var doc in Model.Where(d => d.Version == mostRecentVersion).OrderByDescending(d => d.Version))
+            foreach (var doc in Model.OrderByDescending(d => d.Version))
             {
                 <tr>
                     <td>
@@ -56,7 +51,7 @@
         else
         {
             <tr>
-                <td>
+                <td colspan="2">
                     No documents generated
                 </td>
             </tr>

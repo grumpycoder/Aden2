@@ -20,7 +20,9 @@ namespace Aden.Web.Services
 
         public Result GenerateDocuments(Report report)
         {
-            var version = report.CurrentDocumentVersion ?? 0 + 1;
+            var version = report.CurrentDocumentVersion ?? 0;
+            version += 1;
+
             string filename;
             report.CurrentDocumentVersion = version;
             if (string.IsNullOrEmpty(report.Submission.FileSpecification.ReportAction)) return Result.Fail($"No report action defined for this {report.Submission.FileSpecification.FileDisplayName}");
