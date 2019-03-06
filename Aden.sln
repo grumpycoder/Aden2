@@ -27,8 +27,8 @@ Global
 		UpdateAssemblyFileVersion = True
 		UpdateAssemblyInfoVersion = True
 		ShouldCreateLogs = True
-		AssemblyVersionSettings = YearStamp.MonthStamp.Increment.NoneWithAutoReset
-		AssemblyFileVersionSettings = YearStamp.MonthStamp.Increment.IncrementWithResetOnIncrease
+		AssemblyVersionSettings = YearStamp.MMddStamp.IncrementWithResetOnIncrease.NoneWithAutoReset
+		AssemblyFileVersionSettings = YearStamp.MMddStamp.IncrementWithResetOnIncrease.IncrementWithResetOnIncrease
 		UpdatePackageVersion = False
 		AssemblyInfoVersionSemVerSettings = AssemblyVersion.IncrementWithAutoReset.None
 		AssemblyInfoVersionType = SemVer1
