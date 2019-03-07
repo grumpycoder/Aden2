@@ -221,6 +221,8 @@ namespace Aden.Web.Controllers.api
 
             var submission = _context.Submissions.Include(f => f.FileSpecification.GenerationGroup.Users).FirstOrDefault(x => x.CurrentReportId == report.Id);
 
+            var version = (report.CurrentDocumentVersion ?? 0) + 1;
+
             //Retrieve file from file parameter
             foreach (string filename in HttpContext.Current.Request.Files)
             {
@@ -235,7 +237,7 @@ namespace Aden.Web.Controllers.api
                 if (f.FileName.ToLower().Contains(Constants.LeaKey)) reportLevel = ReportLevel.LEA;
                 if (f.FileName.ToLower().Contains(Constants.StateKey)) reportLevel = ReportLevel.SEA;
 
-                var version = report.CurrentDocumentVersion ?? 0 + 1;
+               
 
                 var documentName = submission.FileSpecification.FileNameFormat.Replace("{level}", reportLevel.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
 
@@ -254,6 +256,7 @@ namespace Aden.Web.Controllers.api
                 report.Documents.Add(doc);
             }
 
+            report.CurrentDocumentVersion = version; 
 
             //finish work item
             var wi = submission.CompleteWork(workItem, workItem.AssignedUser);
