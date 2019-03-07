@@ -299,7 +299,6 @@
             onshown: function (dialog) {
                 var btn = dialog.getButton(dialog.getButtons()[1].id);
                 $(document).on('change', '#form', function () {
-                    console.log('changed');
                     $('#form').validate({
                         rules: {
                             description: {
