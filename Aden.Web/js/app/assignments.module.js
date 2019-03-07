@@ -216,9 +216,6 @@
 
             }
             else {
-
-
-                console.log('continue with completing task', data);
                 // Generate files from defined report action
                 $toggleWorkingButton(container);
 
@@ -424,6 +421,8 @@
             title: title,
             onshown: function (dialog) {
                 var btn = dialog.getButton(dialog.getButtons()[1].id);
+                var btn2 = dialog.getButton(dialog.getButtons()[0].id);
+
                 btn.disable();
                 $(document).on('change', '#form', function () {
                     $('#form').validate({
@@ -444,7 +443,7 @@
                         }
                     });
                     var form = $('#form');
-
+                    btn2.enable();
                     if (form.valid()) {
                         btn.enable();
                     } else {
@@ -470,11 +469,10 @@
                     cssClass: 'btn-primary',
                     action: function (dialogRef) {
                         dialogRef.enableButtons(false);
-                        dialogRef.setClosable(false);
+                        dialogRef.setClosable(true);
 
                         var $button = this;
                         $button.disable();
-
                         var formData = new FormData($('form')[0]);
                         var files = $('#uploadFiles')[0].files;
 
@@ -484,7 +482,6 @@
 
                         if (files.length > 0) {
                             for (var i = 0; i < files.length; i++) {
-                                //formData.append('file', files[i]);
                                 var found = reportLevels.find(function (item) { return files[i].name.toLowerCase().includes(item) });
                                 if (found === undefined) errors.push(files[i].name + ' not properly named');
 
@@ -501,7 +498,7 @@
                                 closable: true, 
                                 draggable: true
                             });
-
+                            dialogRef.getButton(dialogRef.getButtons()[0].id).enable(); 
                         } else {
 
                             $showModalWorking($('.panel-body'));
