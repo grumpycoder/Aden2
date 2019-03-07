@@ -100,8 +100,6 @@
                                                 </span>
                                             </div>
                                             <div class="panel-body">
-                                                Count: @report.Documents.Count(d => d.Version == report.CurrentDocumentVersion)
-                                                CurrentVersion: @report.CurrentDocumentVersion
                                                 @Html.Partial("_ReportDocuments", report.Documents.Where(d => d.Version == report.CurrentDocumentVersion).ToList())
                                             </div>
                                         </div>
