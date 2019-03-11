@@ -333,7 +333,7 @@
             title: title,
             message: $('<div></div>').load(url, function (resp, status, xhr) {
                 if (status === 'error') {
-                    window.$log.error('Error showing history');
+                    toastr.error('Error showing history');
                 }
             }),
             onshown: function (dialog) {
@@ -413,7 +413,7 @@
             title: title,
             message: $('<div></div>').load(url, function (resp, status, xhr) {
                 if (status === 'error') {
-                    window.$log.error('Error showing history');
+                    toastr.error('Error showing history');
                 }
             }),
             onshown: function (dialog) {

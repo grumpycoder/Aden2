@@ -94,9 +94,11 @@ namespace Aden.Web.Services
 
                     results.Insert(0, table.UpdateFieldValue("Filename", filename).ToCsvString(false));
                 }
-
-                if (table.Rows.Count == 0) return Result.Fail<byte[]>($"Report action of {reportLevel.GetDisplayName()} level report of {report.Submission.FileSpecification.FileDisplayName} data table does not contain any records");
-                results.Append(table.ToCsvString(false));
+                else
+                {
+                    if (table.Rows.Count == 0) return Result.Fail<byte[]>($"Report action of {reportLevel.GetDisplayName()} level report of {report.Submission.FileSpecification.FileDisplayName} data table does not contain any records");
+                    results.Append(table.ToCsvString(false));
+                }
             }
             var file = Encoding.ASCII.GetBytes(results.ToString());
 

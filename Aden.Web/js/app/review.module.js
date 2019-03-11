@@ -15,7 +15,7 @@
             title: title,
             message: $('<div></div>').load(url, function (resp, status, xhr) {
                 if (status === 'error') {
-                    window.$log.error('Error showing history');
+                    toastr.error('Error showing history');
                 }
             }),
             buttons: [
@@ -31,7 +31,7 @@
                     action: function (dialogRef) {
                         var downloadUrl = '/download/' + id;
                         window.downloadFile(downloadUrl);
-                        window.$log.info('Your file is being downloaded');
+                        toastr.info('Your file is being downloaded');
                         dialogRef.close();
                     }
                 }
