@@ -38,5 +38,11 @@
       "enabled": true,
       "adjustRelativePaths": false
     }
+  },
+  {
+    "outputFileName": "js/app/app.module.min.js",
+    "inputFiles": [
+      "js/app/app.module.js"
+    ]
   }
 ]
