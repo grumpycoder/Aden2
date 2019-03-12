@@ -201,11 +201,9 @@
                                         ')');
                                 },
                                 error: function (err) {
-                                    console.log('err', err);
                                     toastr.error('Error completing task: ' + err.responseJSON.message);
                                 }
                             }).always(function () {
-                                console.log('always');
                                 $toggleWorkingButton(container);
                             });
 
@@ -230,11 +228,9 @@
                         toastr.success('Completed task for ' + data.fileName + ' (' + data.fileNumber + ')');
                     },
                     error: function (err) {
-                        console.log('err', err);
                         toastr.error('Error completing task: ' + err.responseJSON.message);
                     }
                 }).always(function () {
-                    console.log('always');
                     $toggleWorkingButton(container);
                 });
 
