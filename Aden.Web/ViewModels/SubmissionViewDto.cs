@@ -2,6 +2,8 @@
 using Aden.Web.Models;
 using Humanizer;
 using System;
+using System.Security.Claims;
+using System.Web;
 
 namespace Aden.Web.ViewModels
 {
@@ -61,9 +63,7 @@ namespace Aden.Web.ViewModels
 
         public bool CanReview => HasStarted;
 
-        public bool HasAdmin => true; //claim != null;
-                                      //var claim = (HttpContext.Current.User as ClaimsPrincipal).Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role && c.Value.Contains(Constants.GlobalAdministrators));
-
+        public bool HasAdmin => (HttpContext.Current.User as ClaimsPrincipal).HasClaim(ClaimTypes.Role, Constants.GlobalAdministrators); //claim != null;
 
         public int? CurrentReportId { get; set; }
     }
