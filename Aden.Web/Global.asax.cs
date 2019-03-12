@@ -12,6 +12,7 @@ namespace Aden.Web
     {
         protected void Application_Start()
         {
+            MvcHandler.DisableMvcResponseHeader = true;
             // set drop folder for mail
             if (MailHelper.IsUsingPickupDirectory)
                 MailHelper.SetRelativePickupDirectoryLocation(@"App_Data");
