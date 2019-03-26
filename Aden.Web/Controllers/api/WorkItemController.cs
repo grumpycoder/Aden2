@@ -233,9 +233,9 @@ namespace Aden.Web.Controllers.api
 
                 var reportLevel = ReportLevel.SCH;
                 //TODO: Refactor Constants to use ReportLevel Value
-                if (f.FileName.ToLower().Contains(Constants.SchoolKey)) reportLevel = ReportLevel.SCH;
-                if (f.FileName.ToLower().Contains(Constants.LeaKey)) reportLevel = ReportLevel.LEA;
-                if (f.FileName.ToLower().Contains(Constants.StateKey)) reportLevel = ReportLevel.SEA;
+                if (f.FileName.ToLower().Contains(Constants.SchoolKey.ToLower())) reportLevel = ReportLevel.SCH;
+                if (f.FileName.ToLower().Contains(Constants.LeaKey.ToLower())) reportLevel = ReportLevel.LEA;
+                if (f.FileName.ToLower().Contains(Constants.StateKey.ToLower())) reportLevel = ReportLevel.SEA;
 
                
 
@@ -251,6 +251,8 @@ namespace Aden.Web.Controllers.api
                     FileSize = data.Length,
                     Version = version
                 };
+
+                br.Dispose();
 
                 //attach report documents
                 report.Documents.Add(doc);

@@ -473,13 +473,17 @@
 
                         var $button = this;
                         $button.disable();
-                        var formData = new FormData($('form')[0]);
+                        var formData = new FormData();
+
                         var files = $('#uploadFiles')[0].files;
+                        
+                        for (var f = 0; f < files.length; f++) {
+                            formData.append(files[f].name, files[f]);
+                        }
 
                         var reportLevels = ['sch', 'lea', 'sea'];
                         var errors = [];
-
-
+                        
                         if (files.length > 0) {
                             for (var i = 0; i < files.length; i++) {
                                 var found = reportLevels.find(function (item) { return files[i].name.toLowerCase().includes(item) });
