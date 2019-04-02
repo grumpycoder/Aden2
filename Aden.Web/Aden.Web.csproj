@@ -54,8 +54,8 @@
     <Reference Include="ALSDE.IdemLib, Version=2019.1.31.6971, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ALSDE.IdemLib.2019.1.0-beta-02\lib\net40\ALSDE.IdemLib.dll</HintPath>
     </Reference>
-    <Reference Include="Alsde.Mvc.Logging, Version=2018.8.6800.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Alsde.Mvc.Logging.2018.8.1\lib\net471\Alsde.Mvc.Logging.dll</HintPath>
+    <Reference Include="Alsde.Mvc.Logging, Version=2019.402.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Alsde.Mvc.Logging.2019.402.0.1\lib\net471\Alsde.Mvc.Logging.dll</HintPath>
     </Reference>
     <Reference Include="Alsde.Security, Version=2019.2.9.6979, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Alsde.Security.2019.2.0-beta-01\lib\net451\Alsde.Security.dll</HintPath>
@@ -417,6 +417,7 @@
     <Content Include="bundleconfig.json.bindings">
       <DependentUpon>bundleconfig.json</DependentUpon>
     </Content>
+    <Content Include="Alsde Logging Readme.md" />
     <None Include="bundleconfig.json" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">
@@ -504,9 +505,7 @@
     <Content Include="Web.Stage.config" />
     <Content Include="Web.Dev.config" />
     <Content Include="Web.Test.config" />
-    
   </ItemGroup>
-  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
