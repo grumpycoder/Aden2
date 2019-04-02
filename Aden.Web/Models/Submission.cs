@@ -169,6 +169,9 @@ namespace Aden.Web.Models
             };
 
             var report = Reports.SingleOrDefault(x => x.Id == CurrentReportId);
+            report.GeneratedDate = null;
+            report.ApprovedDate = null;
+            report.SubmittedDate = null;
 
             report.ReportState = ReportState.AssignedForGeneration;
             report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
