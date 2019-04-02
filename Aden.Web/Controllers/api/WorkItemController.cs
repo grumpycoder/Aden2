@@ -78,6 +78,7 @@ namespace Aden.Web.Controllers.api
         {
             var workItem = await _context.WorkItems
                 .Include(r => r.Report)
+                .Include(u => u.AssignedUser)
                 .FirstOrDefaultAsync(x => x.Id == model.WorkItemId);
 
             if (workItem == null) return NotFound();

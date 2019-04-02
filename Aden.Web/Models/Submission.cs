@@ -142,7 +142,7 @@ namespace Aden.Web.Models
         {
 
             //Create Audit record
-            var message = $"{currentUser} reassigned from {workItem.AssignedUser} to {assignee.FullName}: {reason}";
+            var message = $"{currentUser} reassigned from {workItem.AssignedUser.FullName} to {assignee.FullName}: {reason}";
             var audit = new SubmissionAudit(Id, message);
             SubmissionAudits.Add(audit);
 
