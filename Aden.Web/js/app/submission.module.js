@@ -13,6 +13,7 @@
         }),
         remoteOperations: true,
         allowColumnResizing: true,
+        allowColumnReordering: true,
         showBorders: true,
         wordWrapEnabled: true,
         'export': {
@@ -59,6 +60,7 @@
             { dataField: 'submissionDate', caption: 'Date Submitted', dataType: 'date' },
             { dataField: 'displayDataYear', caption: 'Data Year' },
             { dataField: 'section', caption: 'Section', visible: false },
+            { dataField: 'application', caption: 'Application', visible: false },
             { dataField: 'supportGroup', caption: 'Support Group', visible: false },
             { dataField: 'collection', caption: 'Collection', visible: false },
             {
@@ -99,6 +101,36 @@
                     return 'No';
                 }
             },
+            {
+                dataField: 'generators', caption: 'Generators', dataType: 'string', visible: false, 
+                cellTemplate: function (container, options) {
+                    options.data.generators.forEach(function (item) { $('<span>' + item + '</span><br />').appendTo(container) });
+                },
+                allowFiltering: false,
+                calculateDisplayValue: function (rowData) {
+                    return rowData.generators.join(", ");
+                }
+            },
+            {
+                dataField: 'approvers', caption: 'Approvers', dataType: 'string', visible: false, 
+                cellTemplate: function (container, options) {
+                    options.data.approvers.forEach(function (item) { $('<span>' + item + '</span><br />').appendTo(container) });
+                },
+                allowFiltering: false,
+                calculateDisplayValue: function (rowData) {
+                    return rowData.approvers.join(", ");
+                }
+            },
+            {
+                dataField: 'submitters', caption: 'Submitters', dataType: 'string', visible: false, 
+                cellTemplate: function (container, options) {
+                    options.data.submitters.forEach(function (item) { $('<span>' + item + '</span><br />').appendTo(container) });
+                },
+                allowFiltering: false,
+                calculateDisplayValue: function (rowData) {
+                    return rowData.submitters.join(", ");
+                }
+            }, 
             {
                 width: 200,
                 alignment: 'center',

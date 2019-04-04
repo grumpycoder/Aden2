@@ -2,6 +2,7 @@
 using Aden.Web.Models;
 using Humanizer;
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Web;
 
@@ -31,6 +32,9 @@ namespace Aden.Web.ViewModels
         public string SupportGroup { get; set; }
 
         public string ReportAction { get; set; }
+        public List<string> Generators { get; set; }
+        public List<string> Approvers { get; set; }
+        public List<string> Submitters { get; set; }
         public string GenerationUserGroup { get; set; }
         public string ApprovalUserGroup { get; set; }
         public string SubmissionUserGroup { get; set; }

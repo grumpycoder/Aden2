@@ -1,6 +1,7 @@
 ﻿using Aden.Web.Models;
 using Aden.Web.ViewModels;
 using AutoMapper;
+using System.Linq;
 
 namespace Aden.Web.Data.Profiles
 {
@@ -29,6 +30,9 @@ namespace Aden.Web.Data.Profiles
                 .ForMember(d => d.SubmissionState, opt => opt.MapFrom(s => s.SubmissionState))
                 .ForMember(d => d.CurrentAssignment, opt => opt.MapFrom(s => s.CurrentAssignee.FullName))
                 .ForMember(d => d.CurrentReportId, opt => opt.MapFrom(s => s.CurrentReportId))
+                .ForMember(d => d.Generators, opt => opt.MapFrom(s => s.FileSpecification.GenerationGroup.Users.Select(x => x.FullName)))
+                .ForMember(d => d.Approvers, opt => opt.MapFrom(s => s.FileSpecification.ApprovalGroup.Users.Select(x => x.FullName)))
+                .ForMember(d => d.Submitters, opt => opt.MapFrom(s => s.FileSpecification.SubmissionGroup.Users.Select(x => x.FullName)))
                 ;
         }
     }
