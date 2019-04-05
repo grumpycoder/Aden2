@@ -187,7 +187,6 @@
                         if (result) {
 
                             $toggleWorkingButton(container);
-
                             $.ajax({
                                 url: uri,
                                 type: 'POST',
@@ -201,7 +200,7 @@
                                         ')');
                                 },
                                 error: function (err) {
-                                    toastr.error('Error completing task: ' + err.responseJSON.message);
+                                    toastr.error('Error completing task: ' + err.responseJSON.exceptionMessage);
                                 }
                             }).always(function () {
                                 $toggleWorkingButton(container);
@@ -228,7 +227,7 @@
                         toastr.success('Completed task for ' + data.fileName + ' (' + data.fileNumber + ')');
                     },
                     error: function (err) {
-                        toastr.error('Error completing task: ' + err.responseJSON.message);
+                        toastr.error('Error completing task: ' + err.responseJSON.exceptionMessage);
                     }
                 }).always(function () {
                     $toggleWorkingButton(container);

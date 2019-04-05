@@ -7,7 +7,6 @@ using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
-using System;
 using System.Data.Entity;
 using System.IO;
 using System.Linq;
@@ -145,19 +144,13 @@ namespace Aden.Web.Controllers.api
             if (assignee == null) return BadRequest($"No members in {group.Name} to assign next task");
 
             //TODO Move to completed work method
-            try
+            if (workItem.WorkItemAction == WorkItemAction.Generate)
             {
-                if (workItem.WorkItemAction == WorkItemAction.Generate)
-                {
-                    var result = _documentService.GenerateDocuments(currentReport);
-                    if (result.IsFailure) return BadRequest(result.Error);
-                }
-            }
-            catch (Exception e)
-            {
+                var result = _documentService.GenerateDocuments(currentReport);
 
-                return BadRequest(e.Message);
+                if (result.IsFailure) return BadRequest(result.Error);
             }
+
 
             var wi = submission.CompleteWork(workItem, assignee);
 
@@ -238,7 +231,7 @@ namespace Aden.Web.Controllers.api
                 if (f.FileName.ToLower().Contains(Constants.LeaKey.ToLower())) reportLevel = ReportLevel.LEA;
                 if (f.FileName.ToLower().Contains(Constants.StateKey.ToLower())) reportLevel = ReportLevel.SEA;
 
-               
+
 
                 var documentName = submission.FileSpecification.FileNameFormat.Replace("{level}", reportLevel.GetDisplayName()).Replace("{version}", string.Format("v{0}.csv", version));
 
@@ -259,7 +252,7 @@ namespace Aden.Web.Controllers.api
                 report.Documents.Add(doc);
             }
 
-            report.CurrentDocumentVersion = version; 
+            report.CurrentDocumentVersion = version;
 
             //finish work item
             var wi = submission.CompleteWork(workItem, workItem.AssignedUser);
