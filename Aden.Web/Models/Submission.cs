@@ -227,7 +227,7 @@ namespace Aden.Web.Models
                 case WorkItemAction.Submit:
                     report.ReportState = ReportState.Complete;
                     report.Submission.SubmissionState = SubmissionState.Complete;
-                    report.SubmittedDate = DateTime.Now;
+                    report.SubmittedDate = report.Submission.SubmissionDate = DateTime.Now;
                     wi.AssignedUser = CurrentAssignee = workItem.AssignedUser;
                     break;
                 case WorkItemAction.ReviewError:
