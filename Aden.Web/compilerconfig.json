@@ -34,5 +34,8 @@
   {
     "outputFile": "js/app/submission.module.min.js",
     "inputFile": "js/app/submission.module.js"
-  }
+  },
+  {
+    "outputFile": "js/app/submission-report.module.min.js",
+    "inputFile": "js/app/submission-report.module.js"}
 ]

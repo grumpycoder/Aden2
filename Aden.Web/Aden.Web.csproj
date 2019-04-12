@@ -379,6 +379,8 @@
     <Content Include="js\app\review.module.min.js">
       <DependentUpon>review.module.js</DependentUpon>
     </Content>
+    <Content Include="js\app\submission-report.module.js" />
+    <Content Include="js\app\submission-report.module.min.js" />
     <Content Include="js\app\submission.module.js" />
     <Content Include="js\app\submission.module.min.js">
       <DependentUpon>submission.module.js</DependentUpon>
@@ -504,6 +506,7 @@
     <Content Include="Web.Stage.config" />
     <Content Include="Web.Dev.config" />
     <Content Include="Web.Test.config" />
+    <Content Include="Views\Home\SubmissionReport.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

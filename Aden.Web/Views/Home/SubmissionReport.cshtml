@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "Submission Report";
+}
+
+<style>
+    tr.dx-row.dx-data-row.dx-column-lines.sucess {
+        background-color: darkseagreen;
+    }
+</style>
+<section>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading"><span class="panel-title">Submissions Report</span></div>
+        <div class="panel-body">
+
+            <div class="btn-group" role="group" aria-label="..." id="btnStatusFilter">
+                <button type="button" class="btn btn-primary" value="Completed">Completed</button>
+                <button type="button" class="btn btn-primary" value="Overdue">Overdue</button>
+                <button type="button" class="btn btn-primary" value="All">All</button>
+            </div>
+
+            <div class="btn-group" role="group" aria-label="..." id="btnGroupDue">
+                <button class="btn btn-info" name="btnNext" value="30" id="btnNext30">Due 30 Days</button>
+                <button class="btn btn-info" name="btnNext" value="60" id="btnNext60">Due 60 Days</button>
+                <button class="btn btn-info" name="btnNext" value="90" id="btnNext90">Due 90 Days</button>
+                <button class="btn btn-info" name="btnNext" value="365" id="btnNextEnd">End of Year</button>
+
+            </div>
+
+            <div class="btn-group" role="group" aria-label="..." id="btnSupportGroup">
+                <button class="btn btn-success" name="btnSupportGroup" value="Section">Manual</button>
+                <button class="btn btn-success" name="btnSupportGroup" value="Development">Applications</button>
+                <button class="btn btn-success" name="btnSupportGroup" value="Data">Non-Application</button>
+
+            </div>
+
+            <div id="gridReport"></div>
+        </div>
+    </div>
+
+</section>
+
+
+@section scripts{
+
+    <script src="~/js/app/submission-report.module.js?v=1.0.2"></script>
+
+}
