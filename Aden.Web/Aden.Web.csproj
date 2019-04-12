@@ -258,6 +258,7 @@
     <Compile Include="Filters\MyApiControllerActionInvoker.cs" />
     <Compile Include="Filters\ExceptionHandlingAttribute.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
+    <Compile Include="Helpers\IdentityExtensions.cs" />
     <Compile Include="Models\ErrorLogDetail.cs" />
     <Compile Include="Models\PerformanceLogDetail.cs" />
     <Compile Include="ViewModels\UpdateGroupMemberDto.cs" />

@@ -1,4 +1,5 @@
 ﻿using Aden.Web.Data;
+using Aden.Web.Helpers;
 using Aden.Web.Services;
 using Alsde.Security.Identity;
 using System;
@@ -37,10 +38,9 @@ namespace Aden.Web.Controllers
 
             _membershipService.SyncClaims(identity);
 
-            if (identity.HasClaim(x => x.Type == ClaimTypes.Role && x.Value.Contains("AdenAdministrators")))
-                return RedirectToAction("Submissions", "Home");
+            var landingPage = identity.GetClaimValue(ClaimTypes.Webpage);
+            return RedirectToAction(landingPage, "Home");
 
-            return RedirectToAction("Assignments", "Home");
         }
 
 

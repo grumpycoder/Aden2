@@ -1,4 +1,5 @@
 ﻿using Aden.Web.Data;
+using Aden.Web.Helpers;
 using Aden.Web.Models;
 using ALSDE.Services;
 using CSharpFunctionalExtensions;
@@ -90,13 +91,13 @@ namespace Aden.Web.Services
 
             var user = _context.Users.FirstOrDefault(x => x.IdentityGuid == new Guid(claim));
 
-            if(user == null) user = new UserProfile();
+            if (user == null) user = new UserProfile();
 
-            user.EmailAddress = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Email).Value;
-            user.LastName = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname).Value;
-            user.FirstName = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.GivenName).Value;
-            user.FullName = identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Name).Value;
-            user.IdentityGuid = new Guid(identity.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value); 
+            user.EmailAddress = identity.GetClaimValue(ClaimTypes.Email);
+            user.LastName = identity.GetClaimValue(ClaimTypes.Surname);
+            user.FirstName = identity.GetClaimValue(ClaimTypes.GivenName);
+            user.FullName = identity.GetClaimValue(ClaimTypes.Name);
+            user.IdentityGuid = new Guid(identity.GetClaimValue(ClaimTypes.NameIdentifier));
             _context.Users.AddOrUpdate(user);
             _context.SaveChanges();
 
@@ -106,6 +107,19 @@ namespace Aden.Web.Services
                 identity.AddClaim(new Claim(ClaimTypes.Role, @group.Name));
                 identity.AddClaim(new Claim(ClaimsIdentity.DefaultNameClaimType, @group.Name));
             }
+            //Set homepage
+            identity.AddUpdateClaim(ClaimTypes.Webpage, "Assignments");
+
+            if (identity.HasClaim(x => x.Type == ClaimTypes.Role && x.Value.Contains("AdenAdministrators")))
+                identity.AddUpdateClaim(ClaimTypes.Webpage, "Submissions");
+
+            if (identity.HasClaim(x => x.Type == ClaimTypes.Role && x.Value.Contains("AdenExecutive")))
+                identity.AddUpdateClaim(ClaimTypes.Webpage, "SubmissionReport");
+
+
         }
     }
+
+
+
 }
