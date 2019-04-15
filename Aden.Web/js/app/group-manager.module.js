@@ -7,7 +7,7 @@ var listGroup = $("#listGroups").dxList({
     dataSource: DevExpress.data.AspNet.createStore({
         key: 'id',
         loadUrl: uri,
-        deleteUrl:deleteUri, 
+        deleteUrl: deleteUri,
         pageSize: 10,
         paginate: true
     }),
@@ -22,10 +22,12 @@ var listGroup = $("#listGroups").dxList({
     selectionMode: "single",
     onSelectionChanged: function (data) {
         var item = listGroup.option().selectedItem;
-        getUsers(item);
+        if (item !== undefined) {
+            $('#btnAddMember').removeAttr('disabled');
+            getUsers(item);
+        }
     },
-    onItemDeleting: function(e) {
-        
+    onItemDeleting: function (e) {
         deleteGroup(e.itemData);
         e.cancel = true;
     },
@@ -35,53 +37,53 @@ var listGroup = $("#listGroups").dxList({
 
 function deleteGroup(item) {
     console.log('item', item);
-    var groupName = item.name; 
+    var groupName = item.name;
     $.ajax({
         url: '/api/membership/deletegroup/' + groupName,
         type: 'POST',
         success: function (data) {
             toastr.success('Deleted group ' + groupName);
             listGroup.reload();
+            $('#btnAddMember').prop("disabled", true);
         },
         error: function (err) {
             console.log('err', err);
             //window.$log.error('Something went wrong: ' + err.message);
         }
     }).always(function () {
-        
     });
 
 }
 
 function getUsers(item) {
-    if (item === undefined) return; 
+    if (item === undefined) return;
 
-    var groupId = item.id; 
+    var groupId = item.id;
     membershipUri = '/api/membership/groupmembers/' + groupId;
 
     var store = new DevExpress.data.CustomStore({
         key: ["identityGuid"],
-        load: function(loadOptions) {
+        load: function (loadOptions) {
             return $.get(membershipUri,
-                function(data) {
+                function (data) {
                     console.log('data', data);
                     return data;
                 });
         },
-        insert: function(values) {
+        insert: function (values) {
             // ...
         },
-        update: function(key, values) {
+        update: function (key, values) {
             // ...
         },
-        remove: function(key, data) {
+        remove: function (key, data) {
             console.log('remove', key.identityGuid);
-            var deleteUri = '/api/membership/groupmembers/' + groupId + '/' + key.identityGuid; 
+            var deleteUri = '/api/membership/groupmembers/' + groupId + '/' + key.identityGuid;
             $.ajax({
                 url: deleteUri,
                 processData: false,
                 type: 'DELETE',
-                success: function(data) {
+                success: function (data) {
                     //play with data
                     console.log('delete', data);
                 }
@@ -91,7 +93,7 @@ function getUsers(item) {
 
     var listUsers = $("#listUsers").dxList(
         {
-            dataSource: store, 
+            dataSource: store,
             height: 555,
             allowItemDeleting: true,
             searchEnabled: true,
@@ -105,7 +107,7 @@ function getUsers(item) {
             onSelectionChanged: function (data) {
                 console.log('selected User', listUsers.option().selectedItem);
             },
-            onItemDeleted: function(data) {
+            onItemDeleted: function (data) {
                 console.log('delete', data);
             },
             showSelectionControls: true,
