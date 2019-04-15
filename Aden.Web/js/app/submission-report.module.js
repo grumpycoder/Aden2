@@ -1,5 +1,5 @@
 ﻿$(function () {
-    console.log('submission view ready');
+    console.log('submission report view ready');
 
     window.assignmentUpdated = false;
 
@@ -288,6 +288,7 @@
                         hint: 'Clear filters',
                         onClick: function () {
                             dataGrid.clearFilter();
+                            resetAllButtons();
                         }
                     }
                 },
@@ -361,6 +362,12 @@
             rowElement.addClass(classes[3]);
             return;
         }
+    }
+
+    function resetAllButtons() {
+        $('#btnStatusFilter button').siblings().removeClass('active'); 
+        $('#btnGroupDue button').siblings().removeClass('active'); 
+        $('#btnSupportGroup button').siblings().removeClass('active'); 
     }
 
     $('#btnStatusFilter button').on('click',

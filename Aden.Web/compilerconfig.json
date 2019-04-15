@@ -37,5 +37,10 @@
   },
   {
     "outputFile": "js/app/submission-report.module.min.js",
-    "inputFile": "js/app/submission-report.module.js"}
+    "inputFile": "js/app/submission-report.module.js"
+  },
+  {
+    "outputFile": "js/app/group-manager.module.min.js",
+    "inputFile": "js/app/group-manager.module.js"
+  }
 ]
