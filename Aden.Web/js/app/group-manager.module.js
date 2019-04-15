@@ -87,7 +87,7 @@ function getUsers(item) {
             $.ajax({
                 url: deleteUri,
                 processData: false,
-                type: 'DELETE',
+                type: 'POST',
                 success: function (data) {
                     //play with data
 
