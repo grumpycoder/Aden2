@@ -33,10 +33,12 @@
 
                     <div class="col-md-6">
                         <form role="form" id="userForm" name="userForm">
+                            <input type="hidden" name="groupId" id="groupId" value="" />
+                            <input type="hidden" name="identityGuid" id="identityGuid" value="" />
                             <div class="input-group">
-                                <input type="text" class="form-control" placeholder="Search group member...">
+                                <input type="text" class="form-control typeahead" placeholder="Search group member...">
                                 <span class="input-group-btn">
-                                    <button class="btn btn-default" type="button" id="btnAddMember" disabled="disabled">Add</button>
+                                    <button class="btn btn-default" type="button" id="btnAddGroupMember" disabled="disabled">Add</button>
                                 </span>
                             </div><!-- /input-group -->
                         </form>
@@ -62,6 +64,35 @@
 <script src="~/js/app/group-manager.module.js"></script>
 
 <script>
+
+    $('input.typeahead').typeahead({
+        source: function(query, response) {
+            return $.get('/api/membership/users/?username=' + query,
+                { query: query },
+                function(data) {
+                    return response(data);
+                });
+        },
+        items: 15,
+        displayText: function(item) {
+            return item.firstname + ' ' + item.lastname + ' (' + item.emailAddress + ')';
+        },
+        afterSelect: function(item) {
+            this.$element[0].text = item.firstname + ' ' + item.lastname;
+            $('#identityGuid').val(item.identityGuid);
+        },
+        delay: 100,
+        minLength: 1,
+        autoSelect: true
+    }).bind('change blur',
+        function(e) {
+            if (e.currentTarget.value === undefined || e.currentTarget.value === '') {
+                $('#btnAddGroupMember').prop('disabled', true);
+            } else {
+                $('#btnAddGroupMember').prop('disabled', false);
+            }
+        });
+
     $(document).on('click', '#btnAddGroup', function (e) {
         e.preventDefault();
         var btn = $(this);
@@ -72,10 +103,9 @@
             url: '/api/membership/creategroup/' + groupName,
             type: 'POST',
             success: function (data) {
-                toastr.success('Created group ' + groupName);
-                txtGroup.val('');
+                toastr.success('Created group - ' + groupName);
                 listGroup.reload();
-
+                $('#groupName').val('');
             },
             error: function (err) {
                 console.log('err', err);
@@ -86,5 +116,29 @@
         });
 
     });
+
+    $(document).on('click', '#btnAddGroupMember',  function(e) {
+            e.preventDefault();
+
+            var url = '/api/membership/addgroupuser/';
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: $('#userForm').serialize(),
+                success: function(data) {
+                    $('input.typeahead').val('');
+                    $('#btnAddGroupMember').prop('disabled', true);
+                    $("#listUsers").dxList('instance').reload(); 
+                },
+                error: function(err) {
+                    toastr.error('Error adding group member');
+                }
+            }).always(function() {
+
+            });
+
+        });
+
+
 </script>
 }
