@@ -276,6 +276,12 @@ namespace Aden.Web.Controllers
             return View(vm.OrderByDescending(x => x.Sent));
         }
 
+        [Route("GroupManager")]
+        public ActionResult GroupManager()
+        {
+            return View();
+        }
+
         public ActionResult LogViewer()
         {
             return View();

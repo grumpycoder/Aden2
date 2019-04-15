@@ -25,6 +25,7 @@ namespace Aden.Web.Data
 
         public DbSet<UserProfile> Users { get; set; }
         public DbSet<Group> Groups { get; set; }
+        public DbSet<GroupUserView> GroupUserViews { get; set; }
         public DbSet<ErrorLogDetail> ErrorLogs { get; set; }
         public DbSet<PerformanceLogDetail> PerformanceLogs { get; set; }
 
@@ -48,6 +49,7 @@ namespace Aden.Web.Data
             modelBuilder.Configurations.Add(new ReportDocumentConfiguration());
             modelBuilder.Configurations.Add(new UserProfileConfiguration());
             modelBuilder.Configurations.Add(new GroupConfiguration());
+            modelBuilder.Configurations.Add(new GroupUserViewConfiguration());
             modelBuilder.Configurations.Add(new ErrorLogDetailConfiguration());
             modelBuilder.Configurations.Add(new PerformanceLogDetailConfiguration());
 

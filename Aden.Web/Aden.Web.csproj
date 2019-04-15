@@ -253,6 +253,7 @@
     <Compile Include="Controllers\api\MembershipController.cs" />
     <Compile Include="Controllers\api\SubmissionController.cs" />
     <Compile Include="Data\Configuration\ErrorLogDetailConfiguration.cs" />
+    <Compile Include="Data\Configuration\GroupUserViewConfiguration.cs" />
     <Compile Include="Data\Configuration\PerformanceLogDetailConfiguration.cs" />
     <Compile Include="Data\Profiles\ErrorLogDetailProfile.cs" />
     <Compile Include="Filters\MyApiControllerActionInvoker.cs" />
@@ -260,6 +261,7 @@
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Helpers\IdentityExtensions.cs" />
     <Compile Include="Models\ErrorLogDetail.cs" />
+    <Compile Include="Models\GroupUserView.cs" />
     <Compile Include="Models\PerformanceLogDetail.cs" />
     <Compile Include="ViewModels\UpdateGroupMemberDto.cs" />
     <Compile Include="Controllers\api\WorkItemController.cs" />
@@ -372,6 +374,7 @@
     <Content Include="js\app\filespecification.module.min.js">
       <DependentUpon>filespecification.module.js</DependentUpon>
     </Content>
+    <Content Include="js\app\group-manager.module.js" />
     <Content Include="js\app\log.module.js" />
     <Content Include="js\app\log.module.min.js" />
     <Content Include="js\app\mail.module.js" />
@@ -508,6 +511,7 @@
     <Content Include="Web.Dev.config" />
     <Content Include="Web.Test.config" />
     <Content Include="Views\Home\SubmissionReport.cshtml" />
+    <Content Include="Views\Home\GroupManager.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

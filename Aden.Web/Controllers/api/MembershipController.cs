@@ -1,7 +1,10 @@
-﻿using Aden.Web.Data;
+﻿using System;
+using Aden.Web.Data;
 using Aden.Web.Models;
 using Aden.Web.Services;
 using Aden.Web.ViewModels;
+using DevExtreme.AspNet.Data;
+using DevExtreme.AspNet.Mvc;
 using System.Data.Entity;
 using System.Data.Entity.Migrations;
 using System.Linq;
@@ -27,6 +30,25 @@ namespace Aden.Web.Controllers.api
 
         }
 
+        [HttpGet, Route("groups")]
+        public async Task<object> Groups(DataSourceLoadOptions loadOptions)
+        {
+            var dto = await _context.Groups.ToListAsync();
+
+            return Ok(DataSourceLoader.Load(dto, loadOptions));
+        }
+
+        [HttpDelete, Route("groupmembers/{groupId}/{identityGuid}")]
+        public async Task<object> DeleteGroupMember(int groupId, Guid identityGuid)
+        {
+            var dto = await _context.Groups.Include(u => u.Users).FirstOrDefaultAsync(g => g.Id == groupId);
+            
+            dto.Users.RemoveAll(x => x.IdentityGuid == identityGuid);
+            _context.SaveChanges();
+
+            return Ok(dto);
+        }
+
         [HttpGet, Route("{username}")]
         public object Users(string username = null)
         {
@@ -34,13 +56,19 @@ namespace Aden.Web.Controllers.api
             return Ok(users);
 
         }
-
+        
         [HttpGet, Route("groupmembers/{groupId}")]
         public async Task<object> GroupMembers(int groupId)
         {
             var dto = await _context.Groups.Include(u => u.Users).FirstOrDefaultAsync(x => x.Id == groupId);
 
             return Ok(dto.Users);
+        }
+
+        [HttpPost, Route("creategroup")]
+        public object AddGroup(string groupName)
+        {
+            return Ok(groupName);
         }
 
         [HttpPost, Route("AddGroupUser")]
