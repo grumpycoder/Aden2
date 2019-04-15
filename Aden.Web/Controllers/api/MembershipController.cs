@@ -30,7 +30,7 @@ namespace Aden.Web.Controllers.api
 
         }
 
-        [HttpGet, Route("groups")]
+        [HttpGet, Route("Groups")]
         public async Task<object> Groups(DataSourceLoadOptions loadOptions)
         {
             var dto = await _context.Groups.ToListAsync();
@@ -38,20 +38,26 @@ namespace Aden.Web.Controllers.api
             return Ok(DataSourceLoader.Load(dto, loadOptions));
         }
 
-        [HttpPost, Route("creategroup/{groupName}")]
-        public object AddGroup(string groupName)
+        [HttpPost, Route("CreateGroup/{groupName}")]
+        public async Task<object> AddGroup(string groupName)
         {
-            var group = new Group() { Name = groupName };
+            var group = await _context.Groups.FirstOrDefaultAsync(x => x.Name == groupName);
+
+            if (group != null) return BadRequest("Group name already exists");
+
+            group = new Group() { Name = groupName };
 
             _context.Groups.Add(group);
             _context.SaveChanges();
             return Ok(groupName);
         }
 
-        [HttpPost, Route("deletegroup/{groupName}")]
+        [HttpPost, Route("DeleteGroup/{groupName}")]
         public async Task<object> DeleteGroup(string groupName)
         {
             var group = await _context.Groups.Include(x => x.Users).FirstOrDefaultAsync(x => x.Name == groupName);
+
+            if (group == null) return BadRequest("Group not found");
 
             var specifications = await _context.FileSpecifications.Where(x =>
                 x.ApprovalGroupId == group.Id || x.GenerationGroupId == group.Id || x.SubmissionGroupId == group.Id)
@@ -59,25 +65,29 @@ namespace Aden.Web.Controllers.api
 
             if (specifications.Count > 0) { return BadRequest("Cannot delete group. Group assigned to a specification"); }
 
-            group.Users.RemoveAll(x => x.Id != null);
+            group.Users.RemoveRange(0, group.Users.Count);
 
             _context.Groups.Remove(group);
             _context.SaveChanges();
             return Ok(groupName);
         }
 
-        [HttpGet, Route("groupmembers/{groupId}")]
+        [HttpGet, Route("GroupMembers/{groupId}")]
         public async Task<object> GroupMembers(int groupId)
         {
             var dto = await _context.Groups.Include(u => u.Users).FirstOrDefaultAsync(x => x.Id == groupId);
 
+            if (dto == null) return BadRequest("Group does not exist");
+
             return Ok(dto.Users);
         }
 
-        [HttpDelete, Route("groupmembers/{groupId}/{identityGuid}")]
+        [HttpPost, Route("GroupMembers/{groupId}/{identityGuid}")]
         public async Task<object> DeleteGroupMember(int groupId, Guid identityGuid)
         {
             var dto = await _context.Groups.Include(u => u.Users).FirstOrDefaultAsync(g => g.Id == groupId);
+
+            if (dto == null) return BadRequest("Group does not exist");
 
             dto.Users.RemoveAll(x => x.IdentityGuid == identityGuid);
             _context.SaveChanges();
@@ -125,22 +135,6 @@ namespace Aden.Web.Controllers.api
 
             return Ok(user);
         }
-
-        //[HttpPost, Route("DeleteGroupMember")]
-        //public object DeleteGroupMember(UpdateGroupMemberDto model)
-        //{
-        //    var group = _context.Groups.Include(u => u.Users).FirstOrDefault(x => x.Id == model.GroupId);
-
-        //    if (group == null) return BadRequest("Group does not exists");
-
-        //    var user = group.Users.FirstOrDefault(x => x.IdentityGuid == model.IdentityGuid);
-
-        //    group.Users.Remove(user);
-
-        //    _context.SaveChanges();
-
-        //    return Ok($"Deleted {user.FullName} to {group.Name}");
-        //}
 
     }
 
