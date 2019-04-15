@@ -11,11 +11,37 @@
                 <div class="panel-title">
                     Groups
                 </div>
-                <div id="listGroups"></div>
+                <form role="form" id="groupForm" name="groupForm">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="groupName" placeholder="New group name...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="btnAddGroup">Save</button>
+                        </span>
+                    </div><!-- /input-group -->
+                </form>
+
+                    <p>
+                        <div id="listGroups"></div>
+                    </p>
             </div>
             <div class="col-md-9">
-                <p>User List Here</p>
-                <div id="listUsers"></div>
+
+                <div class="panel-title">
+                    Members
+                </div>
+
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search group member...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" id="btnAddMember">Save</button>
+                        </span>
+                    </div><!-- /input-group -->
+
+                </div>
+                <p>
+                    <div id="listUsers"></div>
+                </p>
             </div>
         </div>
     </div>
@@ -23,5 +49,31 @@
 </section>
 
 @section scripts{
-<script src="~/js/app/group-manager.module.js"></script>
+    <script src="~/js/app/group-manager.module.js"></script>
+    
+    <script>
+        $(document).on('click', '#btnAddGroup', function (e) {
+            e.preventDefault();
+            var btn = $(this);
+            var txtGroup = $('#groupName'); 
+            var groupName = txtGroup.val(); 
+            window.$toggleWorkingButton(btn);
+            $.ajax({
+                url: '/api/membership/creategroup/' + groupName,
+                type: 'POST',
+                success: function (data) {
+                    toastr.success('Created group ' + groupName);
+                    txtGroup.val('');
+
+                },
+                error: function (err) {
+                    console.log('err', err);
+                    //window.$log.error('Something went wrong: ' + err.message);
+                }
+            }).always(function () {
+                window.$toggleWorkingButton(btn);
+            });
+
+        });
+    </script>
 }

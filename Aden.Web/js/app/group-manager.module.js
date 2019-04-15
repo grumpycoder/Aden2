@@ -51,6 +51,7 @@ function getUsers(item) {
             var deleteUri = '/api/membership/groupmembers/' + groupId + '/' + key.identityGuid; 
             $.ajax({
                 url: deleteUri,
+                processData: false,
                 type: 'DELETE',
                 success: function(data) {
                     //play with data
