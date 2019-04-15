@@ -1,15 +1,18 @@
 ﻿
 var uri = "/api/membership/groups";
+var deleteUri = "/api/membership/deletegroup";
 var membershipUri = '/api/membership/group/1';
 
 var listGroup = $("#listGroups").dxList({
     dataSource: DevExpress.data.AspNet.createStore({
         key: 'id',
         loadUrl: uri,
+        deleteUrl:deleteUri, 
         pageSize: 10,
         paginate: true
     }),
     height: 555,
+    allowItemDeleting: true,
     searchEnabled: true,
     searchExpr: "name",
     itemTemplate: function (data) {
@@ -21,13 +24,38 @@ var listGroup = $("#listGroups").dxList({
         var item = listGroup.option().selectedItem;
         getUsers(item);
     },
+    onItemDeleting: function(e) {
+        
+        deleteGroup(e.itemData);
+        e.cancel = true;
+    },
     showSelectionControls: true,
     pageLoadMode: "scrollBottom"
 }).dxList("instance");
 
+function deleteGroup(item) {
+    console.log('item', item);
+    var groupName = item.name; 
+    $.ajax({
+        url: '/api/membership/deletegroup/' + groupName,
+        type: 'POST',
+        success: function (data) {
+            toastr.success('Deleted group ' + groupName);
+            listGroup.reload();
+        },
+        error: function (err) {
+            console.log('err', err);
+            //window.$log.error('Something went wrong: ' + err.message);
+        }
+    }).always(function () {
+        
+    });
 
+}
 
 function getUsers(item) {
+    if (item === undefined) return; 
+
     var groupId = item.id; 
     membershipUri = '/api/membership/groupmembers/' + groupId;
 
@@ -63,7 +91,6 @@ function getUsers(item) {
 
     var listUsers = $("#listUsers").dxList(
         {
-            //dataSource: membershipUri,
             dataSource: store, 
             height: 555,
             allowItemDeleting: true,

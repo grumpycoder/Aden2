@@ -38,13 +38,22 @@ namespace Aden.Web.Controllers.api
         [HttpPost, Route("creategroup/{groupName}")]
         public object AddGroup(string groupName)
         {
-            var model = new Group() { Name = groupName };
+            var group = new Group() { Name = groupName };
 
-            _context.Groups.Add(model);
+            _context.Groups.Add(group);
             _context.SaveChanges();
             return Ok(groupName);
         }
 
+        [HttpPost, Route("deletegroup/{groupName}")]
+        public async Task<object> DeleteGroup(string groupName)
+        {
+            var group = await _context.Groups.FirstOrDefaultAsync(x => x.Name == groupName);
+
+            _context.Groups.Remove(group);
+            _context.SaveChanges();
+            return Ok(groupName);
+        }
 
         //[HttpDelete, Route("groupmembers/{groupId}/{identityGuid}")]
         //public async Task<object> DeleteGroupMember(int groupId, Guid identityGuid)
@@ -65,13 +74,13 @@ namespace Aden.Web.Controllers.api
 
         //}
 
-        //[HttpGet, Route("groupmembers/{groupId}")]
-        //public async Task<object> GroupMembers(int groupId)
-        //{
-        //    var dto = await _context.Groups.Include(u => u.Users).FirstOrDefaultAsync(x => x.Id == groupId);
+        [HttpGet, Route("groupmembers/{groupId}")]
+        public async Task<object> GroupMembers(int groupId)
+        {
+            var dto = await _context.Groups.Include(u => u.Users).FirstOrDefaultAsync(x => x.Id == groupId);
 
-        //    return Ok(dto.Users);
-        //}
+            return Ok(dto.Users);
+        }
 
 
 
