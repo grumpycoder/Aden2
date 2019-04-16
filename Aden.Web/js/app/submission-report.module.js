@@ -59,12 +59,12 @@
             { dataField: 'currentAssignment', caption: 'Assigned' },
             { dataField: 'lastUpdatedFriendly', caption: 'Last Update' },
             { dataField: 'deadlineDate', caption: 'Submission Deadline', dataType: 'date' },
-            { dataField: 'submissionDate', caption: 'Date Submitted', dataType: 'date' },
+            { dataField: 'submissionDate', caption: 'Date Submitted', dataType: 'date', visible: false },
             { dataField: 'displayDataYear', caption: 'Data Year' },
-            { dataField: 'section', caption: 'Section', visible: false },
-            { dataField: 'application', caption: 'Application', visible: false },
-            { dataField: 'supportGroup', caption: 'Support Group', visible: false },
-            { dataField: 'collection', caption: 'Collection', visible: false },
+            { dataField: 'section', caption: 'Section', visible: true },
+            { dataField: 'application', caption: 'Application', visible: true },
+            { dataField: 'supportGroup', caption: 'Support Group', visible: true },
+            { dataField: 'collection', caption: 'Collection', visible: true },
             {
                 dataField: 'isSEA',
                 caption: 'SEA',
@@ -198,76 +198,7 @@
         onToolbarPreparing: function (e) {
             var dataGrid = e.component;
 
-            var timeSpan = [
-                {
-                    text: '30 days',
-                    icon: "fa fa-calendar-o",
-                    value: '30'
-                },
-                {
-                    text: '60 days',
-                    icon: "fa fa-calendar-o",
-                    value: '60'
-                },
-                {
-                    text: '90 days',
-                    icon: "fa fa-calendar-o",
-                    value: '90'
-                },
-                {
-                    text: 'Year',
-                    icon: "fa fa-calendar-o",
-                    value: '365'
-                }
-            ];
-
-            var statuses = [
-                {
-                    text: 'Completed',
-                    icon: "fa fa-check",
-                    value: 'Completed'
-                },
-                {
-                    text: 'Overdue',
-                    icon: "fa fa-ban",
-                    value: 'Overdue'
-                },
-                {
-                    text: 'All',
-                    icon: "fa fa-ban",
-                    value: 'All'
-                }
-            ];
-
             e.toolbarOptions.items.unshift(
-                //{
-                //    location: 'before',
-                //    widget: 'dxButtonGroup',
-                //    options: {
-                //        elementAttr: { id: 'btnStatusGroup' },
-                //        items: statuses,
-                //        selectedItemKeys: ['All'],
-                //        keyExpr: "value",
-                //        onSelectionChanged: function(e) {
-                //            statusFilter(e.addedItems[0].value);
-                //        }
-                //    }
-                //},
-                //{
-                //    location: 'before',
-                //    widget: 'dxButtonGroup',
-                //    options: {
-                //        items: timeSpan,
-                //        selectedItemKeys: ['365'],
-                //        keyExpr: "value",
-                //        onSelectionChanged: function(e) {
-                //            var d = $grid;
-                //            //$("#btnStatusGroup").dxButtonGroup("instance").option("disabled", true);
-                //            var b = $("#btnStatusGroup").dxButtonGroup("instance");
-                //            dueNextFilter(e.addedItems[0].value);
-                //        }
-                //    }
-                //},
                 {
                     location: "after",
                     widget: "dxButton",
@@ -425,7 +356,6 @@
         if (status === 'Overdue') {
             statusFilter.push(['deadlineDate', '<', date], ['submissionStateDisplay', '<>', 'Completed'], ['submissionStateDisplay', '<>', 'Waived']);
         }
-        if (status === 'All') statusFilter = null;
 
         applyFilters();
     }
@@ -440,7 +370,6 @@
         var temp = [];
         var currentDate = moment().add(0, 'days').format();
         var date = moment().add(numDays, 'days').format();
-        if (numDays === 365) { date = moment().endOf('year').format(); }
 
         temp.push(["deadlineDate", ">=", currentDate]);
         temp.push('and');
