@@ -47,6 +47,7 @@ namespace Aden.Web.Models
             //TODO: ReportId not available yet
             CurrentReportId = 0;
 
+            //Create audit record
             var msg = $"{userFullName} waived submission: {message}";
             var audit = new SubmissionAudit(Id, msg);
             SubmissionAudits.Add(audit);
@@ -114,8 +115,13 @@ namespace Aden.Web.Models
 
         }
 
-        public WorkItem Start(UserProfile assignee)
+        public WorkItem Start(UserProfile assignee, string userFullName)
         {
+            //Create audit record
+            var msg = $"{userFullName} started submission";
+            var audit = new SubmissionAudit(Id, msg);
+            SubmissionAudits.Add(audit);
+
             //Change state
             SubmissionState = SubmissionState.AssignedForGeneration;
             CurrentAssignee = assignee;

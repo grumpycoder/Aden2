@@ -76,7 +76,7 @@ namespace Aden.Web.Controllers.api
             if (assignedUser == null)
                 return BadRequest($"No group members to assign next task. ");
 
-            var workItem = submission.Start(assignedUser);
+            var workItem = submission.Start(assignedUser, _currentUserFullName);
 
             WorkEmailer.Send(workItem, submission);
 
@@ -105,8 +105,8 @@ namespace Aden.Web.Controllers.api
                 .FirstOrDefault(x => x.ReportId == submission.CurrentReportId && x.WorkItemState == WorkItemState.NotStarted);
 
             //Create copy because removing workitems produces null assignee 
-            var wi = workItem; 
-            if(workItem != null) wi = workItem.DeepCopy();
+            var wi = workItem;
+            if (workItem != null) wi = workItem.DeepCopy();
 
             //TODO: Submission does not need to be aware of data context
             //Remove Reports/Documents/WorkItems from submission
@@ -120,15 +120,15 @@ namespace Aden.Web.Controllers.api
 
 
                 var workItems = _context.WorkItems.Where(w => w.ReportId == report.Id);
-                if(workItems.Any()) _context.WorkItems.RemoveRange(workItems);
+                if (workItems.Any()) _context.WorkItems.RemoveRange(workItems);
 
-           
+
                 _context.Reports.Remove(report);
             }
 
             submission.Cancel(_currentUserFullName);
 
-            if(wi != null) WorkEmailer.Send(wi, submission);
+            if (wi != null) WorkEmailer.Send(wi, submission);
 
             _context.SaveChanges();
 
