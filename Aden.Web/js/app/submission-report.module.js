@@ -22,11 +22,6 @@
             allowExportSelectedData: false,
             icon: 'fa fa-trash'
         },
-        stateStoring: {
-            enabled: true,
-            type: "localStorage",
-            storageKey: "gridSubmissionReportFilterStorage"
-        },
         filterRow: { visible: true },
         headerFilter: { visible: true },
         groupPanel: { visible: false },
@@ -53,23 +48,25 @@
                     }
                 ]
             },
-            { dataField: 'fileNumber', caption: 'File Number' },
-            { dataField: 'fileName', caption: 'File Name' },
-            { dataField: 'submissionStateDisplay', caption: 'Status' },
-            { dataField: 'currentAssignment', caption: 'Assigned' },
-            { dataField: 'lastUpdatedFriendly', caption: 'Last Update' },
-            { dataField: 'deadlineDate', caption: 'Submission Deadline', dataType: 'date' },
+            { dataField: 'fileNumber', caption: 'File Number', visibleIndex: 1 },
+            { dataField: 'fileName', caption: 'File Name', visibleIndex: 2 },
+            { dataField: 'deadlineDate', caption: 'Submission Deadline', dataType: 'date', visibleIndex: 6 },
+            { dataField: 'displayDataYear', caption: 'Data Year', visibleIndex: 7 },
+            { dataField: 'section', caption: 'Section', visibleIndex: 8 },
+            { dataField: 'submissionStateDisplay', caption: 'Status', visibleIndex: 9 },
+            { dataField: 'currentAssignment', caption: 'Assigned', visibleIndex: 10 },
+            { dataField: 'application', caption: 'Application', visibleIndex: 14 },
+            { dataField: 'supportGroup', caption: 'Support Group', visibleIndex: 15 },
+            { dataField: 'collection', caption: 'Collection', visibleIndex: 16 },
+
             { dataField: 'submissionDate', caption: 'Date Submitted', dataType: 'date', visible: false },
-            { dataField: 'displayDataYear', caption: 'Data Year' },
-            { dataField: 'section', caption: 'Section', visible: true },
-            { dataField: 'application', caption: 'Application', visible: true },
-            { dataField: 'supportGroup', caption: 'Support Group', visible: true },
-            { dataField: 'collection', caption: 'Collection', visible: true },
+            { dataField: 'lastUpdatedFriendly', caption: 'Last Update', visible: false },
             {
                 dataField: 'isSEA',
                 caption: 'SEA',
                 dataType: 'boolean',
-                visible: false,
+                visible: true,
+                visibleIndex: 3,
                 showEditorAlways: false,
                 trueText: 'Yes',
                 falseText: 'No',
@@ -83,7 +80,8 @@
                 dataField: 'isLEA',
                 caption: 'LEA',
                 dataType: 'boolean',
-                visible: false,
+                visible: true,
+                visibleIndex: 4,
                 showEditorAlways: false,
                 trueText: 'Yes',
                 falseText: 'No',
@@ -97,7 +95,8 @@
                 dataField: 'isSCH',
                 caption: 'SCH',
                 dataType: 'boolean',
-                visible: false,
+                visible: true,
+                visibleIndex: 5,
                 showEditorAlways: false,
                 trueText: 'Yes',
                 falseText: 'No',
@@ -111,7 +110,8 @@
                 dataField: 'generators',
                 caption: 'Generators',
                 dataType: 'string',
-                visible: false,
+                visible: true,
+                visibleIndex: 11,
                 cellTemplate: function (container, options) {
                     options.data.generators.forEach(function (item) {
                         $('<span>' + item + '</span><br />').appendTo(container)
@@ -126,7 +126,8 @@
                 dataField: 'approvers',
                 caption: 'Approvers',
                 dataType: 'string',
-                visible: false,
+                visible: true,
+                visibleIndex: 12,
                 cellTemplate: function (container, options) {
                     options.data.approvers.forEach(function (item) {
                         $('<span>' + item + '</span><br />').appendTo(container)
@@ -222,17 +223,6 @@
                             resetAllButtons();
                         }
                     }
-                },
-                {
-                    location: "after",
-                    widget: "dxButton",
-                    options: {
-                        icon: "clearsquare",
-                        hint: 'Reset grid to default',
-                        onClick: function () {
-                            dataGrid.state({});
-                        }
-                    }
                 }
             );
         }
@@ -296,14 +286,20 @@
     }
 
     function resetAllButtons() {
-        $('#btnStatusFilter button').siblings().removeClass('active'); 
-        $('#btnGroupDue button').siblings().removeClass('active'); 
-        $('#btnSupportGroup button').siblings().removeClass('active'); 
+        $('#btnStatusFilter button').siblings().removeClass('active');
+        $('#btnGroupDue button').siblings().removeClass('active');
+        $('#btnSupportGroup button').siblings().removeClass('active');
+    }
+
+    function resetButton(name) {
+        $('#' + name + ' button').siblings().removeClass('active');
     }
 
     $('#btnStatusFilter button').on('click',
         function (e) {
             var btn = $(this);
+            resetButton('btnGroupDue');
+            resetButton('btnSupportGroup');
             if (btn.hasClass('active')) {
                 btn.removeClass('active');
                 applyStatusFilter();
@@ -316,6 +312,8 @@
     $('#btnGroupDue button').on('click',
         function (e) {
             var btn = $(this);
+            resetButton('btnStatusFilter');
+            resetButton('btnSupportGroup');
             if (btn.hasClass('active')) {
                 btn.removeClass('active');
                 applyDueFilter();
@@ -329,6 +327,8 @@
     $('#btnSupportGroup button').on('click',
         function (e) {
             var btn = $(this);
+            resetButton('btnStatusFilter');
+            resetButton('btnGroupDue');
             if (btn.hasClass('active')) {
                 btn.removeClass('active');
                 applyGroupFilter();
@@ -345,27 +345,34 @@
 
     function applyStatusFilter(status) {
         statusFilter = [];
+        $grid.deleteColumn('lastUpdatedFriendly');
+        $grid.deleteColumn('submissionDate');
+
         if (status === undefined) {
+            combinedFilter = statusFilter;
             applyFilters();
             return;
-        } 
+        }
         var date = moment().add(0, 'days').format();
         if (status === 'Completed') {
+            $grid.addColumn({ dataField: 'submissionDate', caption: 'Date Submitted', visibleIndex: 17 });
             statusFilter.push(["submissionStateDisplay", "=", "Completed"], "or", ["submissionStateDisplay", "=", "Waived"]);
         }
         if (status === 'Overdue') {
+            $grid.addColumn({ dataField: 'lastUpdatedFriendly', caption: 'Last Update', visibleIndex: 17 });
             statusFilter.push(['deadlineDate', '<', date], ['submissionStateDisplay', '<>', 'Completed'], ['submissionStateDisplay', '<>', 'Waived']);
         }
-
+        combinedFilter = statusFilter;
         applyFilters();
     }
-    
+
     function applyDueFilter(numDays) {
         dueFilter = [];
         if (numDays === undefined) {
+            combinedFilter = dueFilter;
             applyFilters();
             return;
-        } 
+        }
 
         var temp = [];
         var currentDate = moment().add(0, 'days').format();
@@ -378,36 +385,41 @@
         temp.push(["submissionStateDisplay", "<>", "Waived"]);
 
         dueFilter.push(temp);
+
+        combinedFilter = dueFilter;
         applyFilters();
     }
 
     function applyGroupFilter(group) {
         groupFilter = [];
         if (group === undefined) {
+            combinedFilter = groupFilter;
             applyFilters();
             return;
-        } 
+        }
         groupFilter.push(["supportGroup", "=", group]);
+
+        combinedFilter = groupFilter;
         applyFilters();
     }
 
 
     function applyFilters() {
         $grid.clearFilter();
-        combinedFilter = [];
+        //combinedFilter = [];
 
-        if (statusFilter.length > 0) {
-            if (combinedFilter.length > 0) combinedFilter.push('and');
-            combinedFilter.push(statusFilter);
-        }
-        if (dueFilter.length > 0) {
-            if (combinedFilter.length > 0) combinedFilter.push('and');
-            combinedFilter.push(dueFilter);
-        }
-        if (groupFilter.length > 0) {
-            if (combinedFilter.length > 0) combinedFilter.push('and');
-            combinedFilter.push(groupFilter);
-        }
+        //if (statusFilter.length > 0) {
+        //    if (combinedFilter.length > 0) combinedFilter.push('and');
+        //    combinedFilter.push(statusFilter);
+        //}
+        //if (dueFilter.length > 0) {
+        //    if (combinedFilter.length > 0) combinedFilter.push('and');
+        //    combinedFilter.push(dueFilter);
+        //}
+        //if (groupFilter.length > 0) {
+        //    if (combinedFilter.length > 0) combinedFilter.push('and');
+        //    combinedFilter.push(groupFilter);
+        //}
         $grid.filter(combinedFilter);
     }
 
