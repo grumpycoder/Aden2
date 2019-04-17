@@ -276,6 +276,11 @@ namespace Aden.Web.Controllers
             return View(vm.OrderByDescending(x => x.Sent));
         }
 
+        public ActionResult About()
+        {
+            return View();
+        }
+
         [Route("GroupManager")]
         public ActionResult GroupManager()
         {
@@ -286,6 +291,7 @@ namespace Aden.Web.Controllers
         {
             return View();
         }
+
         public ActionResult PerfViewer()
         {
             return View();

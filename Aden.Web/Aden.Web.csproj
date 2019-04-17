@@ -515,6 +515,7 @@
     <Content Include="Views\Home\GroupManager.cshtml" />
     <Content Include="Views\Home\_SubmissionAudit.cshtml" />
     <Content Include="Views\Home\_WorkHistory.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
