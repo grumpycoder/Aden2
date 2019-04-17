@@ -11,6 +11,7 @@ namespace Aden.Web.Data.Profiles
         {
             CreateMap<Report, ReportViewDto>()
                .ForMember(d => d.Id, opt => opt.MapFrom(s => s.Id))
+               .ForMember(d => d.SubmissionId, opt => opt.MapFrom(s => s.SubmissionId))
                .ForMember(d => d.FileName, opt => opt.MapFrom(s => s.Submission.FileSpecification.FileName))
                .ForMember(d => d.FileNumber, opt => opt.MapFrom(s => s.Submission.FileSpecification.FileNumber))
                .ForMember(d => d.DataYear, opt => opt.MapFrom(s => s.Submission.FileSpecification.DataYear))

@@ -1,0 +1,37 @@
+﻿@model int
+
+<span class="lead">Submission Audit</span>
+
+<div id="gridAudit-@Model"></div>
+
+<script src="~/js/vendor-bundle.min.js?v=1.0.0"></script>
+
+<script>
+    $(function () {
+        var auditUri = '/api/audit/submission/' + @Model;
+
+        $('#gridAudit-@Model').dxDataGrid(
+            {
+                dataSource: DevExpress.data.AspNet.createStore({
+                    key: 'id',
+                    loadUrl: auditUri
+                }),
+                remoteOperations: true,
+                allowColumnResizing: true,
+                noDataText: 'No Audits',
+                showBorders: true,
+                columnResizingMode: "nextColumn",
+                columnMinWidth: 50,
+                columnAutoWidth: true,
+                height: 200,
+                wordWrapEnabled: true,
+                scrolling: { mode: "virtual", rowRenderingMode: "virtual" },
+                columns: [
+                    { dataField: 'auditDate', caption: 'Date', dataType: 'datetime', width: 175 },
+                    { dataField: 'message', caption: 'Message' }
+                ]
+            }).dxDataGrid('instance');
+
+    });
+</script>
+

@@ -54,5 +54,7 @@ namespace Aden.Web.ViewModels
                 }
             }
         }
+
+        public int SubmissionId { get; set; }
     }
 }

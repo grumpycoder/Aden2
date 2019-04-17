@@ -513,6 +513,8 @@
     <Content Include="Web.Test.config" />
     <Content Include="Views\Home\SubmissionReport.cshtml" />
     <Content Include="Views\Home\GroupManager.cshtml" />
+    <Content Include="Views\Home\_SubmissionAudit.cshtml" />
+    <Content Include="Views\Home\_WorkHistory.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -124,10 +124,24 @@
                                     </div>
 
                                 </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        @{Html.RenderPartial("_WorkHistory", @report.Id);}
+                                    </div>
+                                </div>
+                                
                             </div>
                         </div>
 
                     }
+                    <div class="row">
+                        <div class="col-md-12">
+                            @*@{Html.RenderPartial("_SubmissionAudit", new { SubmissionId = report.SubmissionId });}*@
+                            @{Html.RenderPartial("_SubmissionAudit", @Model.FirstOrDefault().SubmissionId);}
+                          
+                        </div>
+                    </div>
 
                 </div>
 

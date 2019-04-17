@@ -59,7 +59,7 @@
         }).dxDataGrid('instance');
 
 
-    var auditUri = '/api/audit/' + @(Model.SubmissionId ?? 0);
+    var auditUri = '/api/audit/submission/' + @(Model.SubmissionId ?? 0);
 
     var $gridAudit = $('#gridAudit').dxDataGrid(
         {

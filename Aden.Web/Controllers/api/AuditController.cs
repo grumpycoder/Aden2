@@ -18,7 +18,7 @@ namespace Aden.Web.Controllers.api
             _context = new AdenContext();
         }
 
-        [HttpGet, Route("{id}")]
+        [HttpGet, Route("submission/{id}")]
         public async Task<object> Get(int id, DataSourceLoadOptions loadOptions)
         {
             var dto = await _context.SubmissionAudits.Where(r => r.SubmissionId == id).ToListAsync();
