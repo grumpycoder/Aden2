@@ -1,7 +1,7 @@
 ﻿@model List<Aden.Web.ViewModels.ReportViewDto>
 @{
     ViewBag.Title = "Files";
-    int count = 0; 
+    int count = 0;
 }
 
 <style>
@@ -46,7 +46,7 @@
                                         <span>- Reopened current version</span>
                                     }
                                 </span>
-                                
+
                             </div>
                             <div class="panel-body">
                                 <div class="row">
@@ -124,27 +124,54 @@
                                     </div>
 
                                 </div>
-                                
+
                                 <div class="row">
                                     <div class="col-md-12">
-                                        @{Html.RenderPartial("_WorkHistory", @report.Id);}
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                <span class="lead">Work Log</span>
+                                            </div>
+                                            <div class="panel-body">
+                                                <div class="container-fluid">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <p>
+                                                                @{Html.RenderPartial("_WorkHistory", @report.Id);}
+                                                            </p>
+                                                        </div>
+                                                       
+                                                    </div>
+                                                </div>
+
+
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
 
                     }
-                    <div class="row">
-                        <div class="col-md-12">
-                            @*@{Html.RenderPartial("_SubmissionAudit", new { SubmissionId = report.SubmissionId });}*@
-                            @{Html.RenderPartial("_SubmissionAudit", @Model.FirstOrDefault().SubmissionId);}
-                          
-                        </div>
-                    </div>
 
                 </div>
 
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    
+                <span class="lead">Submission Audit</span>
+                </div>
+                <div class="panel-body">
+                @{Html.RenderPartial("_SubmissionAudit", @Model.FirstOrDefault().SubmissionId);}
+
+                </div>
             </div>
         </div>
     </div>
