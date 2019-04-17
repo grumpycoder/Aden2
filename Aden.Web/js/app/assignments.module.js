@@ -164,8 +164,8 @@
         }
     }).dxDataGrid("instance");
 
-
     function complete(container, data) {
+        $toggleWorkingButton(container);
         var uri = '/api/workitem/complete/' + data.id;
         if (data.isManualUpload && data.canGenerate) {
             showUpload(container, data);
@@ -185,7 +185,6 @@
                         '<p>Selecting "Ok" will assign a task to begin the process again.</p>',
                     callback: function (result) {
                         if (result) {
-
                             $toggleWorkingButton(container);
                             $.ajax({
                                 url: uri,
@@ -206,7 +205,7 @@
                                 $toggleWorkingButton(container);
                             });
 
-
+                            $toggleWorkingButton(container);
                         } else {
                             return;
                         }
@@ -215,9 +214,8 @@
 
             }
             else {
-                // Generate files from defined report action
+                //Generate files from defined report action
                 $toggleWorkingButton(container);
-
                 $.ajax({
                     url: uri,
                     type: 'POST',
@@ -237,6 +235,11 @@
 
         }
 
+    }
+
+
+    function myFunction() {
+        console.log('my function call');
     }
 
     function reject(container, data) {
@@ -475,14 +478,14 @@
                         var formData = new FormData();
 
                         var files = $('#uploadFiles')[0].files;
-                        
+
                         for (var f = 0; f < files.length; f++) {
                             formData.append(files[f].name, files[f]);
                         }
 
                         var reportLevels = ['sch', 'lea', 'sea'];
                         var errors = [];
-                        
+
                         if (files.length > 0) {
                             for (var i = 0; i < files.length; i++) {
                                 var found = reportLevels.find(function (item) { return files[i].name.toLowerCase().includes(item) });
@@ -497,11 +500,11 @@
                             BootstrapDialog.alert({
                                 title: 'WARNING',
                                 message: errorMessage,
-                                type: BootstrapDialog.TYPE_WARNING, 
-                                closable: true, 
+                                type: BootstrapDialog.TYPE_WARNING,
+                                closable: true,
                                 draggable: true
                             });
-                            dialogRef.getButton(dialogRef.getButtons()[0].id).enable(); 
+                            dialogRef.getButton(dialogRef.getButtons()[0].id).enable();
                         } else {
 
                             $showModalWorking($('.panel-body'));

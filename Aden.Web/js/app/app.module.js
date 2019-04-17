@@ -1,11 +1,13 @@
 ﻿
 window.$toggleWorkingButton = function (button, status) {
-
+    console.log('button', button);
     if ($('.loadingoverlay').length) status = 'off';
 
     if (status === 'off') {
         button.LoadingOverlay('hide');
+        button.prop('disabled', false);
     } else {
+        button.prop('disabled', true);
         button.LoadingOverlay('show',
             { image: '', fontawesome: 'fa fa-cog fa-spin' });
     }
