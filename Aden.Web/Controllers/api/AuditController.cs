@@ -23,7 +23,7 @@ namespace Aden.Web.Controllers.api
         {
             var dto = await _context.SubmissionAudits.Where(r => r.SubmissionId == id).ToListAsync();
 
-            return Ok(DataSourceLoader.Load(dto.OrderByDescending(x => x.AuditDate), loadOptions));
+            return Ok(DataSourceLoader.Load(dto.OrderByDescending(x => x.Id), loadOptions));
         }
 
     }

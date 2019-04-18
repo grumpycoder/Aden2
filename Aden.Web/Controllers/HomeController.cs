@@ -204,7 +204,7 @@ namespace Aden.Web.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var workItem = await _context.WorkItems.Include(x => x.Report).FirstOrDefaultAsync(x => x.Id == id);
+            var workItem = await _context.WorkItems.Include(x => x.AssignedUser).Include(x => x.Report).FirstOrDefaultAsync(x => x.Id == id);
             if (workItem == null) return new HttpStatusCodeResult(HttpStatusCode.NotFound);
 
             var submission = _context.Submissions

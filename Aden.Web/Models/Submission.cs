@@ -1,4 +1,4 @@
-﻿using Glimpse.Core.Extensions;
+﻿using Aden.Web.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -142,6 +142,12 @@ namespace Aden.Web.Models
             };
             report.WorkItems.Add(workItem);
 
+            //Create Audit record
+            var currentVersion = report.CurrentDocumentVersion ?? 1;
+            var newWorkMessage = $"{assignee.FullName} was assigned {workItem.WorkItemAction.GetDescription()} task for document version #{currentVersion}";
+            var newAudit = new SubmissionAudit(Id, newWorkMessage);
+            SubmissionAudits.Add(newAudit);
+
             return workItem;
         }
 
@@ -149,7 +155,7 @@ namespace Aden.Web.Models
         {
 
             //Create Audit record
-            var message = $"{currentUser} reassigned from {workItem.AssignedUser.FullName} to {assignee.FullName}: {reason}";
+            var message = $"{currentUser} reassigned {workItem.WorkItemAction.GetDescription()} task from {workItem.AssignedUser.FullName} to {assignee.FullName}: {reason}";
             var audit = new SubmissionAudit(Id, message);
             SubmissionAudits.Add(audit);
 
@@ -162,8 +168,9 @@ namespace Aden.Web.Models
 
         public WorkItem Reject(WorkItem workItem)
         {
+            var currentVersion = Reports.FirstOrDefault(x => x.Id == CurrentReportId)?.CurrentDocumentVersion ?? 1;
             //Create Audit record
-            var message = $"{workItem.AssignedUser.FullName} rejected {workItem.WorkItemAction.ToDescription()}";
+            var message = $"{workItem.AssignedUser.FullName} rejected document version #{currentVersion}";
             var audit = new SubmissionAudit(Id, message);
             SubmissionAudits.Add(audit);
 
@@ -190,18 +197,23 @@ namespace Aden.Web.Models
 
             report.Submission.CurrentAssignee = wi.AssignedUser;
 
+            //TODO: hard coded increment logic
+            var newWorkMessage = $"{wi.AssignedUser.FullName} was assigned {wi.WorkItemAction.GetDescription()} task for document version #{currentVersion + 1}";
+            var newAudit = new SubmissionAudit(Id, newWorkMessage);
+            SubmissionAudits.Add(newAudit);
+
             report.WorkItems.Add(wi);
 
             return wi;
         }
 
-        public WorkItem CompleteWork(WorkItem workItem, UserProfile nextAssignee, bool generateErrorTask = false)
+        public WorkItem CompleteWork(WorkItem workItem, UserProfile nextAssignee, bool generateErrorTask = false, string attachedMessage = null)
         {
+            var currentVersion = Reports.FirstOrDefault(x => x.Id == CurrentReportId)?.CurrentDocumentVersion ?? 1;
             //Create Audit record
-            var message = $"{workItem.AssignedUser.FullName} completed {workItem.WorkItemAction.ToDescription()}";
+            var message = $"{workItem.AssignedUser.FullName} completed {workItem.WorkItemAction.GetDescription()} task for document version #{currentVersion}";
             var audit = new SubmissionAudit(Id, message);
             SubmissionAudits.Add(audit);
-
 
             var report = Reports.FirstOrDefault(x => x.Id == CurrentReportId);
             workItem.CompletedDate = DateTime.Now;
@@ -218,6 +230,11 @@ namespace Aden.Web.Models
                 report.SubmittedDate = DateTime.Now;
                 wi.AssignedUser = CurrentAssignee = nextAssignee;
                 report.WorkItems.Add(wi);
+                //Create Audit record
+                //TODO: hard coded increment logic
+                message = $"{wi.AssignedUser.FullName} was assigned {wi.WorkItemAction.GetDescription()} task for document version #{currentVersion + 1}";
+                audit = new SubmissionAudit(Id, message);
+                SubmissionAudits.Add(audit);
                 return wi;
             }
 
@@ -263,7 +280,12 @@ namespace Aden.Web.Models
             if (wi.WorkItemAction != 0)
             {
                 report.WorkItems.Add(wi);
+                //Create Audit record
+                var newWorkMessage = $"{wi.AssignedUser.FullName} was assigned {wi.WorkItemAction.GetDescription()} task for document version #{currentVersion}";
+                var newAudit = new SubmissionAudit(Id, newWorkMessage);
+                SubmissionAudits.Add(newAudit);
             }
+
 
             return wi;
         }
