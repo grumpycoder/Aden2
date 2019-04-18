@@ -162,6 +162,11 @@ namespace Aden.Web.Models
 
         public WorkItem Reject(WorkItem workItem)
         {
+            //Create Audit record
+            var message = $"{workItem.AssignedUser.FullName} rejected {workItem.WorkItemAction.ToDescription()}";
+            var audit = new SubmissionAudit(Id, message);
+            SubmissionAudits.Add(audit);
+
             workItem.WorkItemState = WorkItemState.Reject;
             workItem.CompletedDate = DateTime.Now;
 
