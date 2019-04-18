@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Glimpse.Core.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -191,6 +192,12 @@ namespace Aden.Web.Models
 
         public WorkItem CompleteWork(WorkItem workItem, UserProfile nextAssignee, bool generateErrorTask = false)
         {
+            //Create Audit record
+            var message = $"{workItem.AssignedUser.FullName} completed {workItem.WorkItemAction.ToDescription()}";
+            var audit = new SubmissionAudit(Id, message);
+            SubmissionAudits.Add(audit);
+
+
             var report = Reports.FirstOrDefault(x => x.Id == CurrentReportId);
             workItem.CompletedDate = DateTime.Now;
             workItem.WorkItemState = WorkItemState.Completed;
