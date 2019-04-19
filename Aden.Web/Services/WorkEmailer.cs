@@ -24,7 +24,7 @@ namespace Aden.Web.Services
 
             if (workItem.WorkItemAction == 0)
             {
-                subject = $"{submission.FileSpecification.FileDisplayName} Submission Successful";
+                subject = $"{submission.FileSpecification.FileDisplayName} Submission Successful Document Version #{workItem.Report.CurrentDocumentVersion ?? 1}";
                 templatePath = Constants.SubmissionTemplatePath;
                 taskIcon = Constants.SuccessIcon;
             }
@@ -37,12 +37,12 @@ namespace Aden.Web.Services
 
             if (submission.SubmissionState == SubmissionState.NotStarted)
             {
-                subject = $"{submission.FileSpecification.FileDisplayName} {workItem.WorkItemAction.GetDisplayName()} Assignment Cancelled";
+                subject = $"{submission.FileSpecification.FileDisplayName} {workItem.WorkItemAction.GetDisplayName()} Assignment Cancelled Document Version #{workItem.Report.CurrentDocumentVersion ?? 1}";
                 templatePath = Constants.CancelTemplatePath;
                 taskIcon = Constants.CancelledIcon;
             }
 
-            if (string.IsNullOrWhiteSpace(subject)) subject = $"{submission.FileSpecification.FileDisplayName} {workItem.WorkItemAction.GetDisplayName()} Assignment";
+            if (string.IsNullOrWhiteSpace(subject)) subject = $"{submission.FileSpecification.FileDisplayName} {workItem.WorkItemAction.GetDisplayName()} Assignment Document Version #{workItem.Report.CurrentDocumentVersion ?? 1}";
 
             var model = new EmailModel()
             {
@@ -103,7 +103,7 @@ namespace Aden.Web.Services
             var sender = Constants.ReplyAddress;
             var templatePath = Constants.ErrorTemplatePath;
             var taskIcon = Constants.ErrorIcon;
-            var subject = $"{submission.FileSpecification.FileDisplayName} Submission Error";
+            var subject = $"{submission.FileSpecification.FileDisplayName} Submission Error Document Version #{workItem.Report.CurrentDocumentVersion ?? 1}";
 
             var model = new EmailModel()
             {

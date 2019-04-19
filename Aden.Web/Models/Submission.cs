@@ -138,7 +138,8 @@ namespace Aden.Web.Models
                 WorkItemAction = WorkItemAction.Generate,
                 WorkItemState = WorkItemState.NotStarted,
                 AssignedDate = DateTime.Now,
-                AssignedUser = assignee
+                AssignedUser = assignee,
+                Report = report
             };
             report.WorkItems.Add(workItem);
 
@@ -179,13 +180,6 @@ namespace Aden.Web.Models
 
             LastUpdated = DateTime.Now;
 
-            var wi = new WorkItem()
-            {
-                WorkItemState = WorkItemState.NotStarted,
-                AssignedDate = DateTime.Now,
-                WorkItemAction = WorkItemAction.Generate,
-                AssignedUser = workItem.AssignedUser
-            };
 
             var report = Reports.SingleOrDefault(x => x.Id == CurrentReportId);
             report.GeneratedDate = null;
@@ -195,8 +189,16 @@ namespace Aden.Web.Models
             report.ReportState = ReportState.AssignedForGeneration;
             report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
 
-            report.Submission.CurrentAssignee = wi.AssignedUser;
+            var wi = new WorkItem()
+            {
+                WorkItemState = WorkItemState.NotStarted,
+                AssignedDate = DateTime.Now,
+                WorkItemAction = WorkItemAction.Generate,
+                AssignedUser = workItem.AssignedUser,
+                Report = report
+            };
 
+            report.Submission.CurrentAssignee = wi.AssignedUser;
             //TODO: hard coded increment logic
             var newWorkMessage = $"{wi.AssignedUser.FullName} was assigned {wi.WorkItemAction.GetDescription()} task for document version #{currentVersion + 1}";
             var newAudit = new SubmissionAudit(Id, newWorkMessage);
@@ -220,7 +222,7 @@ namespace Aden.Web.Models
             workItem.WorkItemState = WorkItemState.Completed;
 
             //Start new work item
-            var wi = new WorkItem() { WorkItemState = WorkItemState.NotStarted, AssignedDate = DateTime.Now, AssignedUser = nextAssignee };
+            var wi = new WorkItem() { WorkItemState = WorkItemState.NotStarted, AssignedDate = DateTime.Now, AssignedUser = nextAssignee, Report = report };
 
             if (generateErrorTask)
             {

@@ -192,11 +192,12 @@ namespace Aden.Web.Controllers.api
             if (!submission.FileSpecification.GenerationGroup.Users.Any()) return BadRequest("No group members to assign next task. ");
 
             var wi = submission.Reject(workItem);
-
-            WorkEmailer.Send(wi, submission);
-
+            
             await _context.SaveChangesAsync();
 
+            wi.Report.CurrentDocumentVersion += 1; 
+
+            WorkEmailer.Send(wi, submission);
             var dto = Mapper.Map<WorkItemViewDto>(wi);
 
             return Ok(dto);
