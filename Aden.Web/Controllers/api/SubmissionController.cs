@@ -146,6 +146,7 @@ namespace Aden.Web.Controllers.api
 
             //TODO: Pulling too much data here
             var submission = await _context.Submissions
+                .Include(r => r.Reports)
                 .Include(f => f.FileSpecification.GenerationGroup)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
@@ -163,14 +164,14 @@ namespace Aden.Web.Controllers.api
 
             var workItem = submission.Reopen(_currentUserFullName, model.Message, assignedUser, model.NextSubmissionDate);
 
-            WorkEmailer.Send(workItem, submission);
-
             _context.SaveChanges();
 
             //TODO: Refactor. Do not have access to new report until after save
             submission.CurrentReportId = submission.Reports.LastOrDefault().Id;
 
             _context.SaveChanges();
+
+            WorkEmailer.Send(workItem, submission);
 
             var dto = Mapper.Map<SubmissionViewDto>(submission);
 

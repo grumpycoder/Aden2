@@ -57,6 +57,7 @@ namespace Aden.Web.Models
 
         public WorkItem Reopen(string currentUser, string message, UserProfile assignee, DateTime dueDate)
         {
+            var currentVersion = Reports.FirstOrDefault(x => x.Id == CurrentReportId).CurrentDocumentVersion + 1; 
 
             //Create Audit record
             var msg = $"{currentUser} reopened submission: { message }";
@@ -68,7 +69,8 @@ namespace Aden.Web.Models
             {
                 SubmissionId = Id,
                 DataYear = DataYear,
-                ReportState = ReportState.AssignedForGeneration
+                ReportState = ReportState.AssignedForGeneration,
+                CurrentDocumentVersion = currentVersion
             };
             Reports.Add(report);
 
@@ -88,6 +90,11 @@ namespace Aden.Web.Models
                 AssignedUser = assignee
             };
             report.WorkItems.Add(workItem);
+
+            //Create Audit record
+            var newWorkMessage = $"{assignee.FullName} was assigned {workItem.WorkItemAction.GetDescription()} task for document version #{currentVersion}";
+            var newAudit = new SubmissionAudit(Id, newWorkMessage);
+            SubmissionAudits.Add(newAudit);
 
             return workItem;
         }
@@ -129,7 +136,7 @@ namespace Aden.Web.Models
             LastUpdated = DateTime.Now;
 
             //Create report
-            var report = new Report() { SubmissionId = Id, DataYear = DataYear, ReportState = ReportState.AssignedForGeneration };
+            var report = new Report() { SubmissionId = Id, DataYear = DataYear, ReportState = ReportState.AssignedForGeneration, CurrentDocumentVersion = 1 };
             Reports.Add(report);
 
             //Create work item
@@ -185,6 +192,7 @@ namespace Aden.Web.Models
             report.GeneratedDate = null;
             report.ApprovedDate = null;
             report.SubmittedDate = null;
+            report.CurrentDocumentVersion += 1; 
 
             report.ReportState = ReportState.AssignedForGeneration;
             report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
@@ -211,7 +219,7 @@ namespace Aden.Web.Models
 
         public WorkItem CompleteWork(WorkItem workItem, UserProfile nextAssignee, bool generateErrorTask = false, string attachedMessage = null)
         {
-            var currentVersion = Reports.FirstOrDefault(x => x.Id == CurrentReportId)?.CurrentDocumentVersion ?? 1;
+            var currentVersion = Reports.LastOrDefault(x => x.Id == CurrentReportId)?.CurrentDocumentVersion;
             //Create Audit record
             var message = $"{workItem.AssignedUser.FullName} completed {workItem.WorkItemAction.GetDescription()} task for document version #{currentVersion}";
             var audit = new SubmissionAudit(Id, message);
