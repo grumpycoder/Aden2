@@ -38,6 +38,29 @@
             ]
         });
     });
+
+    var auditUri = '/api/audit/submission/' + submissionId;
+
+    $('#gridAuditReview').dxDataGrid(
+        {
+            dataSource: DevExpress.data.AspNet.createStore({
+                key: 'id',
+                loadUrl: auditUri
+            }),
+            remoteOperations: true,
+            allowColumnResizing: true,
+            noDataText: 'No Audits',
+            showBorders: true,
+            columnResizingMode: "nextColumn",
+            columnMinWidth: 50,
+            columnAutoWidth: false,
+            height: 200,
+            wordWrapEnabled: true,
+            scrolling: { mode: "virtual", rowRenderingMode: "virtual" },
+            columns: [
+                { dataField: 'auditDate', caption: 'Date', dataType: 'datetime', width: 50 },
+                { dataField: 'message', caption: 'Message', width:250 }
+            ]
+        }).dxDataGrid('instance');
+    
 })();
-
-

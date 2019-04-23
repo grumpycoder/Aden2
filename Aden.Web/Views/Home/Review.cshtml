@@ -5,21 +5,18 @@
 }
 
 <style>
-    .panel-title .trigger:before {
-        font-family: FontAwesome;
-        content: "\f095";
-        vertical-align: text-bottom;
-        font-weight: 900;
+    a[aria-expanded=true] .fa-chevron-right {
+        display: none;
     }
 
-    .panel-title .trigger.collapsed:before {
-        font-family: FontAwesome;
-        content: "\f095";
-        vertical-align: text-bottom;
-        font-weight: 900;
+    a[aria-expanded=false] .fa-chevron-down {
+        display: none;
+    }
+
+    a {
+        text-decoration: none;
     }
 </style>
-
 <section class="content">
     <div class="row">
         <div class="col-md-12">
@@ -35,98 +32,114 @@
                     @foreach (var report in Model.OrderByDescending(x => x.Id))
                     {
                         count += 1;
-
-
                         <div class="panel panel-@report.PanelClass">
-                            <div class="panel-heading">
-                                <span class="panel-title">@report.DisplayFileName</span>
-                                <span class="panel-subtitle">
-                                    @if (Model.Count > 1 & count == 1)
-                                    {
-                                        <span>- Reopened current version</span>
-                                    }
-                                </span>
+                            <div class="panel-heading" role="tab" id="heading-@report.Id">
+                                <h4 class="panel-title">
+                                    <a role="button"
+                                       data-toggle="collapse"
+                                       data-parent="#accordian"
+                                       href="#report-@report.Id"
+                                       aria-expanded="@(count == 1 ? "true" : "false")"
+                                       aria-controls="report-@report.Id">
+                                        <i class="fa fa-chevron-right pull-right"></i>
+                                        <i class="fa fa-chevron-down pull-right"></i>
+                                        @report.DisplayFileName
+                                        @if (Model.Count > 1 & count == 1)
+                                        {
+                                            <span class="panel-subtitle">- Reopened Current Version</span>
+                                        }
+                                        @if (Model.Count > 1 & count > 1)
+                                        {
+                                            <span class="panel-subtitle">- Previous Opening Version</span>
+                                        }
 
+                                    </a>
+                                </h4>
                             </div>
-                            <div class="panel-body">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <dl>
-                                            <dt>Data Year</dt>
-                                            <dd>@report.DisplayDataYear</dd>
+                            <div id="report-@report.Id" class="panel-collapse collapse @(count == 1 ? "in" : "")" role="tabpanel" aria-labeledby="heading-@report.Id">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <dl>
+                                                <dt>Data Year</dt>
+                                                <dd>@report.DisplayDataYear</dd>
 
-                                            <dt>Submission Due Date</dt>
-                                            <dd>@report.SubmissionDueDate.ToString("M/dd/yyyy")</dd>
-                                            <dt>Status</dt>
-                                            <dd>@report.ReportStateDisplay</dd>
+                                                <dt>Submission Due Date</dt>
+                                                <dd>@report.SubmissionDueDate.ToString("M/dd/yyyy")</dd>
+                                                <dt>Status</dt>
+                                                <dd>@report.ReportStateDisplay</dd>
 
-                                            <dt>Generated</dt>
-                                            <dd>
-                                                @report.GeneratedDate
-                                                @if (!report.GeneratedDate.HasValue)
-                                                {
-                                                    <text>Not yet generated</text>
-                                                }
-                                            </dd>
+                                                <dt>Generated</dt>
+                                                <dd>
+                                                    @report.GeneratedDate
+                                                    @if (!report.GeneratedDate.HasValue)
+                                                    {
+                                                        <text>Not yet generated</text>
+                                                    }
+                                                </dd>
 
-                                            <dt>Approved</dt>
-                                            <dd>
-                                                @report.ApprovedDate
-                                                @if (!report.ApprovedDate.HasValue)
-                                                {
-                                                    <text>Not yet approved</text>
-                                                }
-                                            </dd>
+                                                <dt>Approved</dt>
+                                                <dd>
+                                                    @report.ApprovedDate
+                                                    @if (!report.ApprovedDate.HasValue)
+                                                    {
+                                                        <text>Not yet approved</text>
+                                                    }
+                                                </dd>
 
-                                            <dt>Submitted</dt>
-                                            <dd>
+                                                <dt>Submitted</dt>
+                                                <dd>
 
-                                                @report.SubmittedDate
-                                                @if (!report.SubmittedDate.HasValue)
-                                                {
-                                                    <text>Not yet submitted</text>
-                                                }
-                                            </dd>
+                                                    @report.SubmittedDate
+                                                    @if (!report.SubmittedDate.HasValue)
+                                                    {
+                                                        <text>Not yet submitted</text>
+                                                    }
+                                                </dd>
 
-                                        </dl>
+                                            </dl>
 
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <span class="panel-title">
-                                                    Current File Revision
-                                                </span>
-                                            </div>
-                                            <div class="panel-body">
-                                                @Html.Partial("_ReportDocuments", report.Documents.Where(d => d.Version == report.CurrentDocumentVersion).ToList())
-                                            </div>
                                         </div>
 
-
-                                    </div>
-
-                                    <div class="col-md-6 col-md-offset-6">
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                <span class="panel-title">
-                                                    <a data-toggle="collapse" data-parent="documents" href="@string.Format("#fileHistory{0}", @report.Id)" aria-expanded="false" aria-controls="fileHistory">
-                                                        Revision History
-                                                    </a>
-                                                </span>
+                                        <div class="col-md-6">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    <span class="panel-title">
+                                                        Current File Revision
+                                                    </span>
+                                                </div>
+                                                <div class="panel-body">
+                                                    @Html.Partial("_ReportDocuments", report.Documents.Where(d => d.Version == report.CurrentDocumentVersion).ToList())
+                                                </div>
                                             </div>
-                                            <div class="panel-body panel-collapse collapse" id="@string.Format("fileHistory{0}", @report.Id)" role="tabpanel" aria-labelledby="fileHistory">
-                                                @Html.Partial("_ReportDocuments", report.Documents.Where(d => d.Version < report.CurrentDocumentVersion).ToList())
+
+
+                                        </div>
+
+                                        <div class="col-md-6 col-md-offset-6">
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading"  role="tab" id="revision-@report.Id">
+                                                    <span class="panel-title">
+                                                        <a data-toggle="collapse" data-parent="accordian" href="#fileHistory-@report.Id" aria-expanded="false" aria-controls="fileHistory">
+                                                            Revision History
+                                                            <i class="fa fa-chevron-right pull-right"></i>
+                                                            <i class="fa fa-chevron-down pull-right"></i>
+                                                        </a>
+
+                                                    </span>
+                                                </div>
+                                                <div class="panel-body panel-collapse collapse" id="fileHistory-@report.Id" role="tabpanel" aria-labelledby="fileHistory">
+                                                    @Html.Partial("_ReportDocuments", report.Documents.Where(d => d.Version < report.CurrentDocumentVersion).ToList())
+                                                </div>
                                             </div>
+
                                         </div>
 
                                     </div>
+
+
 
                                 </div>
-
-                              
-
                             </div>
                         </div>
 
@@ -141,13 +154,26 @@
     <div class="row">
         <div class="col-md-12">
             <div class="panel panel-default">
-                <div class="panel-heading">
-                    
-                <span class="lead">Submission Audit</span>
+                <div class="panel-heading" role="tab" id="heading-submissionAudit">
+                    <h4 class="panel-title">
+                        
+                        <a role="button"
+                           data-toggle="collapse"
+                           data-parent="#accordian"
+                           href="#submissionAudit"
+                           aria-expanded="false"
+                           aria-controls="submissionAudit">
+                            Submission Audit
+                            <i class="fa fa-chevron-right pull-right"></i>
+                            <i class="fa fa-chevron-down pull-right"></i>
+                        </a>
+                    </h4>
                 </div>
-                <div class="panel-body">
-                @{Html.RenderPartial("_SubmissionAudit", @Model.FirstOrDefault().SubmissionId);}
+                <div id="submissionAudit" class="panel-collapse collapse" role="tabpanel" aria-labeledby="submissionAudit">
+                    <div class="panel-body">
+                        @{Html.RenderPartial("_SubmissionAudit", @Model.FirstOrDefault().SubmissionId);}
 
+                    </div>
                 </div>
             </div>
         </div>
