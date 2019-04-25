@@ -67,12 +67,6 @@ namespace Aden.Web.Controllers
                              f.Submission.DataYear == dataYear) || string.IsNullOrEmpty(filenumber))
                 .ProjectTo<ReportViewDto>().ToListAsync();
 
-
-            //var dto = await _context.Reports
-            //    .Where(f => (f.Submission.FileSpecification.FileNumber == filenumber &&
-            //                 f.Submission.DataYear == dataYear) || string.IsNullOrEmpty(filenumber))
-            //    .ProjectTo<ReportViewDto>().ToListAsync();
-
             //TODO: Move to mapping profile
             foreach (ReportViewDto item in dto)
             {
