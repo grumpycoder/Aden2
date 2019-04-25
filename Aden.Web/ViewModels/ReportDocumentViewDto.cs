@@ -1,4 +1,6 @@
-﻿namespace Aden.Web.ViewModels
+﻿using System;
+
+namespace Aden.Web.ViewModels
 {
     public class DocumentViewDto
     {
@@ -7,6 +9,7 @@
         public string Filename { get; set; }
 
         public int Version { get; set; }
+        public DateTime? DateGenerated { get; set; }
 
         public long FileSize { get; set; }
         public long FileSizeMb { get; set; }

@@ -31,7 +31,7 @@ namespace Aden.Web.Services
                     $"v{version}.csv");
                 var result = ExecuteDocumentCreationToFile(report, ReportLevel.SCH);
                 if (result.IsFailure) return result;
-                var doc = new ReportDocument() { FileData = result.Value, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = result.Value.Length, Version = version };
+                var doc = new ReportDocument() { FileData = result.Value, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = result.Value.Length, Version = version, DateGenerated = DateTime.Now };
                 report.Documents.Add(doc);
 
             }
@@ -41,7 +41,7 @@ namespace Aden.Web.Services
                     $"v{version}.csv");
                 var result = ExecuteDocumentCreationToFile(report, ReportLevel.LEA);
                 if (result.IsFailure) return result;
-                var doc = new ReportDocument() { FileData = result.Value, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = result.Value.Length, Version = version };
+                var doc = new ReportDocument() { FileData = result.Value, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = result.Value.Length, Version = version, DateGenerated = DateTime.Now };
                 report.Documents.Add(doc);
             }
             if (report.Submission.FileSpecification.IsSEA)
@@ -50,11 +50,10 @@ namespace Aden.Web.Services
                     $"v{version}.csv");
                 var result = ExecuteDocumentCreationToFile(report, ReportLevel.SEA);
                 if (result.IsFailure) return result;
-                var doc = new ReportDocument() { FileData = result.Value, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = result.Value.Length, Version = version };
+                var doc = new ReportDocument() { FileData = result.Value, ReportLevel = ReportLevel.SCH, Filename = filename, FileSize = result.Value.Length, Version = version, DateGenerated = DateTime.Now };
                 report.Documents.Add(doc);
             }
             report.GeneratedDate = DateTime.Now;
-
 
             return Result.Ok();
         }

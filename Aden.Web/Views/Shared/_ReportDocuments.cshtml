@@ -4,10 +4,12 @@
 <table class="table table-responsive">
 
     <thead>
-        <tr>
-            <th>Name</th>
-            <th>Version</th>
-        </tr>
+    <tr>
+        <th></th>
+        <th>Name</th>
+        <th>Generated</th>
+        <th>Version</th>
+    </tr>
     </thead>
     <tbody>
         @if (Model.Any())
@@ -40,8 +42,17 @@
                                data-original-title="@doc.Filename">View</a>
                         }
                         <a href="/download/@doc.Id" class="btn btn-sm btn-default" download>Download</a>
+                        
+                    </td>
+                    <td>
                         <span>
                             @doc.Filename<span> - </span><span class="small">(@doc.FileSizeInMb)</span>
+                        </span>
+                    </td>
+                    <td>
+                        <span>
+                        @doc.DateGenerated
+
                         </span>
                     </td>
                     <td>@doc.Version</td>
@@ -52,7 +63,7 @@
         {
             <tr>
                 <td colspan="2">
-                    No documents generated
+                    No documents generated yet
                 </td>
             </tr>
         }
