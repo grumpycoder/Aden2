@@ -10,6 +10,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
+using Z.EntityFramework.Plus;
 
 namespace Aden.Web.Controllers.api
 {
@@ -41,7 +42,11 @@ namespace Aden.Web.Controllers.api
         {
             if (string.IsNullOrWhiteSpace(model.Message)) return BadRequest("No message provided");
 
-            var submission = await _context.Submissions.Include(f => f.FileSpecification).FirstOrDefaultAsync(s => s.Id == id);
+            var submission = await _context.Submissions
+                .Include(f => f.FileSpecification)
+                .Include(r => r.Reports)
+                .FirstOrDefaultAsync(s => s.Id == id);
+
             if (submission == null) return NotFound();
 
             submission.Waive(model.Message, _currentUserFullName);
@@ -49,7 +54,7 @@ namespace Aden.Web.Controllers.api
             _context.SaveChanges();
 
             //TODO: Refactor. Do not have access to new report until after save
-            submission.CurrentReportId = submission.Reports.LastOrDefault().Id;
+            if (submission.CurrentReportId == 0) submission.CurrentReportId = submission.Reports.LastOrDefault()?.Id;
 
             _context.SaveChanges();
 
@@ -62,7 +67,7 @@ namespace Aden.Web.Controllers.api
         public async Task<object> Start(int id)
         {
             var submission = await _context.Submissions
-                .Include(f => f.FileSpecification.GenerationGroup)
+                .Include(f => f.FileSpecification.GenerationGroup).Include(r => r.Reports)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (submission == null) return NotFound();
@@ -82,9 +87,12 @@ namespace Aden.Web.Controllers.api
 
             _context.SaveChanges();
 
-            submission.CurrentReportId = submission.Reports.LastOrDefault().Id;
+            if (submission.CurrentReportId == null)
+            {
+                submission.CurrentReportId = submission.Reports.LastOrDefault().Id;
+                _context.SaveChanges();
+            }
 
-            _context.SaveChanges();
 
             var dto = Mapper.Map<SubmissionViewDto>(submission);
 
@@ -95,40 +103,19 @@ namespace Aden.Web.Controllers.api
         public async Task<object> Cancel(int id)
         {
             var submission = await _context.Submissions
-                .Include(f => f.FileSpecification)
+                .Include(f => f.FileSpecification).Include(x => x.Reports)
                 .FirstOrDefaultAsync(x => x.Id == id);
 
             if (submission == null) return NotFound();
 
-            //TODO: Need to remove retrieval to current work item
-            var workItem = _context.WorkItems.Include(x => x.AssignedUser)
-                .FirstOrDefault(x => x.ReportId == submission.CurrentReportId && x.WorkItemState == WorkItemState.NotStarted);
+            _context.WorkItems
+                .Where(r => r.ReportId == submission.CurrentReportId && r.WorkItemState != WorkItemState.Completed)
+                .Update(x => new WorkItem() { WorkItemState = WorkItemState.Cancelled });
 
-            //Create copy because removing workitems produces null assignee 
-            var wi = workItem;
-            if (workItem != null) wi = workItem.DeepCopy();
-
-            //TODO: Submission does not need to be aware of data context
-            //Remove Reports/Documents/WorkItems from submission
-            var report = await _context.Reports
-                .FirstOrDefaultAsync(r => r.Id == submission.CurrentReportId);
-            if (report != null)
-            {
-
-                var docs = _context.ReportDocuments.Where(d => d.ReportId == report.Id);
-                if (docs.Any()) _context.ReportDocuments.RemoveRange(docs);
-
-
-                var workItems = _context.WorkItems.Where(w => w.ReportId == report.Id);
-                if (workItems.Any()) _context.WorkItems.RemoveRange(workItems);
-
-
-                _context.Reports.Remove(report);
-            }
+            var report = _context.Reports.FirstOrDefault(x => x.Id == submission.CurrentReportId);
+            report.ReportState = ReportState.NotStarted;
 
             submission.Cancel(_currentUserFullName);
-
-            if (wi != null) WorkEmailer.Send(wi, submission);
 
             _context.SaveChanges();
 

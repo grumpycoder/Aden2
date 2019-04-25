@@ -37,16 +37,15 @@ namespace Aden.Web.Models
             SubmissionState = SubmissionState.Waived;
             LastUpdated = DateTime.Now;
 
-            var report = new Report
-            {
-                SubmissionId = Id,
-                DataYear = DataYear,
-                ReportState = ReportState.Waived
-            };
-            Reports.Add(report);
+            var report = Reports.FirstOrDefault(x => x.Id == CurrentReportId);
 
-            //TODO: ReportId not available yet
-            CurrentReportId = 0;
+            if (report == null)
+            {
+                report = new Report { SubmissionId = Id, DataYear = DataYear, ReportState = ReportState.Waived };
+                Reports.Add(report);
+                //TODO: ReportId not available yet
+                CurrentReportId = 0;
+            }
 
             //Create audit record
             var msg = $"{userFullName} waived submission: {message}";
@@ -57,7 +56,7 @@ namespace Aden.Web.Models
 
         public WorkItem Reopen(string currentUser, string message, UserProfile assignee, DateTime dueDate)
         {
-            var currentVersion = Reports.FirstOrDefault(x => x.Id == CurrentReportId).CurrentDocumentVersion + 1; 
+            var currentVersion = Reports.FirstOrDefault(x => x.Id == CurrentReportId)?.CurrentDocumentVersion + 1;
 
             //Create Audit record
             var msg = $"{currentUser} reopened submission: { message }";
@@ -101,26 +100,14 @@ namespace Aden.Web.Models
 
         public void Cancel(string currentUser)
         {
-
-            //Set Submission State and clear assignee
+            //Set Submission State and clear assignment
             SubmissionState = SubmissionState.NotStarted;
-
             CurrentAssignee = null;
-
-            var lastReport = Reports.LastOrDefault();
-
-            if (lastReport != null)
-            {
-                CurrentReportId = lastReport.Id;
-
-                if (lastReport.ReportState == ReportState.Waived) SubmissionState = SubmissionState.Waived;
-            }
 
             //Create Audit record
             var msg = $"{currentUser} cancelled submission";
             var audit = new SubmissionAudit(Id, msg);
             SubmissionAudits.Add(audit);
-
         }
 
         public WorkItem Start(UserProfile assignee, string userFullName)
@@ -136,8 +123,24 @@ namespace Aden.Web.Models
             LastUpdated = DateTime.Now;
 
             //Create report
-            var report = new Report() { SubmissionId = Id, DataYear = DataYear, ReportState = ReportState.AssignedForGeneration, CurrentDocumentVersion = 1 };
-            Reports.Add(report);
+            Report report;
+            if (CurrentReportId != null)
+            {
+                report = Reports.FirstOrDefault(x => x.Id == CurrentReportId);
+                report.CurrentDocumentVersion += 1;
+            }
+            else
+            {
+                report = new Report()
+                {
+                    SubmissionId = Id,
+                    DataYear = DataYear,
+                    ReportState = ReportState.AssignedForGeneration,
+                    CurrentDocumentVersion = 1
+                };
+                Reports.Add(report);
+            }
+
 
             //Create work item
             var workItem = new WorkItem()
@@ -192,7 +195,7 @@ namespace Aden.Web.Models
             report.GeneratedDate = null;
             report.ApprovedDate = null;
             report.SubmittedDate = null;
-            report.CurrentDocumentVersion += 1; 
+            report.CurrentDocumentVersion += 1;
 
             report.ReportState = ReportState.AssignedForGeneration;
             report.Submission.SubmissionState = SubmissionState.AssignedForGeneration;
@@ -240,6 +243,7 @@ namespace Aden.Web.Models
                 report.SubmittedDate = DateTime.Now;
                 wi.AssignedUser = CurrentAssignee = nextAssignee;
                 report.WorkItems.Add(wi);
+
                 //Create Audit record
                 //TODO: hard coded increment logic
                 message = $"{wi.AssignedUser.FullName} was assigned {wi.WorkItemAction.GetDescription()} task for document version #{currentVersion + 1}";
@@ -295,7 +299,6 @@ namespace Aden.Web.Models
                 var newAudit = new SubmissionAudit(Id, newWorkMessage);
                 SubmissionAudits.Add(newAudit);
             }
-
 
             return wi;
         }

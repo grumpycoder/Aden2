@@ -47,13 +47,23 @@ namespace Aden.Web.ViewModels
 
         public SubmissionState SubmissionState { get; set; }
 
+        public bool CanStart => (SubmissionState == SubmissionState.NotStarted) && HasAdmin;
+
+        public bool CanWaiver => CanStart && HasAdmin;
+
+
+        public bool CanCancel => SubmissionState != SubmissionState.Waived && SubmissionState != SubmissionState.Complete && SubmissionState != SubmissionState.NotStarted;
+
+        public bool CanReopen => (SubmissionState == SubmissionState.Complete || SubmissionState == SubmissionState.Waived) && HasAdmin;
+
+        public bool CanReview => CurrentReportId != null;
+
+
+
         public string SubmissionStateDisplay => SubmissionState.GetDisplayName();
 
         public bool HasStarted => SubmissionState != SubmissionState.NotStarted;
-        public bool CanCancel => SubmissionState == SubmissionState.AssignedForGeneration && HasAdmin;
-        public bool CanStart => SubmissionState == SubmissionState.NotStarted && HasAdmin;
 
-        public bool CanReopen => (SubmissionState == SubmissionState.Complete || SubmissionState == SubmissionState.Waived) && HasAdmin;
 
         public bool StartDisabled => CanStart && (string.IsNullOrWhiteSpace(GenerationUserGroup) ||
                                                                                               string.IsNullOrWhiteSpace(ApprovalUserGroup) ||
@@ -63,9 +73,7 @@ namespace Aden.Web.ViewModels
                                                     string.IsNullOrWhiteSpace(ApprovalUserGroup) ||
                                                     string.IsNullOrWhiteSpace(SubmissionUserGroup));
 
-        public bool CanWaiver => CanStart && HasAdmin;
 
-        public bool CanReview => HasStarted;
 
         public bool HasAdmin => (HttpContext.Current.User as ClaimsPrincipal).HasClaim(ClaimTypes.Role, Constants.GlobalAdministrators); //claim != null;
 
