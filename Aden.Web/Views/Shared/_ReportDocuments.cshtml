@@ -4,12 +4,12 @@
 <table class="table table-responsive">
 
     <thead>
-    <tr>
-        <th></th>
-        <th>Name</th>
-        <th>Generated</th>
-        <th>Version</th>
-    </tr>
+        <tr>
+            <th></th>
+            <th>Name</th>
+            <th>Generated</th>
+            <th>Version</th>
+        </tr>
     </thead>
     <tbody>
         @if (Model.Any())
@@ -42,7 +42,7 @@
                                data-original-title="@doc.Filename">View</a>
                         }
                         <a href="/download/@doc.Id" class="btn btn-sm btn-default" download>Download</a>
-                        
+
                     </td>
                     <td>
                         <span>
@@ -51,8 +51,7 @@
                     </td>
                     <td>
                         <span>
-                        @doc.DateGenerated
-
+                            @(doc.DateGenerated == null ? "Not available" : doc.DateGenerated.ToString())
                         </span>
                     </td>
                     <td>@doc.Version</td>
@@ -62,8 +61,8 @@
         else
         {
             <tr>
-                <td colspan="2">
-                    No documents generated yet
+                <td colspan="4">
+                    No documents generated
                 </td>
             </tr>
         }
