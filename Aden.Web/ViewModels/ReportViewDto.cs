@@ -47,6 +47,9 @@ namespace Aden.Web.ViewModels
                         case ReportState.Complete:
                             panelClass = "success";
                             break;
+                        case ReportState.Waived:
+                            panelClass = "success"; 
+                            break;
                         default:
                             break;
                     }
