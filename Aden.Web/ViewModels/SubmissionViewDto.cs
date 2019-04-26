@@ -52,7 +52,7 @@ namespace Aden.Web.ViewModels
         public bool CanWaiver => CanStart && HasAdmin;
 
 
-        public bool CanCancel => SubmissionState != SubmissionState.Waived && SubmissionState != SubmissionState.Complete && SubmissionState != SubmissionState.NotStarted;
+        public bool CanCancel => (SubmissionState != SubmissionState.Waived && SubmissionState != SubmissionState.Complete && SubmissionState != SubmissionState.NotStarted) && HasAdmin;
 
         public bool CanReopen => (SubmissionState == SubmissionState.Complete || SubmissionState == SubmissionState.Waived) && HasAdmin;
 
