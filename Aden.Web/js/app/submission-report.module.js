@@ -52,10 +52,10 @@
             { dataField: 'fileName', caption: 'File Name', visibleIndex: 2 },
             { dataField: 'deadlineDate', caption: 'Submission Deadline', dataType: 'date', visibleIndex: 6 },
             { dataField: 'displayDataYear', caption: 'Data Year', visibleIndex: 7 },
-            { dataField: 'section', caption: 'Section', visibleIndex: 8 },
             { dataField: 'submissionStateDisplay', caption: 'Status', visibleIndex: 9 },
             { dataField: 'currentAssignment', caption: 'Assigned', visibleIndex: 10 },
             { dataField: 'application', caption: 'Application', visibleIndex: 14 },
+            { dataField: 'section', caption: 'Section', visibleIndex: 8 },
             { dataField: 'supportGroup', caption: 'Support Group', visibleIndex: 15 },
             { dataField: 'collection', caption: 'Collection', visibleIndex: 16 },
 
