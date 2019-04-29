@@ -252,6 +252,7 @@
     <Compile Include="Controllers\api\MailController.cs" />
     <Compile Include="Controllers\api\MembershipController.cs" />
     <Compile Include="Controllers\api\SubmissionController.cs" />
+    <Compile Include="Controllers\ReportController.cs" />
     <Compile Include="Data\Configuration\ErrorLogDetailConfiguration.cs" />
     <Compile Include="Data\Configuration\GroupUserViewConfiguration.cs" />
     <Compile Include="Data\Configuration\PerformanceLogDetailConfiguration.cs" />
@@ -384,6 +385,7 @@
     <Content Include="js\app\review.module.min.js">
       <DependentUpon>review.module.js</DependentUpon>
     </Content>
+    <Content Include="js\app\file-assignment-report.module.js" />
     <Content Include="js\app\submission-report.module.js" />
     <Content Include="js\app\submission-report.module.min.js" />
     <Content Include="js\app\submission.module.js" />
@@ -511,12 +513,15 @@
     <Content Include="Web.Stage.config" />
     <Content Include="Web.Dev.config" />
     <Content Include="Web.Test.config" />
-    <Content Include="Views\Home\SubmissionReport.cshtml" />
+    <Content Include="Views\Report\Submission.cshtml" />
     <Content Include="Views\Home\GroupManager.cshtml" />
     <Content Include="Views\Home\_SubmissionAudit.cshtml" />
     <Content Include="Views\Home\_WorkHistory.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
+    <Content Include="Views\Report\FileAssignment.cshtml" />
+    <Content Include="Views\Report\Index.cshtml" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

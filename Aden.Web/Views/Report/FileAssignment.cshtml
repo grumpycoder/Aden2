@@ -1,0 +1,27 @@
+﻿
+@{
+    ViewBag.Title = "File Assignments";
+}
+
+<style>
+    tr.dx-row.dx-data-row.dx-column-lines.sucess {
+        background-color: darkseagreen;
+    }
+</style>
+<section>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading"><span class="panel-title">@ViewBag.Title</span></div>
+        <div class="panel-body">
+            <div id="gridReport"></div>
+        </div>
+    </div>
+
+</section>
+
+
+@section scripts{
+
+    <script src="~/js/app/file-assignment-report.module.js?v=1.0.2"></script>
+
+}

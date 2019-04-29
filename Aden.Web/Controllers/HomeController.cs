@@ -42,6 +42,11 @@ namespace Aden.Web.Controllers
             return View();
         }
 
+        public ActionResult FileAssignmentReport()
+        {
+            return View();
+        }
+
         [CustomAuthorize(Roles = "AppGlobalAdenAdministrators, AppAdenAdministrators")]
         public ActionResult FileSpecifications()
         {
