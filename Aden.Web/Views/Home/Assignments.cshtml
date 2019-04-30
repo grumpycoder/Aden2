@@ -1,12 +1,11 @@
-﻿
-@{
+﻿@{
     ViewBag.Title = "Assignments";
 }
 
 <section>
 
 <div class="panel panel-primary">
-    <div class="panel-heading"><span class="panel-title">Current Assignments</span></div>
+    <div class="panel-heading"><span class="panel-title">@ViewBag.Title</span></div>
     <div class="panel-body">
         <div id="gridCurrent"></div>
     </div>
@@ -17,7 +16,7 @@
 <section>
 
     <div class="panel panel-success">
-        <div class="panel-heading"><span class="panel-title">Completed Assignments</span></div>
+        <div class="panel-heading"><span class="panel-title">Completed @ViewBag.Title</span></div>
         <div class="panel-body">
             <div id="gridComplete"></div>
         </div>
