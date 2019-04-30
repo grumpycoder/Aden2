@@ -218,6 +218,7 @@
             }
         },
         onContentReady: function () {
+            gridContentReady(); 
             $(".dx-datagrid-table").addClass("table");
         },
         onToolbarPreparing: function (e) {
@@ -275,6 +276,13 @@
             );
         }
     }).dxDataGrid("instance");
+
+    function gridContentReady() {
+        $('#panel-message').hide();
+        if ($grid.getCombinedFilter() !== undefined) {
+            $('#panel-message').show();
+        }
+    }
 
     function showHistory(e) {
         var title = 'Submission History - [' + e.row.data.fileName + ']';

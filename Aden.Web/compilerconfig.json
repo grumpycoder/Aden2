@@ -42,5 +42,9 @@
   {
     "outputFile": "js/app/group-manager.module.min.js",
     "inputFile": "js/app/group-manager.module.js"
+  },
+  {
+    "outputFile": "js/app/file-assignment-report.module.min.js",
+    "inputFile": "js/app/file-assignment-report.module.js"
   }
 ]

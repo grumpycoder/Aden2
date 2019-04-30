@@ -240,9 +240,19 @@
                 }
 
             );
-        }
+        },
+        onContentReady: function () {
+            gridContentReady(); 
+            $(".dx-datagrid-table").addClass("table");
+        },
     }).dxDataGrid("instance");
 
+    function gridContentReady() {
+        $('#panel-message').hide();
+        if ($grid.getCombinedFilter() !== undefined) {
+            $('#panel-message').show();
+        }
+    }
 
     function activate(container, data) {
         var id = data.id;
