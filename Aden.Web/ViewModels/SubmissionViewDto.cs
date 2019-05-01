@@ -3,6 +3,7 @@ using Aden.Web.Models;
 using Humanizer;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using System.Web;
 
@@ -47,14 +48,17 @@ namespace Aden.Web.ViewModels
 
         public SubmissionState SubmissionState { get; set; }
 
-        public bool CanStart => (SubmissionState == SubmissionState.NotStarted) && HasAdmin;
+        public bool CanStart => (SubmissionState == SubmissionState.NotStarted) && (HasAdmin || IsGroupMember);
 
         public bool CanWaiver => CanStart && HasAdmin;
 
 
-        public bool CanCancel => (SubmissionState != SubmissionState.Waived && SubmissionState != SubmissionState.Complete && SubmissionState != SubmissionState.NotStarted) && HasAdmin;
+        public bool CanCancel =>
+            (SubmissionState != SubmissionState.Waived && SubmissionState != SubmissionState.Complete &&
+             SubmissionState != SubmissionState.NotStarted) && (HasAdmin || IsGroupMember);
 
-        public bool CanReopen => (SubmissionState == SubmissionState.Complete || SubmissionState == SubmissionState.Waived) && HasAdmin;
+        public bool CanReopen =>
+            (SubmissionState == SubmissionState.Complete || SubmissionState == SubmissionState.Waived) && (HasAdmin || IsGroupMember);
 
         public bool CanReview => CurrentReportId != null;
 
@@ -66,8 +70,8 @@ namespace Aden.Web.ViewModels
 
 
         public bool StartDisabled => CanStart && (string.IsNullOrWhiteSpace(GenerationUserGroup) ||
-                                                                                              string.IsNullOrWhiteSpace(ApprovalUserGroup) ||
-                                                                                              string.IsNullOrWhiteSpace(SubmissionUserGroup));
+                                                  string.IsNullOrWhiteSpace(ApprovalUserGroup) ||
+                                                  string.IsNullOrWhiteSpace(SubmissionUserGroup));
 
         public bool ReopenDisabled => CanReopen && (string.IsNullOrWhiteSpace(GenerationUserGroup) ||
                                                     string.IsNullOrWhiteSpace(ApprovalUserGroup) ||
@@ -75,8 +79,24 @@ namespace Aden.Web.ViewModels
 
 
 
-        public bool HasAdmin => (HttpContext.Current.User as ClaimsPrincipal).HasClaim(ClaimTypes.Role, Constants.GlobalAdministrators); //claim != null;
+        public bool HasAdmin =>
+            (HttpContext.Current.User as ClaimsPrincipal).HasClaim(ClaimTypes.Role,
+                Constants.GlobalAdministrators); //claim != null;
+
+        public bool IsGroupMember
+        {
+            get
+            {
+                var list = GeneratorEmailAddresses.Concat(ApproverEmailAddresses);
+                var email = (HttpContext.Current.User as ClaimsPrincipal).Identity.GetEmailAddressClaim();
+                var isMatch = list.Contains(email);
+                return isMatch;
+
+            }
+        }
 
         public int? CurrentReportId { get; set; }
+        public List<string> GeneratorEmailAddresses { get; set; }
+        public List<string> ApproverEmailAddresses { get; set; }
     }
 }

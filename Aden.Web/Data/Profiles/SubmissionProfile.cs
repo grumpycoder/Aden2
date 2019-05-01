@@ -30,9 +30,12 @@ namespace Aden.Web.Data.Profiles
                 .ForMember(d => d.SubmissionState, opt => opt.MapFrom(s => s.SubmissionState))
                 .ForMember(d => d.CurrentAssignment, opt => opt.MapFrom(s => s.CurrentAssignee.FullName))
                 .ForMember(d => d.CurrentReportId, opt => opt.MapFrom(s => s.CurrentReportId))
+                //.ForMember(d => d.Generators, opt => opt.MapFrom(s => s.FileSpecification.GenerationGroup.Users.Select(x => new {x.FullName, x.EmailAddress})))
                 .ForMember(d => d.Generators, opt => opt.MapFrom(s => s.FileSpecification.GenerationGroup.Users.Select(x => x.FullName)))
                 .ForMember(d => d.Approvers, opt => opt.MapFrom(s => s.FileSpecification.ApprovalGroup.Users.Select(x => x.FullName)))
                 .ForMember(d => d.Submitters, opt => opt.MapFrom(s => s.FileSpecification.SubmissionGroup.Users.Select(x => x.FullName)))
+                .ForMember(d => d.GeneratorEmailAddresses, opt => opt.MapFrom(s => s.FileSpecification.GenerationGroup.Users.Select(x => x.EmailAddress.ToLower())))
+                .ForMember(d => d.ApproverEmailAddresses, opt => opt.MapFrom(s => s.FileSpecification.ApprovalGroup.Users.Select(x => x.EmailAddress.ToLower())))
                 ;
         }
     }

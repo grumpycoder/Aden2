@@ -32,5 +32,25 @@ namespace Aden.Web.Helpers
             var claim = identity.Claims.FirstOrDefault(c => c.Type == key);
             return claim.Value;
         }
+
+        public static string GetClaimValue(this ClaimsPrincipal currentPrincipal, string key)
+        {
+            var identity = currentPrincipal;
+            var claim = identity?.Claims.FirstOrDefault(c => c.Type == key);
+            return claim?.Value;
+        }
+
+        public static string GetEmailAddressClaim(this IIdentity currentPrincipal)
+        {
+            const string key = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress";
+            return GetClaimValue(ClaimsPrincipal.Current, key).ToLower();
+
+            //var identity = currentPrincipal as ClaimsIdentity;
+            //if (identity == null)
+            //    return null;
+
+            //var claim = identity?.Claims.FirstOrDefault(c => c.Type == key);
+            //return claim?.Value;
+        }
     }
 }
