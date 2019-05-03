@@ -85,13 +85,11 @@ namespace Aden.Web.Services
 
             var email = Email
                 .From(sendFom, sendFom)
-                .To(user.EmailAddress)
+                .To(Constants.SupportDesk)
                 .Subject(subject)
                 .BodyAsHtml()
                 .Body("")
                 .UsingTemplateFromFile(templatePath, model);
-
-
 
             email.Send();
         }
@@ -148,7 +146,7 @@ namespace Aden.Web.Services
             var templatePath = Constants.SubmissionTemplatePath;
             var taskIcon = Constants.SuccessIcon;
             var subject = string.Empty;
-            
+
             subject = $"{submission.FileSpecification.FileDisplayName} Completed Document Version #{workItem.Report.CurrentDocumentVersion ?? 1}";
 
             var model = new EmailModel()

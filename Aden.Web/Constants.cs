@@ -31,6 +31,7 @@ namespace Aden.Web
 
         public static int CommandTimeout => AppSettings.Get<int>("CommandTimeout");
         public static string GlobalAdministrators => AppSettings.Get<string>("GlobalAdministratorsGroupName");
+        public static string SupportDesk => AppSettings.Get<string>("SupportDesk");
 
         public static string Administrators = AppSettings.Get<string>("AdministratorsGroupName");
         public static string SubmissionErrorNotifiers = AppSettings.Get<string>("SubmissionErrorNotifiersGroupName");
