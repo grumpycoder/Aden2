@@ -281,6 +281,7 @@ namespace Aden.Web.Controllers
         }
 
         [Route("GroupManager")]
+        [CustomAuthorize(Roles = "AppGlobalAdenAdministrators, AppAdenAdministrators")]
         public ActionResult GroupManager()
         {
             return View();
