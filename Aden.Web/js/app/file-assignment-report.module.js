@@ -99,6 +99,7 @@
         },
         onContentReady: function () {
             $(".dx-datagrid-table").addClass("table");
+            gridContentReady();
         },
         onToolbarPreparing: function (e) {
             var dataGrid = e.component;
@@ -130,6 +131,13 @@
             );
         }
     }).dxDataGrid("instance");
+
+    function gridContentReady() {
+        $('#panel-message').hide();
+        if ($grid.getCombinedFilter() !== undefined) {
+            $('#panel-message').show();
+        }
+    }
 
     function addRowClass(rowElement, data) {
         var classes = ['active', 'success', 'info', 'warning', 'danger'];
