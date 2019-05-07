@@ -39,17 +39,19 @@
         columnChooser: { enabled: true },
         columns: [
             {
-                width: 50,
-                type: "buttons",
-                buttons: ["edit", "delete", {
-                    text: "History",
-                    icon: "fa fa-history",
-                    hint: "History",
-                    onClick: function (e) {
-                        // Execute your command here
-                        showHistory(e);
-                    }
-                }]
+                alignment: 'center',
+                width: 100, 
+                cellTemplate: function(container, options) {
+                    $('<a/>').addClass('btn btn-default btn-sm btn-sm-grid')
+                        .text('Audit')
+                        .attr('aria-label', 'submission audit ' + options.data.fileName)
+                        .on('dxclick',
+                            function (e) {
+                                console.log(options);
+                                showHistory(options);
+                            })
+                        .appendTo(container);
+                }
             },
             { dataField: 'fileNumber', caption: 'File Number' },
             { dataField: 'fileName', caption: 'File Name' },
@@ -187,8 +189,6 @@
                                 })
                             .appendTo(container);
                     }
-
-
 
                 }
             }

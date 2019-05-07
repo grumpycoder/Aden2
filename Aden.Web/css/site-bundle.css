@@ -59,7 +59,10 @@ header .lead {
   min-width: 120px; }
 
 .btn-lg-grid {
-  min-width: 90px; }
+  min-width: 150px; }
+
+.btn-sm-grid {
+  min-width: 75px; }
 
 .align-right {
   text-align: right; }
