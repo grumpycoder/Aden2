@@ -119,6 +119,7 @@ namespace Aden.Web.Models
             SubmissionAudits.Add(audit);
 
             //Change state
+            StartDate = DateTime.Now;
             SubmissionState = SubmissionState.AssignedForGeneration;
             CurrentAssignee = assignee;
             LastUpdated = DateTime.Now;
