@@ -243,7 +243,6 @@
         },
         onContentReady: function () {
             gridContentReady(); 
-            $(".dx-datagrid-table").addClass("table");
         },
     }).dxDataGrid("instance");
 
@@ -252,6 +251,9 @@
         if ($grid.getCombinedFilter() !== undefined) {
             $('#panel-message').show();
         }
+        $(".dx-datagrid-table").addClass("table");
+        $('.dx-button').attr('data-toggle', 'tooltip'); 
+        $('[data-toggle="tooltip"]').tooltip();
     }
 
     function activate(container, data) {

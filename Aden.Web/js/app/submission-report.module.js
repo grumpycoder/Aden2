@@ -35,8 +35,8 @@
         columns: [
             {
                 alignment: 'center',
-                width: 100, 
-                cellTemplate: function(container, options) {
+                width: 100,
+                cellTemplate: function (container, options) {
                     $('<a/>').addClass('btn btn-default btn-sm btn-sm-grid')
                         .text('Audit')
                         .attr('aria-label', 'submission audit ' + options.data.fileName)
@@ -58,8 +58,52 @@
             { dataField: 'section', caption: 'Section', visibleIndex: 8 },
             { dataField: 'supportGroup', caption: 'Support Group', visibleIndex: 15 },
             { dataField: 'collection', caption: 'Collection', visibleIndex: 16 },
+            { dataField: 'startDate', caption: 'Started Date', dataType: 'date' },
+            { dataField: 'submissionDate', caption: 'Date Submitted', dataType: 'date' },
+            {
+                dataField: 'daysOverdue', caption: 'Days Overdue', dataType: 'decimal',
+                headerFilter: {
+                    dataSource: [{
+                        text: "Less than 30",
+                        value: ["daysOverdue", "<", 30]
+                    }, {
 
-            { dataField: 'submissionDate', caption: 'Date Submitted', dataType: 'date', visible: false },
+                        text: "30 - 90",
+                        value: [["daysOverdue", ">=", 30], ["daysOverdue", "<", 90]]
+                    }, {
+
+                        text: "90 - 120",
+                        value: [["daysOverdue", ">=", 90], ["daysOverdue", "<", 120]]
+                    },
+                    {
+
+                        text: "Greater than 120",
+                        value: [["daysOverdue", ">=", 120]]
+                    }]
+                }
+            },
+            {
+                dataField: 'completionDays', caption: 'Completion Days', dataType: 'decimal',
+                headerFilter: {
+                    dataSource: [{
+                        text: "Less than 30",
+                        value: ["completionDays", "<", 30]
+                    }, {
+
+                        text: "30 - 90",
+                        value: [["completionDays", ">=", 30], ["completionDays", "<", 90]]
+                    }, {
+
+                        text: "90 - 120",
+                        value: [["completionDays", ">=", 90], ["completionDays", "<", 120]]
+                    },
+                    {
+
+                        text: "Greater than 120",
+                        value: [["completionDays", ">=", 120]]
+                    }]
+                }
+            },
             { dataField: 'lastUpdatedFriendly', caption: 'Last Update', visible: false },
             {
                 dataField: 'isSEA',
@@ -194,8 +238,7 @@
             }
         },
         onContentReady: function () {
-            $(".dx-datagrid-table").addClass("table");
-            gridContentReady(); 
+            gridContentReady();
         },
         onToolbarPreparing: function (e) {
             var dataGrid = e.component;
@@ -230,9 +273,17 @@
     }).dxDataGrid("instance");
 
     function gridContentReady() {
+        console.log('grid content ready');
+        $(".dx-datagrid-table").addClass("table");
+        $('.dx-button').attr('data-toggle', 'tooltip');
+        $('[data-toggle="tooltip"]').tooltip();
+
         $('#panel-message').hide();
         if ($grid.getCombinedFilter() !== undefined) {
-            $('#panel-message').show();
+            if ($grid.getCombinedFilter().length > 0) {
+                $('#panel-message').show();
+
+            }
         }
     }
 
@@ -315,6 +366,8 @@
                 btn.addClass('active').siblings().removeClass('active');
                 applyStatusFilter(btn.val());
             }
+
+            gridContentReady();
         });
 
     $('#btnGroupDue button').on('click',
@@ -329,7 +382,7 @@
                 btn.addClass('active').siblings().removeClass('active');
                 applyDueFilter(btn.val());
             }
-
+            gridContentReady();
         });
 
     $('#btnSupportGroup button').on('click',
@@ -344,6 +397,7 @@
                 btn.addClass('active').siblings().removeClass('active');
                 applyGroupFilter(btn.val());
             }
+            gridContentReady();
         });
 
     var combinedFilter = [];
@@ -414,20 +468,6 @@
 
     function applyFilters() {
         $grid.clearFilter();
-        //combinedFilter = [];
-
-        //if (statusFilter.length > 0) {
-        //    if (combinedFilter.length > 0) combinedFilter.push('and');
-        //    combinedFilter.push(statusFilter);
-        //}
-        //if (dueFilter.length > 0) {
-        //    if (combinedFilter.length > 0) combinedFilter.push('and');
-        //    combinedFilter.push(dueFilter);
-        //}
-        //if (groupFilter.length > 0) {
-        //    if (combinedFilter.length > 0) combinedFilter.push('and');
-        //    combinedFilter.push(groupFilter);
-        //}
         $grid.filter(combinedFilter);
     }
 

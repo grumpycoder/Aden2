@@ -9,6 +9,7 @@ namespace Aden.Web.Models
     {
         public int Id { get; set; }
         public DateTime? DueDate { get; set; }
+        public DateTime? StartDate { get; set; }
         public DateTime? SubmissionDate { get; set; }
         public DateTime? NextDueDate { get; set; }
         public int DataYear { get; set; }

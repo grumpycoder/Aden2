@@ -59,7 +59,51 @@
             { dataField: 'currentAssignment', caption: 'Assigned' },
             { dataField: 'lastUpdatedFriendly', caption: 'Last Update' },
             { dataField: 'deadlineDate', caption: 'Submission Deadline', dataType: 'date' },
+            { dataField: 'startDate', caption: 'Started Date', dataType: 'date' },
             { dataField: 'submissionDate', caption: 'Date Submitted', dataType: 'date' },
+            { dataField: 'daysOverdue', caption: 'Days Overdue', dataType: 'decimal', 
+                headerFilter: {
+                    dataSource: [ {
+                        text: "Less than 30",
+                        value: ["daysOverdue", "<", 30]
+                    }, {
+                    
+                        text: "30 - 90",
+                        value: [["daysOverdue", ">=", 30], ["daysOverdue", "<", 90]]
+                    }, {
+                    
+                        text: "90 - 120",
+                        value: [["daysOverdue", ">=", 90], ["daysOverdue", "<", 120]]
+                    }, 
+                        {
+                    
+                            text: "Greater than 120",
+                            value: [["daysOverdue", ">=", 120]]
+                        }]
+                }
+            },
+            {
+                dataField: 'completionDays', caption: 'Completion Days', dataType: 'decimal',
+                headerFilter: {
+                    dataSource: [ {
+                            text: "Less than 30",
+                            value: ["completionDays", "<", 30]
+                        }, {
+                    
+                            text: "30 - 90",
+                            value: [["completionDays", ">=", 30], ["completionDays", "<", 90]]
+                        }, {
+                    
+                            text: "90 - 120",
+                            value: [["completionDays", ">=", 90], ["completionDays", "<", 120]]
+                        }, 
+                        {
+                    
+                            text: "Greater than 120",
+                            value: [["completionDays", ">=", 120]]
+                        }]
+                }
+            },
             { dataField: 'displayDataYear', caption: 'Data Year' },
             { dataField: 'section', caption: 'Section', visible: false },
             { dataField: 'application', caption: 'Application', visible: false },
@@ -282,6 +326,9 @@
         if ($grid.getCombinedFilter() !== undefined) {
             $('#panel-message').show();
         }
+        
+        $('.dx-button').attr('data-toggle', 'tooltip'); 
+        $('[data-toggle="tooltip"]').tooltip();
     }
 
     function showHistory(e) {

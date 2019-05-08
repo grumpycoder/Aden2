@@ -371,6 +371,10 @@
     <Content Include="js\app\assignments.module.min.js">
       <DependentUpon>assignments.module.js</DependentUpon>
     </Content>
+    <Content Include="js\app\dashboard.module.js" />
+    <Content Include="js\app\dashboard.module.min.js">
+      <DependentUpon>dashboard.module.js</DependentUpon>
+    </Content>
     <Content Include="js\app\file-assignment-report.module.min.js">
       <DependentUpon>file-assignment-report.module.js</DependentUpon>
     </Content>
@@ -531,6 +535,7 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Report\FileAssignment.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
+    <Content Include="Views\Home\Dashboard.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

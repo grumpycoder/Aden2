@@ -59,7 +59,7 @@ namespace Aden.Web
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Submissions", id = UrlParameter.Optional }
+                defaults: new { controller = "Home", action = "Dashboard", id = UrlParameter.Optional }
             );
         }
     }

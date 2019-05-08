@@ -1,7 +1,6 @@
 ﻿$(function () {
     console.log('file assignment report view ready');
-
-
+    
     var uri = "/api/submission";
 
     var $grid = $('#gridReport').dxDataGrid({
@@ -98,7 +97,6 @@
             }
         },
         onContentReady: function () {
-            $(".dx-datagrid-table").addClass("table");
             gridContentReady();
         },
         onToolbarPreparing: function (e) {
@@ -133,10 +131,14 @@
     }).dxDataGrid("instance");
 
     function gridContentReady() {
+        console.log('content ready');
         $('#panel-message').hide();
         if ($grid.getCombinedFilter() !== undefined) {
             $('#panel-message').show();
-        }
+       }
+        $(".dx-datagrid-table").addClass("table");
+        $('.dx-button').attr('data-toggle', 'tooltip'); 
+        $('[data-toggle="tooltip"]').tooltip();
     }
 
     function addRowClass(rowElement, data) {

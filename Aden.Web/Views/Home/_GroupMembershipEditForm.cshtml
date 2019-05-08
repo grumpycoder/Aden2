@@ -156,9 +156,10 @@ else
 
         $('#identityGuid').val(e.row.data.identityGuid);
 
+        var deleteUri = '/api/membership/groupmembers/' + @Model.Id + '/' + e.row.data.identityGuid;
         $.ajax({
             type: "POST",
-            url: url,
+            url: deleteUri,
             data: $('#groupForm').serializeJSON(),
             success: function(data) {
                 $gridMembers.refresh();

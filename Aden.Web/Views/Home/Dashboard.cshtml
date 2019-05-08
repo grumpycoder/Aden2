@@ -1,12 +1,11 @@
 ﻿@{
-    ViewBag.Title = "Submissions";
+    ViewBag.Title = "Dashboard";
 }
 
 <style>
     tr.dx-row.dx-data-row.dx-column-lines.sucess {
         background-color: darkseagreen;
     }
-
 </style>
 <section>
     <div class="panel panel-primary">
@@ -14,10 +13,15 @@
             <div class="panel-title">
                 <span>@ViewBag.Title</span>
             </div>
-            <kbd id="panel-message" class="pull-right small">* Data is filtered</kbd>
         </div>
         <div class="panel-body">
-            <div id="grid"></div>
+            <div id="pivotgrid-demo">
+                <div id="pivotgrid-chart"></div>
+                <div id="pivotgrid"></div>
+            </div>
+           
+            <div id="detail-popup"></div>
+
         </div>
     </div>
 
@@ -25,7 +29,7 @@
 
 
 @section scripts{
-    
-    <script src="~/js/app/submission.module.min.js?v=1.0.3"></script>
-    
+
+    <script src="~/js/app/dashboard.module.min.js?v=1.0.0"></script>
+
 }

@@ -12,38 +12,92 @@ namespace Aden.Web.ViewModels
     public class SubmissionViewDto
     {
         public int Id { get; set; }
+
         public string FileNumber { get; set; }
+
         public string FileName { get; set; }
+
         public DateTime? SubmissionDate { get; set; }
+
+        public DateTime? StartDate { get; set; }
+
+        public double DaysOverdue
+        {
+            get
+            {
+                if (SubmissionState == SubmissionState.Waived || DeadlineDate.GetValueOrDefault().Date > DateTime.Now.Date) return 0;
+
+                if (SubmissionState == SubmissionState.Complete)
+                {
+                    return SubmissionDate.GetValueOrDefault().Date.Subtract(DeadlineDate.GetValueOrDefault().Date).TotalDays;
+                }
+
+                return DateTime.Now.Date.Subtract(DeadlineDate.GetValueOrDefault().Date).TotalDays;
+            }
+        }
+
+        public double? CompletionDays
+        {
+            get
+            {
+                //if (SubmissionState == SubmissionState.Waived || DeadlineDate.GetValueOrDefault().Date > DateTime.Now.Date) return 0;
+
+                if (SubmissionState == SubmissionState.Complete)
+                {
+                    return SubmissionDate.GetValueOrDefault().Date.Subtract(StartDate.GetValueOrDefault().Date).TotalDays;
+                }
+
+                return null;
+                //return DateTime.Now.Date.Subtract(DeadlineDate.GetValueOrDefault().Date).TotalDays;
+            }
+        }
+
         public DateTime? DueDate { get; set; }
+
+        public int DueYear => DeadlineDate.GetValueOrDefault().Year;
+
         public DateTime? NextDueDate { get; set; }
 
         public DateTime? DeadlineDate => NextDueDate ?? DueDate;
 
         public int? DataYear { get; set; }
+
         public string DisplayDataYear => $"{DataYear - 1}-{DataYear}";
 
         public DateTime? LastUpdated { get; set; }
+
         public string LastUpdatedFriendly => $"{LastUpdated.Humanize(false)}";
 
         public string Section { get; set; }
+
         public string DataGroups { get; set; }
+
         public string Application { get; set; }
+
         public string Collection { get; set; }
+
         public string SupportGroup { get; set; }
 
         public string ReportAction { get; set; }
+
         public List<string> Generators { get; set; }
+
         public List<string> Approvers { get; set; }
+
         public List<string> Submitters { get; set; }
+
         public string GenerationUserGroup { get; set; }
+
         public string ApprovalUserGroup { get; set; }
+
         public string SubmissionUserGroup { get; set; }
 
         public string CurrentAssignment { get; set; }
 
         public bool IsSEA { get; set; }
+
         public bool IsLEA { get; set; }
+
         public bool IsSCH { get; set; }
 
         public SubmissionState SubmissionState { get; set; }
@@ -51,7 +105,6 @@ namespace Aden.Web.ViewModels
         public bool CanStart => (SubmissionState == SubmissionState.NotStarted) && (HasAdmin || IsGroupMember);
 
         public bool CanWaiver => CanStart && HasAdmin;
-
 
         public bool CanCancel =>
             (SubmissionState != SubmissionState.Waived && SubmissionState != SubmissionState.Complete &&
@@ -62,12 +115,9 @@ namespace Aden.Web.ViewModels
 
         public bool CanReview => CurrentReportId != null;
 
-
-
         public string SubmissionStateDisplay => SubmissionState.GetDisplayName();
 
         public bool HasStarted => SubmissionState != SubmissionState.NotStarted;
-
 
         public bool StartDisabled => CanStart && (string.IsNullOrWhiteSpace(GenerationUserGroup) ||
                                                   string.IsNullOrWhiteSpace(ApprovalUserGroup) ||
@@ -76,8 +126,6 @@ namespace Aden.Web.ViewModels
         public bool ReopenDisabled => CanReopen && (string.IsNullOrWhiteSpace(GenerationUserGroup) ||
                                                     string.IsNullOrWhiteSpace(ApprovalUserGroup) ||
                                                     string.IsNullOrWhiteSpace(SubmissionUserGroup));
-
-
 
         public bool HasAdmin =>
             (HttpContext.Current.User as ClaimsPrincipal).HasClaim(ClaimTypes.Role,
@@ -96,7 +144,9 @@ namespace Aden.Web.ViewModels
         }
 
         public int? CurrentReportId { get; set; }
+
         public List<string> GeneratorEmailAddresses { get; set; }
+
         public List<string> ApproverEmailAddresses { get; set; }
     }
 }

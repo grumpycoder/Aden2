@@ -32,6 +32,11 @@ namespace Aden.Web.Controllers
             _membershipService = new MembershipService(_context);
         }
 
+        public ActionResult Dashboard()
+        {
+            return View();
+        }
+
         public ActionResult Submissions()
         {
             return View();
