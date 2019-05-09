@@ -111,10 +111,10 @@ namespace Aden.Web.Services
             identity.AddUpdateClaim(ClaimTypes.Webpage, "Assignments");
 
             if (identity.HasClaim(x => x.Type == ClaimTypes.Role && x.Value.Contains("AdenAdministrators")))
-                identity.AddUpdateClaim(ClaimTypes.Webpage, "Submissions");
+                identity.AddUpdateClaim(ClaimTypes.Webpage, "Dashboard");
 
-            if (identity.HasClaim(x => x.Type == ClaimTypes.Role && x.Value.Contains("AdenExecutive")))
-                identity.AddUpdateClaim(ClaimTypes.Webpage, "SubmissionReport");
+            //if (identity.HasClaim(x => x.Type == ClaimTypes.Role && x.Value.Contains("AdenExecutive")))
+            //    identity.AddUpdateClaim(ClaimTypes.Webpage, "SubmissionReport");
 
 
         }
