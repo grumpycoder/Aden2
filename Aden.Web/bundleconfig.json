@@ -38,5 +38,11 @@
       "enabled": true,
       "adjustRelativePaths": false
     }
+  },
+  {
+    "outputFileName": "js/app/dashboard.module.min.js",
+    "inputFiles": [
+      "js/app/dashboard.module.js"
+    ]
   }
 ]

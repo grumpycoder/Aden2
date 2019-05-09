@@ -46,9 +46,5 @@
   {
     "outputFile": "js/app/file-assignment-report.module.min.js",
     "inputFile": "js/app/file-assignment-report.module.js"
-  },
-  {
-    "outputFile": "js/app/dashboard.module.min.js",
-    "inputFile": "js/app/dashboard.module.js"
   }
 ]
