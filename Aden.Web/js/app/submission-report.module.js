@@ -48,17 +48,17 @@
                         .appendTo(container);
                 }
             },
-            { dataField: 'fileNumber', caption: 'File Number', visibleIndex: 1 },
-            { dataField: 'fileName', caption: 'File Name', visibleIndex: 2 },
-            { dataField: 'deadlineDate', caption: 'Submission Deadline', dataType: 'date', visibleIndex: 6 },
-            { dataField: 'displayDataYear', caption: 'Data Year', visibleIndex: 7 },
-            { dataField: 'submissionStateDisplay', caption: 'Status', visibleIndex: 9 },
-            { dataField: 'currentAssignment', caption: 'Assigned', visibleIndex: 10 },
-            { dataField: 'application', caption: 'Application', visibleIndex: 14 },
-            { dataField: 'section', caption: 'Section', visibleIndex: 8 },
-            { dataField: 'supportGroup', caption: 'Support Group', visibleIndex: 15 },
-            { dataField: 'collection', caption: 'Collection', visibleIndex: 16 },
-            { dataField: 'startDate', caption: 'Started Date', dataType: 'date' },
+            { dataField: 'deadlineDate', caption: 'Submission Deadline', dataType: 'date', visibleIndex: 1 },
+            { dataField: 'fileNumber', caption: 'File Number', visibleIndex: 2 },
+            { dataField: 'fileName', caption: 'File Name', visibleIndex: 3 },
+            { dataField: 'displayDataYear', caption: 'Data Year', visibleIndex: 4 },
+            { dataField: 'section', caption: 'Section', visibleIndex: 5 },
+            { dataField: 'submissionStateDisplay', caption: 'Status', visibleIndex: 6 },
+            { dataField: 'currentAssignment', caption: 'Assigned', visibleIndex: 7 },
+            { dataField: 'startDate', caption: 'Started Date', dataType: 'date', visibleIndex: 10 },
+            { dataField: 'application', caption: 'Application', visibleIndex: 11 },
+            { dataField: 'supportGroup', caption: 'Support Group', visibleIndex: 12 },
+            { dataField: 'collection', caption: 'Collection', visibleIndex: 13 },
             { dataField: 'submissionDate', caption: 'Date Submitted', dataType: 'date' },
             {
                 dataField: 'daysOverdue', caption: 'Days Overdue', dataType: 'decimal',
@@ -155,7 +155,7 @@
                 caption: 'Generators',
                 dataType: 'string',
                 visible: true,
-                visibleIndex: 11,
+                visibleIndex: 8,
                 cellTemplate: function (container, options) {
                     options.data.generators.forEach(function (item) {
                         $('<span>' + item + '</span><br />').appendTo(container)
@@ -171,7 +171,7 @@
                 caption: 'Approvers',
                 dataType: 'string',
                 visible: true,
-                visibleIndex: 12,
+                visibleIndex: 9,
                 cellTemplate: function (container, options) {
                     options.data.approvers.forEach(function (item) {
                         $('<span>' + item + '</span><br />').appendTo(container)
@@ -189,7 +189,7 @@
                 visible: false,
                 cellTemplate: function (container, options) {
                     options.data.submitters.forEach(function (item) {
-                        $('<span>' + item + '</span><br />').appendTo(container)
+                        $('<span>' + item + '</span><br />').appendTo(container);
                     });
                 },
                 allowFiltering: false,

@@ -35,6 +35,7 @@
         columnAutoWidth: true,
         columnChooser: { enabled: true },
         columns: [
+            { dataField: 'deadlineDate', caption: 'Submission Deadline', dataType: 'date', visibleIndex: 1 },
             { dataField: 'fileNumber', caption: 'File Number', visibleIndex: 1 },
             { dataField: 'fileName', caption: 'File Name', visibleIndex: 2 },
             { dataField: 'section', caption: 'Section', visibleIndex: 8 },

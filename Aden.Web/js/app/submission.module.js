@@ -53,12 +53,13 @@
                         .appendTo(container);
                 }
             },
+            { dataField: 'deadlineDate', caption: 'Submission Deadline', dataType: 'date' },
             { dataField: 'fileNumber', caption: 'File Number' },
             { dataField: 'fileName', caption: 'File Name' },
+            { dataField: 'displayDataYear', caption: 'Data Year' },
             { dataField: 'submissionStateDisplay', caption: 'Status' },
             { dataField: 'currentAssignment', caption: 'Assigned' },
             { dataField: 'lastUpdatedFriendly', caption: 'Last Update' },
-            { dataField: 'deadlineDate', caption: 'Submission Deadline', dataType: 'date' },
             { dataField: 'startDate', caption: 'Started Date', dataType: 'date' },
             { dataField: 'submissionDate', caption: 'Date Submitted', dataType: 'date' },
             { dataField: 'daysOverdue', caption: 'Days Overdue', dataType: 'decimal', 
@@ -104,7 +105,6 @@
                         }]
                 }
             },
-            { dataField: 'displayDataYear', caption: 'Data Year' },
             { dataField: 'section', caption: 'Section', visible: false },
             { dataField: 'application', caption: 'Application', visible: false },
             { dataField: 'supportGroup', caption: 'Support Group', visible: false },
