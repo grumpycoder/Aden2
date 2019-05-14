@@ -248,7 +248,7 @@ namespace Aden.Web.Models
 
                 //Create Audit record
                 //TODO: hard coded increment logic
-                message = $"{wi.AssignedUser.FullName} was assigned {wi.WorkItemAction.GetDescription()} task for document version #{currentVersion + 1}";
+                message = $"{wi.AssignedUser.FullName} was assigned {wi.WorkItemAction.GetDescription()} task for document version #{currentVersion}";
                 audit = new SubmissionAudit(Id, message);
                 SubmissionAudits.Add(audit);
                 return wi;
