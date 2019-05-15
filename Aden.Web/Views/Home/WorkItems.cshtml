@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "Work Items";
+}
+
+<section>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <span>@ViewBag.Title</span>
+            </div>
+            <kbd id="panel-message" class="pull-right small">* Data is filtered</kbd>
+        </div>
+        <div class="panel-body">
+            <div id="grid"></div>
+        </div>
+    </div>
+
+</section>
+
+@section scripts{
+    <script src="~/js/app/workitems.module.min.js?v=1.0.1"></script>
+}

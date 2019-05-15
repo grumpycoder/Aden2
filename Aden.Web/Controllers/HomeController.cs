@@ -292,6 +292,18 @@ namespace Aden.Web.Controllers
             return View();
         }
 
+        [CustomAuthorize(Roles = "AppAdenAdministrators")]
+        public ActionResult WorkItems()
+        {
+            return View();
+        }
+
+        [Route("AdminReportView")]
+        public ActionResult ReportView()
+        {
+            return View();
+        }
+
         public ActionResult LogViewer()
         {
             return View();

@@ -363,6 +363,10 @@
     <Content Include="img\sde-logo-transparent-25.png" />
     <Content Include="img\sde-logo-transparent-50.png" />
     <Content Include="img\sde-logo-transparent-75.png" />
+    <Content Include="js\app\admin-reportview.module.js" />
+    <Content Include="js\app\admin-reportview.module.min.js">
+      <DependentUpon>admin-reportview.module.js</DependentUpon>
+    </Content>
     <Content Include="js\app\app.module.js" />
     <Content Include="js\app\app.module.min.js">
       <DependentUpon>app.module.js</DependentUpon>
@@ -406,6 +410,10 @@
     <Content Include="js\app\submission.module.js" />
     <Content Include="js\app\submission.module.min.js">
       <DependentUpon>submission.module.js</DependentUpon>
+    </Content>
+    <Content Include="js\app\workitems.module.js" />
+    <Content Include="js\app\workitems.module.min.js">
+      <DependentUpon>workitems.module.js</DependentUpon>
     </Content>
     <Content Include="js\dx-bundle.js" />
     <Content Include="js\dx-bundle.min.js">
@@ -536,6 +544,8 @@
     <Content Include="Views\Report\FileAssignment.cshtml" />
     <Content Include="Views\Report\Index.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
+    <Content Include="Views\Home\WorkItems.cshtml" />
+    <Content Include="Views\Home\ReportView.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

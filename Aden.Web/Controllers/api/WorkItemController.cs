@@ -63,6 +63,15 @@ namespace Aden.Web.Controllers.api
             return Ok(DataSourceLoader.Load(dto.OrderByDescending(x => x.CompletedDate).ThenByDescending(d => d.Action), loadOptions));
         }
 
+        [HttpGet, Route("all")]
+        public async Task<object> GetAll(DataSourceLoadOptions loadOptions)
+        {
+
+            var dto = await _context.WorkItems.ProjectTo<WorkItemViewDto>().ToListAsync();
+
+            return Ok(DataSourceLoader.Load(dto.OrderBy(x => x.AssignedDate), loadOptions));
+        }
+
         [HttpGet, Route("history/{id}")]
         public async Task<object> History(int id, DataSourceLoadOptions loadOptions)
         {
@@ -192,10 +201,10 @@ namespace Aden.Web.Controllers.api
             if (!submission.FileSpecification.GenerationGroup.Users.Any()) return BadRequest("No group members to assign next task. ");
 
             var wi = submission.Reject(workItem);
-            
+
             await _context.SaveChangesAsync();
 
-            wi.Report.CurrentDocumentVersion += 1; 
+            wi.Report.CurrentDocumentVersion += 1;
 
             WorkEmailer.Send(wi, submission);
             var dto = Mapper.Map<WorkItemViewDto>(wi);
@@ -266,6 +275,20 @@ namespace Aden.Web.Controllers.api
 
             return Ok(dto);
 
+        }
+
+        [HttpPost, Route("delete/{id}")]
+        public async Task<object> Delete(int id)
+        {
+            var wi = await _context.WorkItems.FindAsync(id);
+
+            if (wi == null) return NotFound();
+
+            _context.WorkItems.Remove(wi);
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Deleted work item");
         }
     }
 }

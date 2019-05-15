@@ -165,7 +165,6 @@
     }).dxDataGrid("instance");
 
     function complete(container, data) {
-        $toggleWorkingButton(container);
         var uri = '/api/workitem/complete/' + data.id;
         if (data.isManualUpload && data.canGenerate) {
             showUpload(container, data);
@@ -204,8 +203,6 @@
                             }).always(function () {
                                 $toggleWorkingButton(container);
                             });
-
-                            $toggleWorkingButton(container);
                         } else {
                             return;
                         }

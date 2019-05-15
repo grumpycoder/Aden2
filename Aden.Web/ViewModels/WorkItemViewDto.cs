@@ -25,6 +25,7 @@ namespace Aden.Web.ViewModels
         public WorkItemAction Action { get; set; }
 
         public WorkItemState WorkItemState { get; set; }
+        public string WorkItemStateDisplay => WorkItemState.GetDescription();
 
         public string ActionName => Action.GetShortName();
 
@@ -40,6 +41,6 @@ namespace Aden.Web.ViewModels
         public bool CanCancel => false;
 
         public bool IsManualUpload => ReportAction?.ToLower() == "manual";
-
+        public string AssignedUser { get; set; }
     }
 }

@@ -40,6 +40,7 @@ namespace Aden.Web.Data.Profiles
                 .ForMember(d => d.ReportAction,
                     opt => opt.MapFrom(s => s.Report.Submission.FileSpecification.ReportAction))
                 .ForMember(d => d.WorkItemState, opt => opt.MapFrom(s => s.WorkItemState))
+                .ForMember(d => d.AssignedUser, opt => opt.MapFrom(s => s.AssignedUser.EmailAddress))
                 .ForAllOtherMembers(d => d.Ignore());
 
 

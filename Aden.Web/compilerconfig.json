@@ -46,5 +46,13 @@
   {
     "outputFile": "js/app/file-assignment-report.module.min.js",
     "inputFile": "js/app/file-assignment-report.module.js"
+  },
+  {
+    "outputFile": "js/app/workitems.module.min.js",
+    "inputFile": "js/app/workitems.module.js"
+  },
+  {
+    "outputFile": "js/app/admin-reportview.module.min.js",
+    "inputFile": "js/app/admin-reportview.module.js"
   }
 ]
