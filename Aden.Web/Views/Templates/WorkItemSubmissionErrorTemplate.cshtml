@@ -15,12 +15,18 @@
 
     <div id="messageBody" style="margin:auto; display:block; text-align: center; width: 70%;">
         <p>
-            A submission error has occurred when sending file to EDEN for @Model.FileName. A task has been assigned to review the error to @Model.AssignedUser. <br/>
+            A submission error has occurred when sending file to EDEN for @Model.FileName. A task has been assigned to review the error to @Model.AssignedUser. <br />
         </p>
         <p>
             <div>Additional Notes</div>
             <hr />
             @Model.Notes
+        </p>
+    </div>
+
+    <div style="display:block; margin:auto; width: 70%; text-align:center;">
+        <p>
+            <a href="@Model.AssignmentsUrl">View Your Assignments</a>
         </p>
     </div>
 

@@ -33,6 +33,8 @@ namespace Aden.Web.Services
             {
                 taskIcon = Constants.ErrorIcon;
                 //subject = $"{submission.FileSpecification.FileDisplayName} {workItem.WorkItemAction.GetDisplayName()} Assignment";
+                subject = $"{submission.FileSpecification.FileDisplayName} {workItem.WorkItemAction.GetDisplayName()} Unsuccessful Submission Document Version #{workItem.Report?.CurrentDocumentVersion ?? 1}";
+                templatePath = Constants.WorkItemTemplatePath;
             }
 
             if (submission.SubmissionState == SubmissionState.NotStarted)
@@ -184,6 +186,32 @@ namespace Aden.Web.Services
         public DateTime DueDate { get; set; }
         public string FileName { get; set; }
         public string Icon { get; set; }
+
+        public string AssignmentsUrl
+        {
+            get
+            {
+                var url = "https://devaden.alsde.edu/assignments";
+
+                switch (Constants.Environment
+)
+                {
+                    case "Production":
+                        url = "https://aden.alsde.edu/assignments";
+                        break;
+                    case "Stage":
+                        url = "https://stageaden.alsde.edu/assignments";
+                        break;
+                    case "Test":
+                        url = "https://testaden.alsde.edu/assignments";
+                        break;
+                    default:
+                        url = "https://devaden.alsde.edu/assignments";
+                        break;
+                }
+                return url;
+            }
+        }
     }
 
 
