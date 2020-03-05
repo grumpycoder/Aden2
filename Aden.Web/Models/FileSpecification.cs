@@ -11,7 +11,7 @@ namespace Aden.Web.Models
         public bool? IsRetired { get; set; }
         public string FileNameFormat { get; set; }
         public string ReportAction { get; set; }
-        public int DataYear { get; set; }
+        public int? DataYear { get; set; }
         public string DataGroups { get; set; }
         public string Application { get; set; }
         public string Collection { get; set; }
@@ -30,7 +30,7 @@ namespace Aden.Web.Models
         public bool IsSEA { get; set; }
         public bool IsLEA { get; set; }
         public bool IsSCH { get; set; }
-        public DateTime DueDate { get; set; }
+        public DateTime? DueDate { get; set; }
 
         public string FileDisplayName => $"{FileName} ({FileNumber})";
 

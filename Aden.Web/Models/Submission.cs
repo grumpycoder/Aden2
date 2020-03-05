@@ -12,7 +12,7 @@ namespace Aden.Web.Models
         public DateTime? StartDate { get; set; }
         public DateTime? SubmissionDate { get; set; }
         public DateTime? NextDueDate { get; set; }
-        public int DataYear { get; set; }
+        public int? DataYear { get; set; }
         public bool IsSEA { get; set; }
         public bool IsLEA { get; set; }
         public bool IsSCH { get; set; }
