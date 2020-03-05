@@ -110,6 +110,12 @@
             { dataField: 'supportGroup', caption: 'Support Group', visible: false },
             { dataField: 'collection', caption: 'Collection', visible: false },
             {
+                dataField: 'specificationUrl', caption: 'Specification', dataType: 'string', visible: true,
+                cellTemplate: function (container, options) { 
+                    if(options.value !== null) $('<a />', { 'href': options.value, 'target': '_blank' }).append('Specifications').appendTo(container);
+                }
+            },
+            {
                 dataField: 'isSEA', caption: 'SEA',
                 dataType: 'boolean',
                 visible: false,

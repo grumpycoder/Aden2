@@ -60,6 +60,12 @@
             { dataField: 'approvalGroup', caption: 'Approval Group', dataType: 'string', visible: false },
             { dataField: 'submissionGroup', caption: 'Submission Group', dataType: 'string', visible: false },
             {
+                dataField: 'specificationUrl', caption: 'Specification', dataType: 'string', visible: true,
+                cellTemplate: function (container, options) {
+                    $('<a />', { 'href': options.value, 'target': '_blank' }).append('Specifications').appendTo(container);
+                }
+            },
+            {
                 dataField: 'generators', caption: 'Generators', dataType: 'string',
                 cellTemplate: function (container, options) {
                     options.data.generators.forEach(function (item) { $('<span>' + item + '</span><br />').appendTo(container) });
@@ -242,7 +248,7 @@
             );
         },
         onContentReady: function () {
-            gridContentReady(); 
+            gridContentReady();
         },
     }).dxDataGrid("instance");
 
@@ -252,7 +258,7 @@
             $('#panel-message').show();
         }
         $(".dx-datagrid-table").addClass("table");
-        $('.dx-button').attr('data-toggle', 'tooltip'); 
+        $('.dx-button').attr('data-toggle', 'tooltip');
         $('[data-toggle="tooltip"]').tooltip();
     }
 
@@ -386,5 +392,5 @@
 
     }
 
-   
+
 })();

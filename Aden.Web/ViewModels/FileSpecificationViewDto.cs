@@ -7,6 +7,7 @@ namespace Aden.Web.ViewModels
         public int Id { get; set; }
         public string FileName { get; set; }
         public string FileNumber { get; set; }
+        public string SpecificationUrl { get; set; }
 
         public bool? IsRetired { get; set; }
         public string FileNameFormat { get; set; }

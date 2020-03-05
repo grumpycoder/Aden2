@@ -16,6 +16,7 @@ namespace Aden.Web.ViewModels
         public string FileNumber { get; set; }
 
         public string FileName { get; set; }
+        public string SpecificationUrl { get; set; }
 
         public DateTime? SubmissionDate { get; set; }
 
