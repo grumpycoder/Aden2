@@ -8,6 +8,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
+using ALSDE.Idem.Models;
 
 namespace Aden.Web.Services
 {
