@@ -86,9 +86,9 @@ bootstrap-ajax-typeahead@^0.0.5:
   version "0.0.5"
   resolved "https://registry.yarnpkg.com/bootstrap-ajax-typeahead/-/bootstrap-ajax-typeahead-0.0.5.tgz#f514dbcd79e17f570ecdfc425877c533b981005c"
 
-bootstrap-sass@3.4.0:
-  version "3.4.0"
-  resolved "https://registry.yarnpkg.com/bootstrap-sass/-/bootstrap-sass-3.4.0.tgz#b1c330a56782347f626d31d497fa4aea16b3f99b"
+bootstrap-sass@3.4.1:
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/bootstrap-sass/-/bootstrap-sass-3.4.1.tgz#6843c73b1c258a0ac5cb2cc6f6f5285b664a8e9a"
 
 bootstrap3-dialog@^1.35.4:
   version "1.35.4"
