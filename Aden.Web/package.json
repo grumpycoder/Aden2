@@ -2,7 +2,7 @@
   "name": "myproject",
   "version": "1.0.0",
   "devDependencies": {
-    "bootstrap": "^4.2.1",
+    "bootstrap": "^4.3.1",
     "bootstrap-3-typeahead": "^4.0.2",
     "bootstrap-ajax-typeahead": "^0.0.5",
     "bootstrap-sass": "3.4.0",
